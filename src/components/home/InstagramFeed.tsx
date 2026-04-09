@@ -169,7 +169,7 @@ export function InstagramFeed({ posts }: Props) {
                         blurDataURL: item.lqip,
                       })}
                       {...(!item.isSanityImage &&
-                        !item.src!.startsWith("/") && {
+                        item.src && !item.src.startsWith("/") && {
                           unoptimized: true,
                         })}
                     />
