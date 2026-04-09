@@ -8,10 +8,10 @@ export default defineType({
   fields: [
     defineField({
       name: "image",
-      title: "Image",
+      title: "Image (Optional)",
       type: "image",
       options: { hotspot: true },
-      validation: (rule) => rule.required(),
+      description: "Upload a photo, or leave empty to auto-embed from the Instagram Post URL below.",
     }),
     defineField({
       name: "caption",

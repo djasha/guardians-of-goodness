@@ -91,7 +91,7 @@ export interface SiteSettings {
 /** Normalized Instagram post for the feed component */
 export interface InstagramPost {
   _id: string;
-  image: {
+  image?: {
     asset: {
       _id: string;
       url: string;

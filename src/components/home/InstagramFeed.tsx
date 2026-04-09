@@ -39,6 +39,7 @@ export function InstagramFeed({ posts }: Props) {
         postUrl: p.postUrl,
         isSanityImage: p.isSanityImage,
         lqip: p.lqip,
+        embedUrl: p.embedUrl,
       }))
     : fallbackImages.map((img, i) => ({
         id: `fallback-${i}`,
@@ -48,6 +49,7 @@ export function InstagramFeed({ posts }: Props) {
         postUrl: SOCIAL.instagram,
         isSanityImage: false,
         lqip: undefined as string | undefined,
+        embedUrl: undefined as string | undefined,
       }));
 
   return (
@@ -89,6 +91,8 @@ export function InstagramFeed({ posts }: Props) {
           {items.map((item, i) => {
             const W = reduced ? "div" : motion.div;
             const isLarge = i === 0 || i === 5;
+            const useEmbed = !item.src && item.embedUrl;
+
             return (
               <W
                 key={item.id}
@@ -100,57 +104,100 @@ export function InstagramFeed({ posts }: Props) {
                 })}
                 className={isLarge ? "sm:col-span-2 sm:row-span-2" : ""}
               >
-                <a
-                  href={item.postUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="neo-border neo-shadow-sm neo-hover block overflow-hidden relative group aspect-square"
-                >
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes={
-                      isLarge
-                        ? "(max-width: 640px) 100vw, 50vw"
-                        : "(max-width: 640px) 50vw, 25vw"
-                    }
-                    {...(item.lqip && {
-                      placeholder: "blur" as const,
-                      blurDataURL: item.lqip,
-                    })}
-                    {...(!item.isSanityImage &&
-                      !item.src.startsWith("/") && {
-                        unoptimized: true,
-                      })}
-                  />
-
-                  {/* Hover overlay with caption */}
-                  <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/85 transition-colors duration-300 flex items-center justify-center p-4">
-                    {item.caption ? (
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center text-white max-w-[90%]">
-                        <span className="block text-3xl leading-none mb-2">
-                          &ldquo;
-                        </span>
-                        <p className="text-sm sm:text-base font-medium leading-relaxed italic">
-                          {truncate(item.caption, 120)}
-                        </p>
-                        <span className="block text-3xl leading-none mt-2">
-                          &rdquo;
-                        </span>
+                {useEmbed ? (
+                  /* Embed-based rendering: iframe from Instagram */
+                  <div className="neo-border neo-shadow-sm neo-hover block overflow-hidden relative aspect-square">
+                    <iframe
+                      src={item.embedUrl}
+                      className="absolute inset-0 w-full h-full border-0 pointer-events-none"
+                      loading="lazy"
+                      title={item.alt}
+                      scrolling="no"
+                    />
+                    {/* Clickable overlay on top of iframe */}
+                    <a
+                      href={item.postUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute inset-0 z-10 group"
+                    >
+                      <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/85 transition-colors duration-300 flex items-center justify-center p-4">
+                        {item.caption ? (
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center text-white max-w-[90%]">
+                            <span className="block text-3xl leading-none mb-2">
+                              &ldquo;
+                            </span>
+                            <p className="text-sm sm:text-base font-medium leading-relaxed italic">
+                              {truncate(item.caption, 120)}
+                            </p>
+                            <span className="block text-3xl leading-none mt-2">
+                              &rdquo;
+                            </span>
+                          </div>
+                        ) : (
+                          <svg
+                            className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63z" />
+                          </svg>
+                        )}
                       </div>
-                    ) : (
-                      <svg
-                        className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63z" />
-                      </svg>
-                    )}
+                    </a>
                   </div>
-                </a>
+                ) : (
+                  /* Image-based rendering: uploaded image or fallback */
+                  <a
+                    href={item.postUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="neo-border neo-shadow-sm neo-hover block overflow-hidden relative group aspect-square"
+                  >
+                    <Image
+                      src={item.src!}
+                      alt={item.alt}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes={
+                        isLarge
+                          ? "(max-width: 640px) 100vw, 50vw"
+                          : "(max-width: 640px) 50vw, 25vw"
+                      }
+                      {...(item.lqip && {
+                        placeholder: "blur" as const,
+                        blurDataURL: item.lqip,
+                      })}
+                      {...(!item.isSanityImage &&
+                        !item.src!.startsWith("/") && {
+                          unoptimized: true,
+                        })}
+                    />
+                    <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/85 transition-colors duration-300 flex items-center justify-center p-4">
+                      {item.caption ? (
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center text-white max-w-[90%]">
+                          <span className="block text-3xl leading-none mb-2">
+                            &ldquo;
+                          </span>
+                          <p className="text-sm sm:text-base font-medium leading-relaxed italic">
+                            {truncate(item.caption, 120)}
+                          </p>
+                          <span className="block text-3xl leading-none mt-2">
+                            &rdquo;
+                          </span>
+                        </div>
+                      ) : (
+                        <svg
+                          className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63z" />
+                        </svg>
+                      )}
+                    </div>
+                  </a>
+                )}
               </W>
             );
           })}
