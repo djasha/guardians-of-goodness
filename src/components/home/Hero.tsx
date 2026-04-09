@@ -76,20 +76,16 @@ export function Hero() {
 
           {/* Primary CTAs */}
           <M {...(!reduced && { initial: { opacity: 0, y: 15 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4, delay: 0.3 } })}>
-            <div className="flex flex-wrap gap-3 mb-5">
-              {primaryActions.map((action) => (
-                <MagneticButton
-                  key={action.href}
-                  href={action.href}
-                  variant={action.variant}
-                  size="lg"
-                >
-                  {action.label}
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                  </svg>
-                </MagneticButton>
-              ))}
+            <div className="flex flex-wrap items-center gap-3 mb-5">
+              <MagneticButton href="/catalogue" variant="secondary" size="md">
+                Adopt a Cat
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </MagneticButton>
+              <MagneticButton href="/consultation" variant="primary" size="md">
+                Get Involved
+              </MagneticButton>
             </div>
           </M>
 
