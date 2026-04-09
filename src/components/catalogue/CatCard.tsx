@@ -3,11 +3,12 @@
 import { motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
+import { Plane, Star, Heart, Check, Cat } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { Cat } from "@/sanity/types";
+import type { Cat as CatType } from "@/sanity/types";
 
 interface CatCardProps {
-  cat: Cat;
+  cat: CatType;
 }
 
 const statusStyles = {
@@ -27,52 +28,6 @@ const statusStyles = {
     label: "Found a Home!",
   },
 };
-
-/* ── Inline SVG Icons ── */
-function PlaneIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
-    </svg>
-  );
-}
-
-function StarIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth={1}>
-      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-    </svg>
-  );
-}
-
-function HeartIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" stroke="none">
-      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-    </svg>
-  );
-}
-
-function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 6L9 17l-5-5" />
-    </svg>
-  );
-}
-
-function CatSilhouette({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 100 100" fill="currentColor" opacity={0.15}>
-      <ellipse cx="30" cy="20" rx="12" ry="18" />
-      <ellipse cx="70" cy="20" rx="12" ry="18" />
-      <circle cx="50" cy="55" r="30" />
-      <circle cx="40" cy="50" r="3" opacity={0.5} />
-      <circle cx="60" cy="50" r="3" opacity={0.5} />
-      <ellipse cx="50" cy="57" rx="4" ry="2" opacity={0.5} />
-    </svg>
-  );
-}
 
 export function CatCard({ cat }: CatCardProps) {
   const status = statusStyles[cat.adoptionStatus] || statusStyles.available;
@@ -112,7 +67,7 @@ export function CatCard({ cat }: CatCardProps) {
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center" role="img" aria-label={`No photo available for ${cat.name}`}>
-              <CatSilhouette className="w-24 h-24 text-dark" />
+              <Cat className="w-16 h-16 text-primary/20" strokeWidth={1.5} aria-hidden="true" />
             </div>
           )}
 
@@ -132,7 +87,7 @@ export function CatCard({ cat }: CatCardProps) {
           {cat.readyToTravelAbroad && (
             <div className="absolute top-3 right-3">
               <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-black bg-white border-2 border-dark text-dark" title="Ready to travel to EU">
-                <PlaneIcon className="w-3.5 h-3.5" aria-hidden="true" /> EU
+                <Plane className="w-3.5 h-3.5" strokeWidth={2.5} aria-hidden="true" /> EU
               </span>
             </div>
           )}
@@ -141,7 +96,7 @@ export function CatCard({ cat }: CatCardProps) {
           {cat.featured && (
             <div className="absolute bottom-3 right-3">
               <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary border-2 border-dark text-white" title="Featured cat" aria-label="Featured">
-                <StarIcon className="w-4 h-4" aria-hidden="true" />
+                <Star className="w-4 h-4 fill-current" strokeWidth={0} aria-hidden="true" />
               </span>
             </div>
           )}
@@ -216,13 +171,13 @@ export function CatCard({ cat }: CatCardProps) {
           <div className="flex gap-2 text-xs text-gray-500" aria-label="Health status">
             {cat.neutered && (
               <span className="flex items-center gap-1">
-                <CheckIcon className="w-3 h-3 text-secondary" aria-hidden="true" />
+                <Check className="w-3 h-3 text-secondary" strokeWidth={3} aria-hidden="true" />
                 Neutered
               </span>
             )}
             {cat.vaccinated && (
               <span className="flex items-center gap-1">
-                <CheckIcon className="w-3 h-3 text-secondary" aria-hidden="true" />
+                <Check className="w-3 h-3 text-secondary" strokeWidth={3} aria-hidden="true" />
                 Vaccinated
               </span>
             )}
@@ -232,7 +187,7 @@ export function CatCard({ cat }: CatCardProps) {
           {cat.bond?.bondedCat && (
             <div className="mt-3 pt-3 border-t-2 border-dashed border-primary/20">
               <span className="text-xs text-primary font-bold inline-flex items-center gap-1">
-                <HeartIcon className="w-3 h-3" aria-hidden="true" />
+                <Heart className="w-3 h-3 fill-current" strokeWidth={0} aria-hidden="true" />
                 Bonded with {cat.bond.bondedCat.name}
               </span>
             </div>
