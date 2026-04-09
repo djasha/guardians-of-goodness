@@ -55,10 +55,10 @@ export function Hero() {
               <span className="relative inline-block">
                 four-legged
                 {/* Decorative cat paw prints — round beans style */}
-                <svg className="absolute -top-3 -right-5 w-5 h-5 text-secondary/40 rotate-12" viewBox="0 0 50 50" fill="currentColor">
+                <svg className="absolute -top-8 right-[40%] w-4 h-4 text-secondary/30 rotate-12" viewBox="0 0 50 50" fill="currentColor">
                   <circle cx="25" cy="32" r="12"/><circle cx="13" cy="17" r="6"/><circle cx="25" cy="12" r="5.5"/><circle cx="37" cy="17" r="6"/><circle cx="8" cy="28" r="4.5"/>
                 </svg>
-                <svg className="absolute -bottom-2 -left-4 w-3.5 h-3.5 text-primary/30 -rotate-20" viewBox="0 0 50 50" fill="currentColor">
+                <svg className="absolute -bottom-4 -left-6 w-3 h-3 text-primary/20 -rotate-20" viewBox="0 0 50 50" fill="currentColor">
                   <circle cx="25" cy="32" r="12"/><circle cx="13" cy="17" r="6"/><circle cx="25" cy="12" r="5.5"/><circle cx="37" cy="17" r="6"/><circle cx="8" cy="28" r="4.5"/>
                 </svg>
               </span>{" "}
