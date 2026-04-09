@@ -87,7 +87,13 @@ export function CatGrid({ cats, stats }: CatGridProps) {
 
       {paged.length === 0 ? (
         <div className="text-center py-20">
-          <div className="text-6xl mb-4">&#128575;</div>
+          <svg className="w-16 h-16 text-primary/30 mx-auto mb-4" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+            <ellipse cx="30" cy="20" rx="12" ry="18" />
+            <ellipse cx="70" cy="20" rx="12" ry="18" />
+            <circle cx="50" cy="55" r="30" />
+            <circle cx="40" cy="48" r="4" opacity={0.4} />
+            <circle cx="60" cy="48" r="4" opacity={0.4} />
+          </svg>
           <h3 className="font-display text-2xl font-black text-dark mb-2">No cats found</h3>
           <p className="text-gray-500">Try adjusting your filters — there are plenty of furry friends waiting!</p>
           <button

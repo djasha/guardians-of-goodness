@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { NAV_ITEMS } from "@/lib/constants";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { CatWhiskersText } from "@/components/ui/CatWhiskersText";
 import { cn } from "@/lib/utils";
 
 export function Header() {
@@ -101,7 +102,11 @@ export function Header() {
                             : "text-dark/70 hover:text-dark hover:bg-dark/5",
                       )}
                     >
-                      {item.label}
+                      {item.label === "CATalogue" ? (
+                        <CatWhiskersText whiskerClassName="text-current opacity-25" />
+                      ) : (
+                        item.label
+                      )}
                       {hasChildren && (
                         <svg
                           className="inline-block ml-1 w-3 h-3 opacity-40"

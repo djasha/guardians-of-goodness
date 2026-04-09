@@ -6,6 +6,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { NAV_ITEMS, SOCIAL } from "@/lib/constants";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { CatWhiskersText } from "@/components/ui/CatWhiskersText";
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -82,7 +83,11 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                       onClick={onClose}
                       className="flex items-center justify-between py-3.5 px-4 neo-border-sm bg-white text-dark font-bold text-base hover:bg-primary hover:text-white transition-all mb-2"
                     >
-                      {item.label}
+                      {item.label === "CATalogue" ? (
+                        <CatWhiskersText whiskerClassName="text-current opacity-25" />
+                      ) : (
+                        item.label
+                      )}
                       <svg className="w-4 h-4 opacity-30" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                       </svg>
