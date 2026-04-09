@@ -38,7 +38,8 @@ export function Header() {
   };
 
   const isHome = pathname === "/";
-  const onDark = isHome && !scrolled;
+  const hasHeroImage = isHome || pathname === "/consultation";
+  const onDark = hasHeroImage && !scrolled;
 
   return (
     <>
@@ -51,15 +52,19 @@ export function Header() {
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-18 lg:h-20">
-            {/* Logo */}
+          <div className={cn("flex items-center justify-between transition-all duration-300", scrolled ? "h-16 lg:h-18" : hasHeroImage ? "h-20 lg:h-28" : "h-18 lg:h-20")}>
+            {/* Logo — large on hero, shrinks on scroll */}
             <Link href="/" className="flex-shrink-0">
               <Image
                 src="/images/logos/goglogo.png"
                 alt="Guardians of Goodness"
-                width={140}
-                height={48}
-                className={cn("h-10 lg:h-12 w-auto transition-all", onDark && "brightness-0 invert")}
+                width={260}
+                height={90}
+                className={cn(
+                  "w-auto transition-all duration-300",
+                  scrolled ? "h-9 lg:h-11" : onDark ? "h-16 lg:h-22" : "h-10 lg:h-12",
+                  onDark && "brightness-0 invert"
+                )}
                 priority
               />
             </Link>
@@ -82,8 +87,8 @@ export function Header() {
                         isActive(item.href)
                           ? onDark ? "text-secondary" : "text-primary bg-primary/10"
                           : onDark
-                            ? "text-white/70 hover:text-white"
-                            : "text-dark/60 hover:text-dark hover:bg-dark/5",
+                            ? "text-white/90 hover:text-white"
+                            : "text-dark/70 hover:text-dark hover:bg-dark/5",
                       )}
                     >
                       {item.label}
@@ -138,13 +143,13 @@ export function Header() {
             {/* Right */}
             <div className="flex items-center gap-3">
               <Link
-                href="/consultation"
+                href="/support"
                 className={cn(
                   "hidden sm:inline-flex items-center neo-border-sm neo-shadow-sm neo-hover px-5 py-2.5 text-sm font-bold rounded-xl",
                   onDark ? "bg-secondary text-dark border-secondary" : "bg-primary text-white"
                 )}
               >
-                Get Involved
+                Support Us
               </Link>
 
               <button

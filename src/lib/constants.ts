@@ -13,24 +13,16 @@ export const SOCIAL = {
 } as const;
 
 export const NAV_ITEMS = [
-  { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   {
     label: "Projects",
     href: "/projects/tnr",
     children: [
-      { label: "TNR", href: "/projects/tnr" },
-      { label: "HBS", href: "/projects/hbs" },
-    ],
-  },
-  { label: "CATalogue", href: "/catalogue" },
-  {
-    label: "Services",
-    href: "/education",
-    children: [
+      { label: "TNR Program", href: "/projects/tnr" },
+      { label: "Home Shelter", href: "/projects/hbs" },
       { label: "Education", href: "/education" },
     ],
   },
-  { label: "Support Us", href: "/support" },
+  { label: "CATalogue", href: "/catalogue" },
   { label: "Contact", href: "/contact" },
 ] as const;

@@ -37,14 +37,14 @@ export function JoinCTA() {
               lives <span className="text-primary-light">together</span>
             </h2>
 
-            <p className="text-white/40 text-lg leading-relaxed mb-10 max-w-md">
+            <p className="text-white/75 text-lg leading-relaxed mb-10 max-w-md">
               Whether you want to volunteer, become a member, or support our
               mission — we&apos;d love to hear from you.
             </p>
 
             {/* Quote card */}
             <div className="neo-border bg-white/5 border-white/10 p-5 max-w-sm">
-              <p className="text-white/50 text-sm italic font-display leading-relaxed">
+              <p className="text-white/70 text-sm italic font-display leading-relaxed">
                 &ldquo;Until one has loved an animal, a part of one&apos;s soul remains unawakened.&rdquo;
               </p>
               <p className="text-white/25 text-xs mt-2 font-bold">

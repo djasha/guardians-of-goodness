@@ -10,6 +10,7 @@ const pillars = [
     title: "Right to Live Naturally",
     text: "All animals have the right to live in respect to their natural needs and behavioral patterns, in an environment that allows them to meet the basic calls of their kind.",
     color: "bg-secondary",
+    textColor: "text-dark",
     image: "/images/generated/cat-group.jpg",
   },
   {
@@ -17,6 +18,7 @@ const pillars = [
     title: "Disease Prevention & Treatment",
     text: "All animals have the right to receive veterinary care in case of disease or accident, as well as preventive medicine like neutering and vaccination.",
     color: "bg-primary",
+    textColor: "text-white",
     image: "/images/generated/rescue-cat.jpg",
   },
   {
@@ -24,13 +26,15 @@ const pillars = [
     title: "Food, Water & Shelter",
     text: "Each animal, whether feral or domestic, should be granted constant access to food, water of proper quality, and a safe place to protect itself from harsh conditions.",
     color: "bg-accent",
+    textColor: "text-dark",
     image: "/images/generated/gentle-cat.jpg",
   },
   {
     num: "04",
     title: "Freedom from Exploitation",
     text: "We are against any kind of animal exploitation that aims to please human desires at the cost of animal welfare. No animal abuse should be tolerated by society.",
-    color: "bg-pink",
+    color: "bg-dark",
+    textColor: "text-white",
     image: "/images/generated/pillar-freedom.jpg",
   },
 ];
@@ -52,7 +56,7 @@ export function PhilosophyPillars() {
           </h2>
         </div>
 
-        {/* Pillar cards with images */}
+        {/* Pillar cards — full bleed image with colored text overlay */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {pillars.map((pillar, i) => {
             const W = reduced ? "div" : motion.div;
@@ -65,35 +69,35 @@ export function PhilosophyPillars() {
                   viewport: { once: true, amount: 0.2 },
                   transition: { duration: 0.4, delay: i * 0.1 },
                 })}
-                className="neo-border neo-shadow bg-white neo-hover cursor-default overflow-hidden"
+                className="neo-border neo-shadow neo-hover cursor-default overflow-hidden relative group h-[380px] sm:h-[420px]"
               >
-                {/* Image */}
-                <div className="relative h-48 sm:h-56 overflow-hidden">
-                  <Image
-                    src={pillar.image}
-                    alt={pillar.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent" />
-                  {/* Number badge on image */}
-                  <div className={`absolute top-4 right-4 ${pillar.color} neo-border-sm w-10 h-10 flex items-center justify-center`}>
-                    <span className="text-white font-display font-black text-sm">{pillar.num}</span>
-                  </div>
-                  {/* Title on image */}
-                  <div className="absolute bottom-4 left-5 right-16">
-                    <h3 className="font-display text-xl sm:text-2xl font-bold text-white drop-shadow-lg">
-                      {pillar.title}
-                    </h3>
-                  </div>
+                {/* Full bleed image */}
+                <Image
+                  src={pillar.image}
+                  alt={pillar.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+
+                {/* Dark overlay for readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/30 to-dark/10" />
+
+                {/* Number badge */}
+                <div className={`absolute top-4 right-4 ${pillar.color} neo-border-sm w-11 h-11 flex items-center justify-center z-10`}>
+                  <span className={`font-display font-black text-sm ${pillar.textColor}`}>{pillar.num}</span>
                 </div>
 
-                {/* Text content */}
-                <div className="p-6 sm:p-7">
-                  <p className="text-dark/50 leading-relaxed text-sm">
-                    {pillar.text}
-                  </p>
+                {/* Content — pinned to bottom with colored bg */}
+                <div className="absolute bottom-0 left-0 right-0 z-10">
+                  <div className={`${pillar.color} p-6 sm:p-7`}>
+                    <h3 className={`font-display text-xl sm:text-2xl font-black ${pillar.textColor} mb-2`}>
+                      {pillar.title}
+                    </h3>
+                    <p className={`${pillar.textColor} text-sm leading-relaxed opacity-80`}>
+                      {pillar.text}
+                    </p>
+                  </div>
                 </div>
               </W>
             );
