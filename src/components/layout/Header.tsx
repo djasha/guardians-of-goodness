@@ -43,6 +43,7 @@ export function Header() {
   const darkHeroPages = [
     "/", "/consultation", "/contact", "/catalogue",
     "/support", "/education", "/projects/tnr", "/projects/hbs",
+    "/about",
   ];
   const hasDarkHero = darkHeroPages.some(
     (p) => p === "/" ? pathname === "/" : pathname.startsWith(p)
