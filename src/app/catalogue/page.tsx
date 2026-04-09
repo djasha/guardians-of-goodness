@@ -33,14 +33,14 @@ export default async function CataloguePage() {
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-4 tracking-tight">
             CATalogue
           </h1>
-          <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-8">
+          <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto mb-8">
             Every cat deserves a loving home. Browse our rescued cats and find
             your perfect companion.
           </p>
 
           {/* Stats pills */}
           {stats && (
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex flex-wrap justify-center gap-3" role="status" aria-label="Catalogue statistics">
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 backdrop-blur-sm text-white font-bold text-sm border-2 border-white/30">
                 🟢 {stats.available} Available
               </span>

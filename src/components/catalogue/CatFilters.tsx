@@ -55,11 +55,12 @@ function Pill({
   return (
     <button
       onClick={onClick}
+      aria-pressed={active}
       className={cn(
-        "px-3 py-2 text-sm font-bold transition-all duration-200 neo-border-sm",
+        "px-3 py-2 text-sm font-bold transition-all duration-200 neo-border-sm min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
         active
           ? "bg-primary text-white neo-shadow-sm"
-          : "bg-white text-dark/50 hover:text-primary"
+          : "bg-white text-dark/70 hover:text-primary"
       )}
     >
       {children}
@@ -79,11 +80,12 @@ function TagChip({
   return (
     <button
       onClick={onClick}
+      aria-pressed={active}
       className={cn(
-        "px-3 py-1.5 rounded-full text-xs font-bold transition-all border-2",
+        "px-3 py-1.5 rounded-full text-xs font-bold transition-all border-2 min-h-[36px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
         active
           ? "bg-secondary text-white border-dark"
-          : "bg-warm-gray text-gray-500 border-transparent hover:border-secondary/40"
+          : "bg-warm-gray text-gray-600 border-transparent hover:border-secondary/40"
       )}
     >
       {tag}
@@ -134,12 +136,14 @@ export function CatFilters({
       {/* Search + Count */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-5">
         <div className="relative flex-1">
+          <label htmlFor="cat-search" className="sr-only">Search cats by name, breed, or color</label>
           <svg
             className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={2.5}
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -148,11 +152,12 @@ export function CatFilters({
             />
           </svg>
           <input
-            type="text"
+            id="cat-search"
+            type="search"
             placeholder="Search by name, breed, color..."
             value={filters.search}
             onChange={(e) => update({ search: e.target.value })}
-            className="w-full pl-11 pr-4 py-3 neo-border-sm bg-white outline-none focus:border-primary transition-all text-sm font-medium"
+            className="w-full pl-11 pr-4 py-3 neo-border-sm bg-white outline-none focus:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all text-sm font-medium"
           />
         </div>
 
@@ -172,13 +177,13 @@ export function CatFilters({
       </div>
 
       {/* Primary filters */}
-      <div className="flex flex-wrap gap-4 mb-4">
+      <div className="flex flex-wrap gap-4 mb-4" role="search" aria-label="Filter cats">
         {/* Status */}
-        <div>
-          <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+        <fieldset>
+          <legend className="text-xs font-black text-gray-500 uppercase tracking-wider mb-2">
             Status
-          </p>
-          <div className="flex gap-1.5">
+          </legend>
+          <div className="flex gap-1.5" role="group" aria-label="Filter by status">
             <Pill active={filters.status === "all"} onClick={() => update({ status: "all" })}>
               All {stats ? `(${stats.available + stats.pending})` : ""}
             </Pill>
@@ -189,53 +194,55 @@ export function CatFilters({
               Pending {stats ? `(${stats.pending})` : ""}
             </Pill>
           </div>
-        </div>
+        </fieldset>
 
         {/* Gender */}
-        <div>
-          <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+        <fieldset>
+          <legend className="text-xs font-black text-gray-500 uppercase tracking-wider mb-2">
             Gender
-          </p>
-          <div className="flex gap-1.5">
+          </legend>
+          <div className="flex gap-1.5" role="group" aria-label="Filter by gender">
             <Pill active={filters.gender === "all"} onClick={() => update({ gender: "all" })}>All</Pill>
             <Pill active={filters.gender === "male"} onClick={() => update({ gender: "male" })}>&#9794; Male</Pill>
             <Pill active={filters.gender === "female"} onClick={() => update({ gender: "female" })}>&#9792; Female</Pill>
           </div>
-        </div>
+        </fieldset>
 
         {/* Age */}
-        <div>
-          <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+        <fieldset>
+          <legend className="text-xs font-black text-gray-500 uppercase tracking-wider mb-2">
             Age
-          </p>
-          <div className="flex gap-1.5 flex-wrap">
+          </legend>
+          <div className="flex gap-1.5 flex-wrap" role="group" aria-label="Filter by age">
             <Pill active={filters.ageCategory === "all"} onClick={() => update({ ageCategory: "all" })}>All</Pill>
             <Pill active={filters.ageCategory === "kitten"} onClick={() => update({ ageCategory: "kitten" })}>Kitten</Pill>
             <Pill active={filters.ageCategory === "young"} onClick={() => update({ ageCategory: "young" })}>Young</Pill>
             <Pill active={filters.ageCategory === "adult"} onClick={() => update({ ageCategory: "adult" })}>Adult</Pill>
             <Pill active={filters.ageCategory === "senior"} onClick={() => update({ ageCategory: "senior" })}>Senior</Pill>
           </div>
-        </div>
+        </fieldset>
 
         {/* Sort */}
-        <div>
-          <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+        <fieldset>
+          <legend className="text-xs font-black text-gray-500 uppercase tracking-wider mb-2">
             Sort
-          </p>
-          <div className="flex gap-1.5">
+          </legend>
+          <div className="flex gap-1.5" role="group" aria-label="Sort order">
             <Pill active={filters.sort === "featured"} onClick={() => update({ sort: "featured" })}>Featured</Pill>
             <Pill active={filters.sort === "newest"} onClick={() => update({ sort: "newest" })}>Newest</Pill>
             <Pill active={filters.sort === "name"} onClick={() => update({ sort: "name" })}>A-Z</Pill>
           </div>
-        </div>
+        </fieldset>
       </div>
 
       {/* More Filters toggle */}
       <button
         onClick={() => setMoreOpen(!moreOpen)}
+        aria-expanded={moreOpen}
+        aria-controls="more-filters-panel"
         className={cn(
-          "flex items-center gap-2 text-sm font-bold transition-colors",
-          moreOpen ? "text-primary" : "text-gray-400 hover:text-primary"
+          "flex items-center gap-2 text-sm font-bold transition-colors min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+          moreOpen ? "text-primary" : "text-gray-500 hover:text-primary"
         )}
       >
         <svg
@@ -244,6 +251,7 @@ export function CatFilters({
           viewBox="0 0 24 24"
           strokeWidth={2.5}
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
         </svg>
@@ -259,47 +267,50 @@ export function CatFilters({
       <AnimatePresence>
         {moreOpen && (
           <motion.div
+            id="more-filters-panel"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
+            role="region"
+            aria-label="Additional filters"
           >
             <div className="pt-4 mt-4 border-t-2 border-dashed border-gray-200 flex flex-col gap-4">
               <div className="flex flex-wrap gap-4">
-                <div>
-                  <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">Travel Ready</p>
-                  <div className="flex gap-1.5">
+                <fieldset>
+                  <legend className="text-xs font-black text-gray-500 uppercase tracking-wider mb-2">Travel Ready</legend>
+                  <div className="flex gap-1.5" role="group" aria-label="Filter by travel readiness">
                     <Pill active={filters.travelReady === "all"} onClick={() => update({ travelReady: "all" })}>All</Pill>
                     <Pill active={filters.travelReady === "yes"} onClick={() => update({ travelReady: "yes" })}>EU Ready</Pill>
                     <Pill active={filters.travelReady === "no"} onClick={() => update({ travelReady: "no" })}>Local</Pill>
                   </div>
-                </div>
-                <div>
-                  <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">Special Needs</p>
-                  <div className="flex gap-1.5">
+                </fieldset>
+                <fieldset>
+                  <legend className="text-xs font-black text-gray-500 uppercase tracking-wider mb-2">Special Needs</legend>
+                  <div className="flex gap-1.5" role="group" aria-label="Filter by special needs">
                     <Pill active={filters.specialNeeds === "all"} onClick={() => update({ specialNeeds: "all" })}>All</Pill>
                     <Pill active={filters.specialNeeds === "yes"} onClick={() => update({ specialNeeds: "yes" })}>Special Care</Pill>
                     <Pill active={filters.specialNeeds === "no"} onClick={() => update({ specialNeeds: "no" })}>No Special Needs</Pill>
                   </div>
-                </div>
-                <div>
-                  <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">Bonded</p>
-                  <div className="flex gap-1.5">
+                </fieldset>
+                <fieldset>
+                  <legend className="text-xs font-black text-gray-500 uppercase tracking-wider mb-2">Bonded</legend>
+                  <div className="flex gap-1.5" role="group" aria-label="Filter bonded pairs">
                     <Pill active={filters.bondedOnly} onClick={() => update({ bondedOnly: !filters.bondedOnly })}>
                       Bonded Pairs Only
                     </Pill>
                   </div>
-                </div>
+                </fieldset>
               </div>
-              <div>
-                <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">Personality</p>
-                <div className="flex flex-wrap gap-1.5">
+              <fieldset>
+                <legend className="text-xs font-black text-gray-500 uppercase tracking-wider mb-2">Personality</legend>
+                <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter by personality tags">
                   {PERSONALITY_TAGS.map((tag) => (
                     <TagChip key={tag} tag={tag} active={filters.tags.includes(tag)} onClick={() => toggleTag(tag)} />
                   ))}
                 </div>
-              </div>
+              </fieldset>
             </div>
           </motion.div>
         )}
@@ -311,13 +322,13 @@ export function CatFilters({
           {filters.search && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-primary/10 text-primary text-xs font-bold border border-primary/20">
               &quot;{filters.search}&quot;
-              <button onClick={() => update({ search: "" })} className="hover:text-primary-dark">&times;</button>
+              <button onClick={() => update({ search: "" })} aria-label={`Remove search filter: ${filters.search}`} className="hover:text-primary-dark min-w-[24px] min-h-[24px] flex items-center justify-center focus-visible:outline-2 focus-visible:outline-primary">&times;</button>
             </span>
           )}
           {filters.tags.map((tag) => (
             <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-secondary/10 text-secondary-dark text-xs font-bold border border-secondary/20">
               {tag}
-              <button onClick={() => toggleTag(tag)} className="hover:text-secondary">&times;</button>
+              <button onClick={() => toggleTag(tag)} aria-label={`Remove ${tag} filter`} className="hover:text-secondary min-w-[24px] min-h-[24px] flex items-center justify-center focus-visible:outline-2 focus-visible:outline-primary">&times;</button>
             </span>
           ))}
         </div>

@@ -70,6 +70,13 @@ export function CatGrid({ cats, stats }: CatGridProps) {
 
   return (
     <div>
+      {/* Live region for screen reader announcements */}
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {paged.length === 0
+          ? "No cats found matching your filters."
+          : `Showing ${paged.length} of ${filtered.length} cats, page ${currentPage} of ${totalPages || 1}.`}
+      </div>
+
       <CatFilters
         filters={filters}
         onChange={handleFilterChange}
@@ -92,13 +99,15 @@ export function CatGrid({ cats, stats }: CatGridProps) {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 list-none p-0" role="list" aria-label="Cat listings">
             <AnimatePresence mode="popLayout">
               {paged.map((cat) => (
-                <CatCard key={cat._id} cat={cat} />
+                <li key={cat._id}>
+                  <CatCard cat={cat} />
+                </li>
               ))}
             </AnimatePresence>
-          </div>
+          </ul>
           <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
         </>
       )}

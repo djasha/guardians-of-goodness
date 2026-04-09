@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -31,19 +31,21 @@ const statusStyles = {
 export function CatCard({ cat }: CatCardProps) {
   const status = statusStyles[cat.adoptionStatus] || statusStyles.available;
   const isAdopted = cat.adoptionStatus === "adopted";
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, y: 20 }}
+      layout={!prefersReducedMotion}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.3 }}
+      exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95 }}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
     >
       <Link
         href={`/catalogue/${cat.slug}`}
+        aria-label={`View ${cat.name}'s profile — ${status.label}, ${cat.gender}, ${cat.ageCategory || "unknown age"}`}
         className={cn(
-          "group block rounded-xl bg-white border-3 border-dark overflow-hidden transition-all duration-300",
+          "group block rounded-xl bg-white border-3 border-dark overflow-hidden transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
           status.shadow,
           "hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#9b4dca]",
           isAdopted && "opacity-75"
@@ -54,7 +56,7 @@ export function CatCard({ cat }: CatCardProps) {
           {cat.photo ? (
             <Image
               src={cat.photo}
-              alt={cat.name}
+              alt={`Photo of ${cat.name}, a ${cat.gender} ${cat.breed || "cat"}`}
               fill
               className={cn(
                 "object-cover transition-transform duration-700 group-hover:scale-105",
@@ -63,8 +65,8 @@ export function CatCard({ cat }: CatCardProps) {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-              <span className="text-6xl">🐱</span>
+            <div className="w-full h-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center" role="img" aria-label={`No photo available for ${cat.name}`}>
+              <span className="text-6xl" aria-hidden="true">🐱</span>
             </div>
           )}
 
@@ -83,8 +85,8 @@ export function CatCard({ cat }: CatCardProps) {
           {/* Travel badge */}
           {cat.readyToTravelAbroad && (
             <div className="absolute top-3 right-3">
-              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-black bg-white border-2 border-dark text-dark">
-                ✈️ EU
+              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-black bg-white border-2 border-dark text-dark" title="Ready to travel to EU">
+                <span aria-hidden="true">✈️</span> EU
               </span>
             </div>
           )}
@@ -92,15 +94,15 @@ export function CatCard({ cat }: CatCardProps) {
           {/* Featured star */}
           {cat.featured && (
             <div className="absolute bottom-3 right-3">
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary border-2 border-dark text-white text-sm">
-                ⭐
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary border-2 border-dark text-white text-sm" title="Featured cat" aria-label="Featured">
+                <span aria-hidden="true">⭐</span>
               </span>
             </div>
           )}
 
           {/* Adopted ribbon */}
           {isAdopted && (
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
               <div className="bg-dark/80 text-white px-6 py-2 rounded-lg border-2 border-white font-black text-sm uppercase tracking-wider -rotate-12">
                 Found a Home!
               </div>
@@ -123,7 +125,7 @@ export function CatCard({ cat }: CatCardProps) {
             <h3 className="font-display text-xl font-black text-dark group-hover:text-primary transition-colors">
               {cat.name}
             </h3>
-            <span className="text-lg mt-0.5">
+            <span className="text-lg mt-0.5" aria-label={cat.gender === "male" ? "Male" : "Female"} role="img">
               {cat.gender === "male" ? "♂️" : "♀️"}
             </span>
           </div>
@@ -162,16 +164,16 @@ export function CatCard({ cat }: CatCardProps) {
           )}
 
           {/* Health indicators */}
-          <div className="flex gap-2 text-xs text-gray-400">
+          <div className="flex gap-2 text-xs text-gray-500" aria-label="Health status">
             {cat.neutered && (
               <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-secondary" />
+                <span className="w-2 h-2 rounded-full bg-secondary" aria-hidden="true" />
                 Neutered
               </span>
             )}
             {cat.vaccinated && (
               <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-secondary" />
+                <span className="w-2 h-2 rounded-full bg-secondary" aria-hidden="true" />
                 Vaccinated
               </span>
             )}

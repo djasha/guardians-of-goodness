@@ -29,8 +29,9 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
+        aria-label="Go to previous page"
         className={cn(
-          "px-4 py-2.5 rounded-lg font-bold text-sm border-2 transition-all",
+          "px-4 py-2.5 rounded-lg font-bold text-sm border-2 transition-all min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
           currentPage === 1
             ? "border-gray-200 text-gray-300 cursor-not-allowed"
             : "border-dark bg-white text-dark hover:bg-primary hover:text-white hover:shadow-[2px_2px_0_0_#1a1a2e]"
@@ -41,13 +42,15 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       <div className="flex gap-1">
         {pages.map((page, i) =>
           page === "..." ? (
-            <span key={`dots-${i}`} className="px-3 py-2.5 text-gray-400 font-bold">...</span>
+            <span key={`dots-${i}`} className="px-3 py-2.5 text-gray-400 font-bold" aria-hidden="true">...</span>
           ) : (
             <button
               key={page}
               onClick={() => onPageChange(page)}
+              aria-label={`Page ${page}`}
+              aria-current={page === currentPage ? "page" : undefined}
               className={cn(
-                "w-10 h-10 rounded-lg font-bold text-sm border-2 transition-all",
+                "w-10 h-10 rounded-lg font-bold text-sm border-2 transition-all min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                 page === currentPage
                   ? "bg-primary text-white border-dark shadow-[2px_2px_0_0_#1a1a2e]"
                   : "bg-white text-dark border-gray-200 hover:border-primary hover:text-primary"
@@ -61,8 +64,9 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
+        aria-label="Go to next page"
         className={cn(
-          "px-4 py-2.5 rounded-lg font-bold text-sm border-2 transition-all",
+          "px-4 py-2.5 rounded-lg font-bold text-sm border-2 transition-all min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
           currentPage === totalPages
             ? "border-gray-200 text-gray-300 cursor-not-allowed"
             : "border-dark bg-white text-dark hover:bg-primary hover:text-white hover:shadow-[2px_2px_0_0_#1a1a2e]"
