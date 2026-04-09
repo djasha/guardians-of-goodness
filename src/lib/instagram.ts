@@ -30,6 +30,19 @@ interface BeholdResponse {
 
 const INSTAGRAM_URL = "https://www.instagram.com/guardians_of_goodness/";
 
+const PLACEHOLDER_IMAGES = [
+  "/images/generated/hero-cat-hd.jpg",
+  "/images/generated/hero-cat-cinematic.jpg",
+  "/images/generated/gentle-cat.jpg",
+  "/images/generated/cat-group.jpg",
+  "/images/generated/rescue-cat.jpg",
+  "/images/content/cat-photo.jpg",
+  "/images/cats/cat-card-1.png",
+  "/images/cats/cat-card-2.png",
+  "/images/generated/hero-cat-hd.jpg",
+  "/images/generated/hero-cat-cinematic.jpg",
+];
+
 async function fetchBehold(feedId: string): Promise<NormalizedPost[]> {
   const res = await fetch(`https://feeds.behold.so/${feedId}`, {
     next: { revalidate: 3600 },
@@ -67,14 +80,11 @@ function normalizeSanityPosts(posts: InstagramPost[]): NormalizedPost[] {
       };
     }
 
-    // Otherwise, use our API route to proxy the Instagram image
-    const proxyUrl = p.postUrl
-      ? `/api/instagram-image?url=${encodeURIComponent(p.postUrl)}`
-      : "/images/generated/hero-cat-hd.jpg"; // ultimate fallback
-
+    // No uploaded image — use a placeholder until image is added in Sanity
+    // The captions will still show on hover from the Sanity data
     return {
       id: p._id,
-      src: proxyUrl,
+      src: PLACEHOLDER_IMAGES[posts.indexOf(p) % PLACEHOLDER_IMAGES.length],
       alt: p.caption ? p.caption.substring(0, 80) : "Instagram post",
       caption: p.caption ?? undefined,
       postUrl: p.postUrl || INSTAGRAM_URL,
