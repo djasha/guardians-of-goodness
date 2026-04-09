@@ -23,12 +23,21 @@ export default function TNRPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-dark/70 to-dark/50" />
         <div className="relative z-10 text-center px-4">
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4">
-            Trap-Neuter-Return
-          </h1>
-          <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto">
-            The most humane approach to managing stray populations
-          </p>
+          <ScrollReveal>
+            <div className="neo-border-sm neo-shadow-sm bg-primary text-white inline-block px-4 py-1.5 mb-6">
+              <span className="text-xs font-bold uppercase tracking-widest">Our Programs</span>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal>
+            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4">
+              Trap-Neuter-Return
+            </h1>
+          </ScrollReveal>
+          <ScrollReveal>
+            <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto">
+              The most humane approach to managing stray populations
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -36,7 +45,7 @@ export default function TNRPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <ScrollReveal>
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl">
+            <div className="relative aspect-[4/3] neo-border neo-shadow bg-white overflow-hidden">
               <Image
                 src="/images/content/tnr-image.png"
                 alt="TNR process — Trap Neuter Return"
@@ -48,32 +57,42 @@ export default function TNRPage() {
 
           <ScrollReveal>
             <div>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+              <div className="neo-border-sm neo-shadow-sm bg-primary text-white inline-block px-4 py-1.5 mb-6">
+                <span className="text-xs font-bold uppercase tracking-widest">About TNR</span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-dark mb-6">
                 What is TNR?
               </h2>
-              <p className="leading-relaxed text-gray-600 mb-6">
+              <p className="leading-relaxed text-dark/50 mb-6">
                 Neutering stray animals is the most humane and efficient way to
                 avoid overpopulation and improve the quality of lives of the
                 animals at the same time. Each intact cat or dog roaming in the
                 streets is a source of the rapidly growing number of stray
                 animals in Jordan.
               </p>
-              <p className="leading-relaxed text-gray-600 mb-6">
+              <p className="leading-relaxed text-dark/50 mb-6">
                 Besides, the duration and quality of their lives are extremely
                 low. An average stray cat lives from several months to 1-1.5
                 years if not helped by humans. TNR can significantly improve
                 quality of life and add at least a few more years to the
                 lifespan.
               </p>
-              <p className="leading-relaxed text-gray-600 mb-8">
+              <p className="leading-relaxed text-dark/50 mb-8">
                 We encourage you to join our initiative and participate in
                 neutering stray cats and dogs in your neighborhood. We can
                 support you with knowledge and tools needed for this activity.
               </p>
 
+              {/* Cat paw decoration */}
+              <div className="flex gap-2 mb-8">
+                <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9"/><circle cx="8" cy="16" r="4.5"/><circle cx="17" cy="10" r="4"/><circle cx="27" cy="10" r="4"/><circle cx="35" cy="16" r="4.5"/></svg>
+                <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9"/><circle cx="8" cy="16" r="4.5"/><circle cx="17" cy="10" r="4"/><circle cx="27" cy="10" r="4"/><circle cx="35" cy="16" r="4.5"/></svg>
+                <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9"/><circle cx="8" cy="16" r="4.5"/><circle cx="17" cy="10" r="4"/><circle cx="27" cy="10" r="4"/><circle cx="35" cy="16" r="4.5"/></svg>
+              </div>
+
               <Link
                 href="/consultation"
-                className="inline-flex items-center gap-2 bg-primary text-white font-semibold px-8 py-4 rounded-full hover:bg-primary/90 transition-colors"
+                className="neo-border-sm neo-shadow-sm neo-hover bg-primary text-white font-bold px-6 py-3 inline-flex items-center gap-2"
               >
                 Get Involved
                 <svg

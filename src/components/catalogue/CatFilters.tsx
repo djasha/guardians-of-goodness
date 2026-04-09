@@ -29,10 +29,10 @@ function FilterPill({
     <button
       onClick={onClick}
       className={cn(
-        "px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200",
+        "px-4 py-2 text-sm font-bold transition-all duration-200 neo-border-sm",
         active
-          ? "bg-primary text-white shadow-sm shadow-primary/20"
-          : "bg-white text-gray-600 border border-gray-200 hover:border-primary/30 hover:text-primary"
+          ? "bg-primary text-white neo-shadow-sm"
+          : "bg-white text-dark/50 hover:text-primary"
       )}
     >
       {children}
@@ -50,7 +50,7 @@ export function CatFilters({
     onChange({ ...filters, ...partial });
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+    <div className="neo-border neo-shadow bg-white p-6 mb-8">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-5">
         {/* Search */}
         <div className="relative flex-1">
@@ -72,7 +72,7 @@ export function CatFilters({
             placeholder="Search by name..."
             value={filters.search}
             onChange={(e) => update({ search: e.target.value })}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+            className="w-full pl-10 pr-4 py-2.5 neo-border-sm bg-white outline-none focus:border-primary transition-all text-sm"
           />
         </div>
 

@@ -43,9 +43,9 @@ export function Input({ hasError, className, ...props }: InputProps) {
   return (
     <input
       className={cn(
-        "w-full rounded-xl border bg-white px-4 py-3 text-dark placeholder:text-gray-400",
+        "w-full neo-border-sm bg-white px-4 py-3 text-dark placeholder:text-dark/30",
         "outline-none transition-all duration-200",
-        "focus:border-primary focus:ring-2 focus:ring-primary/20",
+        "focus:border-primary",
         hasError
           ? "border-red-300 focus:border-red-500 focus:ring-red-200"
           : "border-gray-200",
@@ -65,12 +65,10 @@ export function Textarea({ hasError, className, ...props }: TextareaProps) {
   return (
     <textarea
       className={cn(
-        "w-full rounded-xl border bg-white px-4 py-3 text-dark placeholder:text-gray-400",
+        "w-full neo-border-sm bg-white px-4 py-3 text-dark placeholder:text-dark/30",
         "outline-none transition-all duration-200 resize-none",
-        "focus:border-primary focus:ring-2 focus:ring-primary/20",
-        hasError
-          ? "border-red-300 focus:border-red-500 focus:ring-red-200"
-          : "border-gray-200",
+        "focus:border-primary",
+        hasError && "border-red-400",
         className
       )}
       rows={4}
@@ -95,12 +93,10 @@ export function Select({
   return (
     <select
       className={cn(
-        "w-full rounded-xl border bg-white px-4 py-3 text-dark",
+        "w-full neo-border-sm bg-white px-4 py-3 text-dark",
         "outline-none transition-all duration-200 appearance-none",
-        "focus:border-primary focus:ring-2 focus:ring-primary/20",
-        hasError
-          ? "border-red-300 focus:border-red-500 focus:ring-red-200"
-          : "border-gray-200",
+        "focus:border-primary",
+        hasError && "border-red-400",
         className
       )}
       {...props}
@@ -140,12 +136,12 @@ export function RadioGroup({
         <label
           key={opt.value}
           className={cn(
-            "flex items-center gap-2 rounded-xl border px-4 py-2.5 cursor-pointer",
+            "flex items-center gap-2 neo-border-sm px-4 py-2.5 cursor-pointer",
             "transition-all duration-200 text-sm",
             value === opt.value
-              ? "border-primary bg-primary/5 text-primary font-semibold"
-              : "border-gray-200 hover:border-primary/30",
-            hasError && !value && "border-red-200"
+              ? "bg-primary/5 text-primary font-bold neo-shadow-sm"
+              : "bg-white text-dark/50 hover:text-primary",
+            hasError && !value && "border-red-400"
           )}
         >
           <input

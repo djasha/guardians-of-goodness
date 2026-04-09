@@ -29,6 +29,16 @@ const timelineEvents = [
   },
 ];
 
+const PawPrint = ({ className = "" }: { className?: string }) => (
+  <svg className={`w-5 h-5 text-primary/20 ${className}`} viewBox="0 0 40 44" fill="currentColor">
+    <ellipse cx="20" cy="30" rx="10" ry="9" />
+    <circle cx="8" cy="16" r="4.5" />
+    <circle cx="17" cy="10" r="4" />
+    <circle cx="27" cy="10" r="4" />
+    <circle cx="35" cy="16" r="4.5" />
+  </svg>
+);
+
 export default function AboutPage() {
   return (
     <>
@@ -52,7 +62,7 @@ export default function AboutPage() {
       {/* Intro Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <ScrollReveal>
-          <p className="text-lg sm:text-xl leading-relaxed text-gray-600 max-w-4xl mx-auto text-center">
+          <p className="text-lg sm:text-xl leading-relaxed text-dark/50 max-w-4xl mx-auto text-center">
             Guardians of Goodness is a non-profit organization that focuses on
             creating a friendly environment for cats and dogs in Jordan and
             empowering people active in the mentioned above sphere with
@@ -65,8 +75,9 @@ export default function AboutPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24">
         <div className="grid md:grid-cols-2 gap-8">
           <ScrollReveal>
-            <div className="bg-white rounded-2xl shadow-lg p-8 sm:p-10 h-full border-t-4 border-primary">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 mb-6">
+            <div className="relative bg-white neo-border neo-shadow p-8 sm:p-10 h-full overflow-hidden">
+              <div className="absolute top-0 left-0 w-16 h-16 bg-primary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
+              <div className="inline-flex items-center justify-center w-14 h-14 neo-border-sm bg-primary/10 mb-6">
                 <svg
                   className="w-7 h-7 text-primary"
                   fill="none"
@@ -81,10 +92,10 @@ export default function AboutPage() {
                   />
                 </svg>
               </div>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-dark mb-4">
                 Our Mission
               </h2>
-              <p className="leading-relaxed text-gray-600">
+              <p className="leading-relaxed text-dark/50">
                 To decrease the number of stray cats and dogs in Jordan and
                 improve the quality of their lives through creating a friendly
                 environment for them.
@@ -93,8 +104,9 @@ export default function AboutPage() {
           </ScrollReveal>
 
           <ScrollReveal>
-            <div className="bg-white rounded-2xl shadow-lg p-8 sm:p-10 h-full border-t-4 border-secondary">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-secondary/10 mb-6">
+            <div className="relative bg-white neo-border neo-shadow p-8 sm:p-10 h-full overflow-hidden">
+              <div className="absolute top-0 left-0 w-16 h-16 bg-secondary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
+              <div className="inline-flex items-center justify-center w-14 h-14 neo-border-sm bg-secondary/10 mb-6">
                 <svg
                   className="w-7 h-7 text-secondary"
                   fill="none"
@@ -114,10 +126,10 @@ export default function AboutPage() {
                   />
                 </svg>
               </div>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-dark mb-4">
                 Our Vision
               </h2>
-              <p className="leading-relaxed text-gray-600">
+              <p className="leading-relaxed text-dark/50">
                 Every life on this planet is valuable and deserves to be treated
                 decently and live in harmony with all creatures on the Globe.
               </p>
@@ -130,9 +142,15 @@ export default function AboutPage() {
       <section className="bg-warm-gray">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <ScrollReveal>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-16">
-              Our Journey
-            </h2>
+            <div className="text-center mb-16">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <PawPrint className="w-6 h-6 text-primary/30" />
+                <PawPrint className="w-4 h-4 text-primary/20" />
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-dark">
+                Our Journey
+              </h2>
+            </div>
           </ScrollReveal>
 
           <div className="relative">
@@ -157,21 +175,29 @@ export default function AboutPage() {
                         <span className="inline-block font-display text-5xl sm:text-6xl font-bold text-primary/20 mb-2">
                           {event.year}
                         </span>
-                        <h3 className="font-display text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+                        <h3 className="font-display text-2xl sm:text-3xl font-bold text-dark mb-4">
                           {event.title}
                         </h3>
-                        <p className="leading-relaxed text-gray-600">
+                        <p className="leading-relaxed text-dark/50">
                           {event.text}
                         </p>
                       </div>
                     </div>
 
-                    {/* Center dot */}
-                    <div className="hidden md:flex items-center justify-center w-5 h-5 rounded-full bg-primary border-4 border-cream shrink-0 z-10" />
+                    {/* Center paw print */}
+                    <div className="hidden md:flex items-center justify-center shrink-0 z-10">
+                      <svg className="w-6 h-6 text-primary" viewBox="0 0 40 44" fill="currentColor">
+                        <ellipse cx="20" cy="30" rx="10" ry="9" />
+                        <circle cx="8" cy="16" r="4.5" />
+                        <circle cx="17" cy="10" r="4" />
+                        <circle cx="27" cy="10" r="4" />
+                        <circle cx="35" cy="16" r="4.5" />
+                      </svg>
+                    </div>
 
                     {/* Image */}
                     <div className="flex-1 md:w-1/2">
-                      <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
+                      <div className="relative aspect-[4/3] neo-border neo-shadow overflow-hidden">
                         <Image
                           src={event.image}
                           alt={`${event.title} - ${event.year}`}
@@ -186,6 +212,29 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Paw-themed Quote Card */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <ScrollReveal>
+          <div className="max-w-3xl mx-auto relative bg-white neo-border neo-shadow p-10 sm:p-14 text-center">
+            <div className="absolute top-4 left-4 opacity-30">
+              <PawPrint className="w-8 h-8 text-primary" />
+            </div>
+            <div className="absolute bottom-4 right-4 opacity-30">
+              <PawPrint className="w-8 h-8 text-secondary" />
+            </div>
+            <div className="absolute top-4 right-6 opacity-20">
+              <PawPrint className="w-5 h-5 text-accent" />
+            </div>
+            <blockquote className="font-display text-2xl sm:text-3xl font-bold text-dark mb-4 leading-snug">
+              &ldquo;The greatness of a nation can be judged by the way its animals are treated.&rdquo;
+            </blockquote>
+            <p className="text-dark/50 text-lg">
+              &mdash; Mahatma Gandhi
+            </p>
+          </div>
+        </ScrollReveal>
       </section>
     </>
   );

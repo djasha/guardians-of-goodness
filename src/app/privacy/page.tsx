@@ -11,11 +11,20 @@ export default function PrivacyPage() {
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
       <div className="max-w-3xl mx-auto prose prose-gray prose-headings:font-display">
-        <h1 className="font-display text-4xl sm:text-5xl font-bold text-gray-900 mb-8">
-          Privacy &amp; Cookies Policy
-        </h1>
+        <div className="flex items-center gap-3 mb-8">
+          <h1 className="font-display text-4xl sm:text-5xl font-bold text-dark !mb-0">
+            Privacy &amp; Cookies Policy
+          </h1>
+          <svg className="w-5 h-5 text-primary/20 flex-shrink-0 mt-2" viewBox="0 0 40 44" fill="currentColor">
+            <ellipse cx="20" cy="30" rx="10" ry="9" />
+            <circle cx="8" cy="16" r="4.5" />
+            <circle cx="17" cy="10" r="4" />
+            <circle cx="27" cy="10" r="4" />
+            <circle cx="35" cy="16" r="4.5" />
+          </svg>
+        </div>
 
-        <p className="text-sm text-gray-500 mb-8">
+        <p className="text-sm text-dark/50 mb-8">
           Last updated: January 2024
         </p>
 

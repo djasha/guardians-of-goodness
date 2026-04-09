@@ -15,6 +15,9 @@ export default function SupportPage() {
       {/* Hero Section */}
       <section className="bg-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center">
+          <div className="neo-border-sm neo-shadow-sm bg-secondary text-white inline-block px-4 py-1.5 mb-6">
+            <span className="text-xs font-bold uppercase tracking-widest">Make a Difference</span>
+          </div>
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4">
             Support Us
           </h1>
@@ -28,10 +31,13 @@ export default function SupportPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="max-w-3xl mx-auto text-center">
           <ScrollReveal>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+            <div className="neo-border-sm neo-shadow-sm bg-primary text-white inline-block px-4 py-1.5 mb-6">
+              <span className="text-xs font-bold uppercase tracking-widest">Why It Matters</span>
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-dark mb-6">
               Your Support is Crucial
             </h2>
-            <p className="text-lg leading-relaxed text-gray-600 mb-12">
+            <p className="text-lg leading-relaxed text-dark/50 mb-12">
               We are non-profit, which means our abilities are defined by the
               level of your participation. We appreciate any contribution that
               may help us get closer to our goals.
@@ -40,8 +46,8 @@ export default function SupportPage() {
 
           <ScrollReveal>
             <div className="grid sm:grid-cols-3 gap-8 mb-16">
-              <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+              <div className="bg-white neo-border neo-shadow neo-hover p-8 text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 neo-border-sm bg-primary/10 mb-4">
                   <svg
                     className="w-8 h-8 text-primary"
                     fill="none"
@@ -56,17 +62,17 @@ export default function SupportPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-display text-xl font-bold text-gray-900 mb-2">
+                <h3 className="font-display text-xl font-bold text-dark mb-2">
                   Donate
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-dark/50 text-sm">
                   Financial contributions help cover vet costs, food, and
                   shelter.
                 </p>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 mb-4">
+              <div className="bg-white neo-border neo-shadow neo-hover p-8 text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 neo-border-sm bg-secondary/10 mb-4">
                   <svg
                     className="w-8 h-8 text-secondary"
                     fill="none"
@@ -81,17 +87,17 @@ export default function SupportPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-display text-xl font-bold text-gray-900 mb-2">
+                <h3 className="font-display text-xl font-bold text-dark mb-2">
                   Volunteer
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-dark/50 text-sm">
                   Give your time and skills to help with our rescue and care
                   programs.
                 </p>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+              <div className="bg-white neo-border neo-shadow neo-hover p-8 text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 neo-border-sm bg-primary/10 mb-4">
                   <svg
                     className="w-8 h-8 text-primary"
                     fill="none"
@@ -106,10 +112,10 @@ export default function SupportPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-display text-xl font-bold text-gray-900 mb-2">
+                <h3 className="font-display text-xl font-bold text-dark mb-2">
                   Spread the Word
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-dark/50 text-sm">
                   Share our mission with friends and family to raise awareness.
                 </p>
               </div>
@@ -117,9 +123,33 @@ export default function SupportPage() {
           </ScrollReveal>
 
           <ScrollReveal>
+            {/* Cat paw decoration */}
+            <div className="flex items-center justify-center gap-2 mb-8">
+              <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor">
+                <ellipse cx="20" cy="30" rx="10" ry="9" />
+                <circle cx="8" cy="16" r="4.5" />
+                <circle cx="17" cy="10" r="4" />
+                <circle cx="27" cy="10" r="4" />
+                <circle cx="35" cy="16" r="4.5" />
+              </svg>
+              <svg className="w-4 h-4 text-secondary/20" viewBox="0 0 40 44" fill="currentColor">
+                <ellipse cx="20" cy="30" rx="10" ry="9" />
+                <circle cx="8" cy="16" r="4.5" />
+                <circle cx="17" cy="10" r="4" />
+                <circle cx="27" cy="10" r="4" />
+                <circle cx="35" cy="16" r="4.5" />
+              </svg>
+              <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor">
+                <ellipse cx="20" cy="30" rx="10" ry="9" />
+                <circle cx="8" cy="16" r="4.5" />
+                <circle cx="17" cy="10" r="4" />
+                <circle cx="27" cy="10" r="4" />
+                <circle cx="35" cy="16" r="4.5" />
+              </svg>
+            </div>
             <a
               href={`mailto:${SITE.email}`}
-              className="inline-flex items-center gap-3 bg-primary text-white font-semibold text-lg px-10 py-5 rounded-full hover:bg-primary/90 transition-colors shadow-lg shadow-primary/25"
+              className="inline-flex items-center gap-3 neo-border-sm neo-shadow-sm neo-hover bg-primary text-white font-bold text-lg px-10 py-5"
             >
               <svg
                 className="w-6 h-6"

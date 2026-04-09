@@ -28,12 +28,23 @@ export default function ConsultationPage() {
         <div className="max-w-3xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-12">
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 neo-border-sm bg-cream px-4 py-1.5 mb-6">
+                <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor">
+                  <ellipse cx="20" cy="30" rx="10" ry="9" />
+                  <circle cx="8" cy="16" r="4.5" />
+                  <circle cx="17" cy="10" r="4" />
+                  <circle cx="27" cy="10" r="4" />
+                  <circle cx="35" cy="16" r="4.5" />
+                </svg>
+                <span className="text-sm font-bold text-dark uppercase tracking-wider">Free Consultation</span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-dark mb-6">
                 We are here to help{" "}
                 <span className="text-primary">you</span> to help{" "}
                 <span className="text-secondary">them</span>
               </h2>
-              <p className="text-lg leading-relaxed text-gray-600">
+              <p className="text-lg leading-relaxed text-dark/50">
                 Whether you have questions about TNR, want to set up a home
                 based shelter, or need advice on caring for community cats, our
                 team is ready to support you. Fill out the form below and we
@@ -43,7 +54,7 @@ export default function ConsultationPage() {
           </ScrollReveal>
 
           <ScrollReveal>
-            <div className="bg-white rounded-2xl shadow-lg p-8 sm:p-10">
+            <div className="neo-border neo-shadow bg-white p-8 sm:p-10">
               <ConsultationForm />
             </div>
           </ScrollReveal>

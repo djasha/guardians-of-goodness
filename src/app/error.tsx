@@ -16,7 +16,7 @@ export default function Error({
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
       <div className="text-center max-w-2xl mx-auto">
-        <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-red-50 mb-6">
+        <div className="inline-flex items-center justify-center w-24 h-24 neo-border neo-shadow bg-white mb-6">
           <svg
             className="w-12 h-12 text-red-500"
             fill="none"
@@ -31,16 +31,16 @@ export default function Error({
             />
           </svg>
         </div>
-        <h1 className="font-display text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+        <h1 className="font-display text-4xl sm:text-5xl font-bold text-dark mb-4">
           Something Went Wrong
         </h1>
-        <p className="text-lg leading-relaxed text-gray-600 mb-8">
+        <p className="text-lg leading-relaxed text-dark/50 mb-8">
           An unexpected error occurred. Please try again, and if the problem
           persists, let us know.
         </p>
         <button
           onClick={reset}
-          className="inline-flex items-center gap-2 bg-primary text-white font-semibold px-8 py-4 rounded-full hover:bg-primary/90 transition-colors"
+          className="neo-border-sm neo-shadow-sm neo-hover bg-primary text-white font-bold px-6 py-3 inline-flex items-center gap-2"
         >
           <svg
             className="w-5 h-5"
@@ -57,6 +57,17 @@ export default function Error({
           </svg>
           Try Again
         </button>
+
+        {/* Paw decoration */}
+        <div className="mt-10 flex justify-center">
+          <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor">
+            <ellipse cx="20" cy="30" rx="10" ry="9" />
+            <circle cx="8" cy="16" r="4.5" />
+            <circle cx="17" cy="10" r="4" />
+            <circle cx="27" cy="10" r="4" />
+            <circle cx="35" cy="16" r="4.5" />
+          </svg>
+        </div>
       </div>
     </section>
   );

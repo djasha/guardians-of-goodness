@@ -21,7 +21,7 @@ export function CatCard({ cat }: CatCardProps) {
     >
       <Link
         href={`/catalogue/${cat.slug}`}
-        className="group block rounded-2xl bg-white shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-1"
+        className="group block neo-border neo-shadow neo-hover bg-white overflow-hidden"
       >
         {/* Image */}
         <div className="relative aspect-[4/5] overflow-hidden">
@@ -35,10 +35,8 @@ export function CatCard({ cat }: CatCardProps) {
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-              <svg className="w-16 h-16 text-primary/20" viewBox="0 0 100 100" fill="currentColor">
-                <ellipse cx="30" cy="20" rx="12" ry="18" />
-                <ellipse cx="70" cy="20" rx="12" ry="18" />
-                <circle cx="50" cy="55" r="30" />
+              <svg className="w-16 h-16 text-primary/20" viewBox="0 0 40 44" fill="currentColor">
+                <ellipse cx="20" cy="30" rx="10" ry="9"/><circle cx="8" cy="16" r="4.5"/><circle cx="17" cy="10" r="4"/><circle cx="27" cy="10" r="4"/><circle cx="35" cy="16" r="4.5"/>
               </svg>
             </div>
           )}
