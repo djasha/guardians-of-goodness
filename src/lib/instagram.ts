@@ -5,15 +5,13 @@ import type { InstagramPost, SiteSettings } from "@/sanity/types";
 /** Shape consumed by the InstagramFeed component */
 export interface NormalizedPost {
   id: string;
-  src?: string;
+  src: string;
   lqip?: string;
   alt: string;
   caption?: string;
   postUrl: string;
   /** True when image is a Sanity asset (use next/image with sanity domain) */
   isSanityImage: boolean;
-  /** Instagram embed URL — used when no image is uploaded */
-  embedUrl?: string;
 }
 
 /** Behold API response shape */
@@ -31,15 +29,6 @@ interface BeholdResponse {
 }
 
 const INSTAGRAM_URL = "https://www.instagram.com/guardians_of_goodness/";
-
-/** Extract shortcode from an Instagram URL */
-function getEmbedUrl(postUrl: string): string | undefined {
-  const match = postUrl.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
-  if (match) {
-    return `https://www.instagram.com/p/${match[1]}/embed/`;
-  }
-  return undefined;
-}
 
 async function fetchBehold(feedId: string): Promise<NormalizedPost[]> {
   const res = await fetch(`https://feeds.behold.so/${feedId}`, {
@@ -64,16 +53,34 @@ async function fetchBehold(feedId: string): Promise<NormalizedPost[]> {
 }
 
 function normalizeSanityPosts(posts: InstagramPost[]): NormalizedPost[] {
-  return posts.map((p) => ({
-    id: p._id,
-    src: p.image?.asset?.url,
-    lqip: p.image?.asset?.metadata?.lqip,
-    alt: p.caption ? p.caption.substring(0, 80) : "Instagram post",
-    caption: p.caption ?? undefined,
-    postUrl: p.postUrl || INSTAGRAM_URL,
-    isSanityImage: !!p.image?.asset?.url,
-    embedUrl: !p.image?.asset?.url && p.postUrl ? getEmbedUrl(p.postUrl) : undefined,
-  }));
+  return posts.map((p) => {
+    // If image was uploaded to Sanity, use it directly
+    if (p.image?.asset?.url) {
+      return {
+        id: p._id,
+        src: p.image.asset.url,
+        lqip: p.image.asset.metadata?.lqip,
+        alt: p.caption ? p.caption.substring(0, 80) : "Instagram post",
+        caption: p.caption ?? undefined,
+        postUrl: p.postUrl || INSTAGRAM_URL,
+        isSanityImage: true,
+      };
+    }
+
+    // Otherwise, use our API route to proxy the Instagram image
+    const proxyUrl = p.postUrl
+      ? `/api/instagram-image?url=${encodeURIComponent(p.postUrl)}`
+      : "/images/generated/hero-cat-hd.jpg"; // ultimate fallback
+
+    return {
+      id: p._id,
+      src: proxyUrl,
+      alt: p.caption ? p.caption.substring(0, 80) : "Instagram post",
+      caption: p.caption ?? undefined,
+      postUrl: p.postUrl || INSTAGRAM_URL,
+      isSanityImage: false,
+    };
+  });
 }
 
 /**

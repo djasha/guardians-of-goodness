@@ -14,6 +14,7 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem("cat").title("Cats"),
       S.documentTypeListItem("partner").title("Partners"),
       S.documentTypeListItem("article").title("Articles"),
+      S.documentTypeListItem("instagramPost").title("Instagram Posts"),
       S.divider(),
       S.documentTypeListItem("formSubmission").title("Form Submissions"),
     ]);
