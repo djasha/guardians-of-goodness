@@ -54,6 +54,13 @@ export default defineType({
       ],
     }),
     defineField({
+      name: "beholdFeedId",
+      title: "Behold.so Feed ID (Optional)",
+      type: "string",
+      description:
+        "Paste your Behold.so feed ID here to auto-sync Instagram posts. Leave empty to use manually curated posts below.",
+    }),
+    defineField({
       name: "impactStats",
       title: "Impact Stats",
       type: "array",
