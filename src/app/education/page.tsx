@@ -28,8 +28,12 @@ export default async function EducationPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-secondary">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
+      <section className="relative bg-secondary overflow-hidden">
+        <div className="absolute inset-0">
+          <Image src="/images/real-cats/insta-6.png" alt="" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-gradient-to-r from-secondary/85 via-secondary/60 to-secondary/25" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
           <ScrollReveal>
             <div className="neo-border-sm neo-shadow-sm bg-primary text-white inline-block px-4 py-1.5 mb-6">
               <span className="text-xs font-bold uppercase tracking-widest">Learn</span>

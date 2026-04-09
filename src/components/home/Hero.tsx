@@ -84,7 +84,7 @@ export function Hero() {
                 </svg>
               </MagneticButton>
               <MagneticButton href="/consultation" variant="primary" size="md">
-                Get Involved
+                Consultation
               </MagneticButton>
             </div>
           </M>

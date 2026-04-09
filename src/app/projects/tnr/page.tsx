@@ -13,8 +13,12 @@ export default function TNRPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-secondary py-20 sm:py-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-secondary overflow-hidden">
+        <div className="absolute inset-0">
+          <Image src="/images/real-cats/free-3.png" alt="" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-gradient-to-r from-secondary/85 via-secondary/60 to-secondary/25" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
           <div className="max-w-3xl">
             <ScrollReveal>
               <div className="neo-border-sm neo-shadow-sm bg-dark text-white inline-block px-4 py-1.5 mb-6">
@@ -45,6 +49,7 @@ export default function TNRPage() {
       </section>
 
       {/* Content Section */}
+
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left: Image Card */}

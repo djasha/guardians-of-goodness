@@ -43,36 +43,27 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-warm-gray">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
+      <section className="relative bg-dark overflow-hidden">
+        <div className="absolute inset-0">
+          <Image src="/images/real-cats/free-1.png" alt="" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/60 to-dark/25" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <div className="max-w-3xl">
             <ScrollReveal>
               <div>
                 <div className="neo-border-sm neo-shadow-sm bg-primary text-white inline-block px-4 py-1.5 mb-6">
                   <span className="text-xs font-bold uppercase tracking-widest">About Us</span>
                 </div>
-                <h1 className="font-display font-black text-dark text-4xl sm:text-5xl lg:text-6xl mb-6">
+                <h1 className="font-display font-black text-white text-4xl sm:text-5xl lg:text-6xl mb-6">
                   Who We Are
                 </h1>
-                <p className="text-lg sm:text-xl leading-relaxed text-dark/50">
+                <p className="text-lg sm:text-xl leading-relaxed text-white/80">
                   Guardians of Goodness is a non-profit organization that focuses on
                   creating a friendly environment for cats and dogs in Jordan and
                   empowering people active in the mentioned above sphere with
                   knowledge, expertise and technical support.
                 </p>
-              </div>
-            </ScrollReveal>
-            <ScrollReveal>
-              <div className="neo-border neo-shadow bg-white p-3">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
-                    src="/images/generated/gentle-cat.jpg"
-                    alt="A gentle cat cared for by Guardians of Goodness"
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                </div>
               </div>
             </ScrollReveal>
           </div>

@@ -39,8 +39,16 @@ export function Header() {
   };
 
   const isHome = pathname === "/";
+  // Pages with dark or colored hero backgrounds where nav needs white text
+  const darkHeroPages = [
+    "/", "/consultation", "/contact", "/catalogue",
+    "/support", "/education", "/projects/tnr", "/projects/hbs",
+  ];
+  const hasDarkHero = darkHeroPages.some(
+    (p) => p === "/" ? pathname === "/" : pathname.startsWith(p)
+  );
   const hasHeroImage = isHome || pathname === "/consultation";
-  const onDark = hasHeroImage && !scrolled;
+  const onDark = hasDarkHero && !scrolled;
 
   return (
     <>

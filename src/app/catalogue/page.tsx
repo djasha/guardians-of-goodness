@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { client } from "@/sanity/client";
 import { ALL_CATS_QUERY } from "@/sanity/queries";
 import type { Cat } from "@/sanity/types";
@@ -24,8 +25,12 @@ export default async function CataloguePage() {
   return (
     <>
       {/* Hero Banner */}
-      <section className="bg-primary">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
+      <section className="relative bg-primary overflow-hidden">
+        <div className="absolute inset-0">
+          <Image src="/images/real-cats/houdini.png" alt="" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/60 to-primary/25" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
           <ScrollReveal>
             <div className="neo-border-sm neo-shadow-sm bg-white text-dark inline-block px-4 py-1.5 mb-6">
               <span className="text-xs font-bold uppercase tracking-widest">Adopt</span>

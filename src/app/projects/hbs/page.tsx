@@ -13,8 +13,12 @@ export default function HBSPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-accent py-20 sm:py-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-accent overflow-hidden">
+        <div className="absolute inset-0">
+          <Image src="/images/content/cat-photo.jpg" alt="" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-gradient-to-r from-accent/85 via-accent/60 to-accent/25" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
           <div className="max-w-3xl">
             <ScrollReveal>
               <div className="neo-border-sm neo-shadow-sm bg-dark text-white inline-block px-4 py-1.5 mb-6">

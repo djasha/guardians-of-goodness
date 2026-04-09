@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
@@ -54,8 +55,12 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-dark">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <section className="relative bg-dark overflow-hidden">
+        <div className="absolute inset-0">
+          <Image src="/images/real-cats/ginger-closeup.png" alt="" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/65 to-dark/30" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <ScrollReveal>
             <div className="max-w-2xl">
               <div className="neo-border-sm neo-shadow-sm bg-primary text-white inline-block px-4 py-1.5 mb-6">
