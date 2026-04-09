@@ -1,6 +1,8 @@
 /**
- * Renders text with subtle cat whiskers under the "CAT" portion.
- * Used in page titles and nav links for the CATalogue.
+ * Renders "CATalogue" with subtle cat whiskers on the C and T letters.
+ * C gets whiskers extending from its opening (like a cat face in profile).
+ * T gets whiskers extending from its crossbar ends.
+ * Subtle but intentional — you notice it, smile, and move on.
  */
 export function CatWhiskersText({
   className,
@@ -9,29 +11,47 @@ export function CatWhiskersText({
   className?: string;
   whiskerClassName?: string;
 }) {
+  const wClass = whiskerClassName || "text-current opacity-50";
+
   return (
     <span className={className}>
+      {/* C with whiskers from its opening */}
       <span className="relative inline-block">
-        CAT
+        C
         <svg
-          className={`absolute -bottom-[0.15em] left-1/2 -translate-x-1/2 w-[1.3em] pointer-events-none ${whiskerClassName || "text-current opacity-30"}`}
-          viewBox="0 0 120 24"
+          className={`absolute top-[0.1em] -right-[0.2em] w-[0.55em] h-[0.75em] pointer-events-none ${wClass}`}
+          viewBox="0 0 20 28"
           fill="none"
           stroke="currentColor"
-          strokeWidth={2.5}
+          strokeWidth={2}
           strokeLinecap="round"
           aria-hidden="true"
         >
-          {/* Left whiskers */}
-          <path d="M40 9 Q22 6, 4 4" />
-          <path d="M40 12 Q22 12, 4 12" />
-          <path d="M40 15 Q22 18, 4 20" />
-          {/* Right whiskers */}
-          <path d="M80 9 Q98 6, 116 4" />
-          <path d="M80 12 Q98 12, 116 12" />
-          <path d="M80 15 Q98 18, 116 20" />
-          {/* Nose */}
-          <circle cx="60" cy="12" r="2.5" fill="currentColor" />
+          {/* Three whiskers angled outward from the C opening */}
+          <path d="M1 8 Q10 4, 19 1" />
+          <path d="M1 14 Q10 13, 19 13" />
+          <path d="M1 20 Q10 24, 19 27" />
+        </svg>
+      </span>
+      A
+      {/* T with whiskers from crossbar ends */}
+      <span className="relative inline-block">
+        T
+        <svg
+          className={`absolute top-[0.18em] left-[-0.3em] w-[1.6em] h-[0.5em] pointer-events-none ${wClass}`}
+          viewBox="0 0 60 18"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          aria-hidden="true"
+        >
+          {/* Left whiskers from T crossbar */}
+          <path d="M18 6 Q10 2, 1 0" />
+          <path d="M18 12 Q10 14, 1 18" />
+          {/* Right whiskers from T crossbar */}
+          <path d="M42 6 Q50 2, 59 0" />
+          <path d="M42 12 Q50 14, 59 18" />
         </svg>
       </span>
       alogue
