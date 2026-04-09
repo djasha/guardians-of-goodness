@@ -1,8 +1,8 @@
 /**
  * Renders "CATalogue" with subtle cat whiskers on the C and T letters.
- * C gets whiskers extending from its opening (like a cat face in profile).
- * T gets whiskers extending from its crossbar ends.
- * Subtle but intentional — you notice it, smile, and move on.
+ * "CAT" stays as one text unit (no kerning breaks) with whiskers overlaid.
+ * C whiskers: 3 lines fanning from its open side.
+ * T whiskers: 2 lines from each end of the crossbar.
  */
 export function CatWhiskersText({
   className,
@@ -11,47 +11,42 @@ export function CatWhiskersText({
   className?: string;
   whiskerClassName?: string;
 }) {
-  const wClass = whiskerClassName || "text-current opacity-50";
+  const wClass = whiskerClassName || "text-current opacity-45";
 
   return (
     <span className={className}>
-      {/* C with whiskers from its opening */}
-      <span className="relative inline-block">
-        C
+      <span className="relative">
+        CAT
+        {/* C whiskers — 3 short lines from the gap of the C */}
         <svg
-          className={`absolute top-[0.1em] -right-[0.2em] w-[0.55em] h-[0.75em] pointer-events-none ${wClass}`}
-          viewBox="0 0 20 28"
+          className={`absolute top-[0.12em] left-[0.48em] w-[0.28em] h-[0.65em] pointer-events-none ${wClass}`}
+          viewBox="0 0 10 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth={2}
+          strokeWidth={2.2}
           strokeLinecap="round"
           aria-hidden="true"
         >
-          {/* Three whiskers angled outward from the C opening */}
-          <path d="M1 8 Q10 4, 19 1" />
-          <path d="M1 14 Q10 13, 19 13" />
-          <path d="M1 20 Q10 24, 19 27" />
+          <path d="M1 7 Q5 4, 9 2" />
+          <path d="M1 12 Q5 12, 9 12" />
+          <path d="M1 17 Q5 20, 9 22" />
         </svg>
-      </span>
-      A
-      {/* T with whiskers from crossbar ends */}
-      <span className="relative inline-block">
-        T
+        {/* T whiskers — 2 lines from each crossbar tip */}
         <svg
-          className={`absolute top-[0.18em] left-[-0.3em] w-[1.6em] h-[0.5em] pointer-events-none ${wClass}`}
-          viewBox="0 0 60 18"
+          className={`absolute top-[0.08em] left-[1.6em] w-[0.95em] h-[0.35em] pointer-events-none ${wClass}`}
+          viewBox="0 0 38 14"
           fill="none"
           stroke="currentColor"
-          strokeWidth={2}
+          strokeWidth={2.2}
           strokeLinecap="round"
           aria-hidden="true"
         >
-          {/* Left whiskers from T crossbar */}
-          <path d="M18 6 Q10 2, 1 0" />
-          <path d="M18 12 Q10 14, 1 18" />
-          {/* Right whiskers from T crossbar */}
-          <path d="M42 6 Q50 2, 59 0" />
-          <path d="M42 12 Q50 14, 59 18" />
+          {/* Left tip */}
+          <path d="M12 4 Q7 2, 1 0" />
+          <path d="M12 9 Q7 11, 1 14" />
+          {/* Right tip */}
+          <path d="M26 4 Q31 2, 37 0" />
+          <path d="M26 9 Q31 11, 37 14" />
         </svg>
       </span>
       alogue
