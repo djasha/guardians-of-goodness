@@ -6,15 +6,21 @@ export interface Cat {
   name: string;
   slug: string;
   age?: string;
+  ageCategory?: "kitten" | "young" | "adult" | "senior";
   gender: "male" | "female";
   breed?: string;
-  personality?: string;
+  color?: string;
+  tags?: string[];
+  description?: string;
+  location?: string;
   specialNeeds?: string;
   neutered: boolean;
   vaccinated: boolean;
   microchipped: boolean;
   readyToTravelAbroad: boolean;
   adoptionStatus: "available" | "pending" | "adopted";
+  featured?: boolean;
+  visible?: boolean;
   photo?: string;
   bond?: {
     type?: string;
@@ -38,6 +44,8 @@ export interface CatDetail extends Omit<Cat, "photo"> {
       };
     };
   }[];
+  instagramPostUrl?: string;
+  adoptionFee?: number;
   bond?: {
     type?: string;
     bondedCat?: {
@@ -47,6 +55,14 @@ export interface CatDetail extends Omit<Cat, "photo"> {
       photo?: string;
     };
   };
+}
+
+/** Stats for catalogue hero */
+export interface CatalogueStats {
+  available: number;
+  pending: number;
+  adopted: number;
+  total: number;
 }
 
 /** Projected partner from PARTNERS_QUERY */

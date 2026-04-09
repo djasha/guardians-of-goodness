@@ -17,6 +17,14 @@
   --font-body: var(--font-dm-sans);
 }
 
+@utility border-3 {
+  border-width: 3px;
+}
+
+@utility border-t-3 {
+  border-top-width: 3px;
+}
+
 html {
   scroll-behavior: smooth;
 }

@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { client } from "@/sanity/client";
-import { ALL_CATS_QUERY } from "@/sanity/queries";
-import type { Cat } from "@/sanity/types";
+import { ALL_CATS_QUERY, CATALOGUE_STATS_QUERY } from "@/sanity/queries";
+import type { Cat, CatalogueStats } from "@/sanity/types";
 import { CatGrid } from "@/components/catalogue/CatGrid";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
@@ -14,10 +13,14 @@ export const metadata: Metadata = {
 
 export default async function CataloguePage() {
   let cats: Cat[] = [];
+  let stats: CatalogueStats | undefined;
   let error = false;
 
   try {
-    cats = await client.fetch<Cat[]>(ALL_CATS_QUERY);
+    [cats, stats] = await Promise.all([
+      client.fetch<Cat[]>(ALL_CATS_QUERY),
+      client.fetch<CatalogueStats>(CATALOGUE_STATS_QUERY),
+    ]);
   } catch {
     error = true;
   }
@@ -25,43 +28,46 @@ export default async function CataloguePage() {
   return (
     <>
       {/* Hero Banner */}
-      <section className="relative bg-primary overflow-hidden">
-        <div className="absolute inset-0">
-          <Image src="/images/real-cats/houdini.png" alt="" fill className="object-cover" priority />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/60 to-primary/25" />
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
-          <ScrollReveal>
-            <div className="neo-border-sm neo-shadow-sm bg-white text-dark inline-block px-4 py-1.5 mb-6">
-              <span className="text-xs font-bold uppercase tracking-widest">Adopt</span>
+      <section className="bg-primary border-b-[6px] border-dark">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-4 tracking-tight">
+            CATalogue
+          </h1>
+          <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-8">
+            Every cat deserves a loving home. Browse our rescued cats and find
+            your perfect companion.
+          </p>
+
+          {/* Stats pills */}
+          {stats && (
+            <div className="flex flex-wrap justify-center gap-3">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 backdrop-blur-sm text-white font-bold text-sm border-2 border-white/30">
+                🟢 {stats.available} Available
+              </span>
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 backdrop-blur-sm text-white font-bold text-sm border-2 border-white/30">
+                🟡 {stats.pending} Pending
+              </span>
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 backdrop-blur-sm text-white font-bold text-sm border-2 border-white/30">
+                🏠 {stats.adopted} Adopted
+              </span>
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary/80 text-white font-black text-sm border-2 border-white/30">
+                🐱 {stats.total} Total Rescued
+              </span>
             </div>
-          </ScrollReveal>
-          <ScrollReveal>
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4">
-              CATalogue
-            </h1>
-          </ScrollReveal>
-          <ScrollReveal>
-            <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto">
-              Find your furry friend with us. Over 200 rescued cats are waiting
-              for loving families.
-            </p>
-          </ScrollReveal>
+          )}
         </div>
       </section>
 
       {/* Cat Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {error ? (
           <ScrollReveal>
             <div className="text-center py-20">
-              <div className="inline-flex items-center justify-center w-24 h-24 neo-border neo-shadow bg-white mb-6">
-                <svg className="w-12 h-12 text-primary/20" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9"/><circle cx="8" cy="16" r="4.5"/><circle cx="17" cy="10" r="4"/><circle cx="27" cy="10" r="4"/><circle cx="35" cy="16" r="4.5"/></svg>
-              </div>
-              <h2 className="font-display text-2xl font-bold text-dark mb-3">
+              <div className="text-6xl mb-6">🐱</div>
+              <h2 className="font-display text-2xl font-black text-dark mb-3">
                 Catalogue Coming Soon
               </h2>
-              <p className="text-dark/50 max-w-md mx-auto">
+              <p className="text-gray-600 max-w-md mx-auto">
                 We are setting up our catalogue. Please check back soon to meet
                 our adorable cats!
               </p>
@@ -70,20 +76,18 @@ export default async function CataloguePage() {
         ) : cats.length === 0 ? (
           <ScrollReveal>
             <div className="text-center py-20">
-              <div className="inline-flex items-center justify-center w-24 h-24 neo-border neo-shadow bg-white mb-6">
-                <svg className="w-12 h-12 text-primary/20" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9"/><circle cx="8" cy="16" r="4.5"/><circle cx="17" cy="10" r="4"/><circle cx="27" cy="10" r="4"/><circle cx="35" cy="16" r="4.5"/></svg>
-              </div>
-              <h2 className="font-display text-2xl font-bold text-dark mb-3">
+              <div className="text-6xl mb-6">🐱</div>
+              <h2 className="font-display text-2xl font-black text-dark mb-3">
                 No Cats Available Right Now
               </h2>
-              <p className="text-dark/50 max-w-md mx-auto">
+              <p className="text-gray-600 max-w-md mx-auto">
                 All our cats have found loving homes! Check back soon for new
                 arrivals.
               </p>
             </div>
           </ScrollReveal>
         ) : (
-          <CatGrid cats={cats} />
+          <CatGrid cats={cats} stats={stats} />
         )}
       </section>
     </>
