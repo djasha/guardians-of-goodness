@@ -14,7 +14,10 @@ export default function ConsultationPage() {
       {/* Hero Section */}
       <section className="bg-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4">
+          <div className="neo-border-sm neo-shadow-sm bg-secondary text-white inline-block px-4 py-1.5 mb-6 border-secondary/50">
+            <span className="text-xs font-bold uppercase tracking-widest">Get Help</span>
+          </div>
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-4">
             Consultation
           </h1>
           <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto">

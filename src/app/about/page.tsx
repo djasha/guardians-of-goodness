@@ -43,36 +43,44 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center">
-        <Image
-          src="/images/backgrounds/cat-background-1-3.png"
-          alt="About Guardians of Goodness"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-dark/70 to-dark/50" />
-        <div className="relative z-10 text-center px-4">
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4">
-            Who We Are
-          </h1>
+      <section className="bg-warm-gray">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <ScrollReveal>
+              <div>
+                <div className="neo-border-sm neo-shadow-sm bg-primary text-white inline-block px-4 py-1.5 mb-6">
+                  <span className="text-xs font-bold uppercase tracking-widest">About Us</span>
+                </div>
+                <h1 className="font-display font-black text-dark text-4xl sm:text-5xl lg:text-6xl mb-6">
+                  Who We Are
+                </h1>
+                <p className="text-lg sm:text-xl leading-relaxed text-dark/50">
+                  Guardians of Goodness is a non-profit organization that focuses on
+                  creating a friendly environment for cats and dogs in Jordan and
+                  empowering people active in the mentioned above sphere with
+                  knowledge, expertise and technical support.
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal>
+              <div className="neo-border neo-shadow bg-white p-3">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src="/images/generated/gentle-cat.jpg"
+                    alt="A gentle cat cared for by Guardians of Goodness"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
-      {/* Intro Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-        <ScrollReveal>
-          <p className="text-lg sm:text-xl leading-relaxed text-dark/50 max-w-4xl mx-auto text-center">
-            Guardians of Goodness is a non-profit organization that focuses on
-            creating a friendly environment for cats and dogs in Jordan and
-            empowering people active in the mentioned above sphere with
-            knowledge, expertise and technical support.
-          </p>
-        </ScrollReveal>
-      </section>
-
       {/* Mission & Vision Cards */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="grid md:grid-cols-2 gap-8">
           <ScrollReveal>
             <div className="relative bg-white neo-border neo-shadow p-8 sm:p-10 h-full overflow-hidden">
@@ -92,7 +100,7 @@ export default function AboutPage() {
                   />
                 </svg>
               </div>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-dark mb-4">
+              <h2 className="font-display text-2xl sm:text-3xl font-black text-dark mb-4">
                 Our Mission
               </h2>
               <p className="leading-relaxed text-dark/50">
@@ -126,7 +134,7 @@ export default function AboutPage() {
                   />
                 </svg>
               </div>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-dark mb-4">
+              <h2 className="font-display text-2xl sm:text-3xl font-black text-dark mb-4">
                 Our Vision
               </h2>
               <p className="leading-relaxed text-dark/50">
@@ -143,11 +151,10 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <PawPrint className="w-6 h-6 text-primary/30" />
-                <PawPrint className="w-4 h-4 text-primary/20" />
+              <div className="neo-border-sm neo-shadow-sm bg-accent text-white inline-block px-4 py-1.5 mb-6">
+                <span className="text-xs font-bold uppercase tracking-widest">Our Story</span>
               </div>
-              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-dark">
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-dark">
                 Our Journey
               </h2>
             </div>
@@ -172,10 +179,10 @@ export default function AboutPage() {
                           index % 2 === 1 ? "md:text-left" : "md:text-right"
                         }`}
                       >
-                        <span className="inline-block font-display text-5xl sm:text-6xl font-bold text-primary/20 mb-2">
+                        <span className="inline-block font-display text-5xl sm:text-6xl font-black text-primary/20 mb-2">
                           {event.year}
                         </span>
-                        <h3 className="font-display text-2xl sm:text-3xl font-bold text-dark mb-4">
+                        <h3 className="font-display text-2xl sm:text-3xl font-black text-dark mb-4">
                           {event.title}
                         </h3>
                         <p className="leading-relaxed text-dark/50">
@@ -186,24 +193,28 @@ export default function AboutPage() {
 
                     {/* Center paw print */}
                     <div className="hidden md:flex items-center justify-center shrink-0 z-10">
-                      <svg className="w-6 h-6 text-primary" viewBox="0 0 40 44" fill="currentColor">
-                        <ellipse cx="20" cy="30" rx="10" ry="9" />
-                        <circle cx="8" cy="16" r="4.5" />
-                        <circle cx="17" cy="10" r="4" />
-                        <circle cx="27" cy="10" r="4" />
-                        <circle cx="35" cy="16" r="4.5" />
-                      </svg>
+                      <div className="bg-warm-gray p-1">
+                        <svg className="w-6 h-6 text-primary" viewBox="0 0 40 44" fill="currentColor">
+                          <ellipse cx="20" cy="30" rx="10" ry="9" />
+                          <circle cx="8" cy="16" r="4.5" />
+                          <circle cx="17" cy="10" r="4" />
+                          <circle cx="27" cy="10" r="4" />
+                          <circle cx="35" cy="16" r="4.5" />
+                        </svg>
+                      </div>
                     </div>
 
                     {/* Image */}
                     <div className="flex-1 md:w-1/2">
-                      <div className="relative aspect-[4/3] neo-border neo-shadow overflow-hidden">
-                        <Image
-                          src={event.image}
-                          alt={`${event.title} - ${event.year}`}
-                          fill
-                          className="object-cover"
-                        />
+                      <div className="neo-border neo-shadow bg-white p-2">
+                        <div className="relative aspect-[4/3] overflow-hidden">
+                          <Image
+                            src={event.image}
+                            alt={`${event.title} - ${event.year}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -227,7 +238,7 @@ export default function AboutPage() {
             <div className="absolute top-4 right-6 opacity-20">
               <PawPrint className="w-5 h-5 text-accent" />
             </div>
-            <blockquote className="font-display text-2xl sm:text-3xl font-bold text-dark mb-4 leading-snug">
+            <blockquote className="font-display text-2xl sm:text-3xl font-black text-dark mb-4 leading-snug">
               &ldquo;The greatness of a nation can be judged by the way its animals are treated.&rdquo;
             </blockquote>
             <p className="text-dark/50 text-lg">

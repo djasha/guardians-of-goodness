@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Link from "next/link";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { SITE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Support Us",
@@ -14,39 +13,46 @@ export default function SupportPage() {
     <>
       {/* Hero Section */}
       <section className="bg-primary">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center">
-          <div className="neo-border-sm neo-shadow-sm bg-secondary text-white inline-block px-4 py-1.5 mb-6">
-            <span className="text-xs font-bold uppercase tracking-widest">Make a Difference</span>
-          </div>
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4">
-            Support Us
-          </h1>
-          <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto">
-            Every act of kindness makes a difference
-          </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <ScrollReveal>
+            <div className="max-w-2xl">
+              <div className="neo-border-sm neo-shadow-sm bg-secondary text-white inline-block px-4 py-1.5 mb-6">
+                <span className="text-xs font-bold uppercase tracking-widest">Support Us</span>
+              </div>
+              <h1 className="font-display font-black text-white text-4xl sm:text-5xl lg:text-6xl mb-6">
+                Your Support is Crucial
+              </h1>
+              <p className="text-lg sm:text-xl text-white/80">
+                Every act of kindness makes a difference
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Content */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto">
           <ScrollReveal>
-            <div className="neo-border-sm neo-shadow-sm bg-primary text-white inline-block px-4 py-1.5 mb-6">
-              <span className="text-xs font-bold uppercase tracking-widest">Why It Matters</span>
+            <div className="text-center mb-12">
+              <div className="neo-border-sm neo-shadow-sm bg-primary text-white inline-block px-4 py-1.5 mb-6">
+                <span className="text-xs font-bold uppercase tracking-widest">Why It Matters</span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl font-black text-dark mb-6">
+                How You Can Help
+              </h2>
+              <p className="text-lg leading-relaxed text-dark/50 max-w-2xl mx-auto">
+                We are non-profit, which means our abilities are defined by the
+                level of your participation. We appreciate any contribution that
+                may help us get closer to our goals.
+              </p>
             </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-dark mb-6">
-              Your Support is Crucial
-            </h2>
-            <p className="text-lg leading-relaxed text-dark/50 mb-12">
-              We are non-profit, which means our abilities are defined by the
-              level of your participation. We appreciate any contribution that
-              may help us get closer to our goals.
-            </p>
           </ScrollReveal>
 
           <ScrollReveal>
             <div className="grid sm:grid-cols-3 gap-8 mb-16">
-              <div className="bg-white neo-border neo-shadow neo-hover p-8 text-center">
+              <div className="relative bg-white neo-border neo-shadow neo-hover p-8 text-center overflow-hidden">
+                <div className="absolute top-0 left-0 w-12 h-12 bg-primary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
                 <div className="inline-flex items-center justify-center w-16 h-16 neo-border-sm bg-primary/10 mb-4">
                   <svg
                     className="w-8 h-8 text-primary"
@@ -62,7 +68,7 @@ export default function SupportPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-display text-xl font-bold text-dark mb-2">
+                <h3 className="font-display text-xl font-black text-dark mb-2">
                   Donate
                 </h3>
                 <p className="text-dark/50 text-sm">
@@ -71,7 +77,8 @@ export default function SupportPage() {
                 </p>
               </div>
 
-              <div className="bg-white neo-border neo-shadow neo-hover p-8 text-center">
+              <div className="relative bg-white neo-border neo-shadow neo-hover p-8 text-center overflow-hidden">
+                <div className="absolute top-0 left-0 w-12 h-12 bg-secondary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
                 <div className="inline-flex items-center justify-center w-16 h-16 neo-border-sm bg-secondary/10 mb-4">
                   <svg
                     className="w-8 h-8 text-secondary"
@@ -87,7 +94,7 @@ export default function SupportPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-display text-xl font-bold text-dark mb-2">
+                <h3 className="font-display text-xl font-black text-dark mb-2">
                   Volunteer
                 </h3>
                 <p className="text-dark/50 text-sm">
@@ -96,10 +103,11 @@ export default function SupportPage() {
                 </p>
               </div>
 
-              <div className="bg-white neo-border neo-shadow neo-hover p-8 text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 neo-border-sm bg-primary/10 mb-4">
+              <div className="relative bg-white neo-border neo-shadow neo-hover p-8 text-center overflow-hidden">
+                <div className="absolute top-0 left-0 w-12 h-12 bg-accent" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
+                <div className="inline-flex items-center justify-center w-16 h-16 neo-border-sm bg-accent/10 mb-4">
                   <svg
-                    className="w-8 h-8 text-primary"
+                    className="w-8 h-8 text-accent"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -112,7 +120,7 @@ export default function SupportPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-display text-xl font-bold text-dark mb-2">
+                <h3 className="font-display text-xl font-black text-dark mb-2">
                   Spread the Word
                 </h3>
                 <p className="text-dark/50 text-sm">
@@ -122,50 +130,54 @@ export default function SupportPage() {
             </div>
           </ScrollReveal>
 
+          {/* CTA Card */}
           <ScrollReveal>
-            {/* Cat paw decoration */}
-            <div className="flex items-center justify-center gap-2 mb-8">
-              <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor">
-                <ellipse cx="20" cy="30" rx="10" ry="9" />
-                <circle cx="8" cy="16" r="4.5" />
-                <circle cx="17" cy="10" r="4" />
-                <circle cx="27" cy="10" r="4" />
-                <circle cx="35" cy="16" r="4.5" />
-              </svg>
-              <svg className="w-4 h-4 text-secondary/20" viewBox="0 0 40 44" fill="currentColor">
-                <ellipse cx="20" cy="30" rx="10" ry="9" />
-                <circle cx="8" cy="16" r="4.5" />
-                <circle cx="17" cy="10" r="4" />
-                <circle cx="27" cy="10" r="4" />
-                <circle cx="35" cy="16" r="4.5" />
-              </svg>
-              <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor">
-                <ellipse cx="20" cy="30" rx="10" ry="9" />
-                <circle cx="8" cy="16" r="4.5" />
-                <circle cx="17" cy="10" r="4" />
-                <circle cx="27" cy="10" r="4" />
-                <circle cx="35" cy="16" r="4.5" />
-              </svg>
-            </div>
-            <a
-              href={`mailto:${SITE.email}`}
-              className="inline-flex items-center gap-3 neo-border-sm neo-shadow-sm neo-hover bg-primary text-white font-bold text-lg px-10 py-5"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
+            <div className="relative bg-white neo-border neo-shadow p-10 sm:p-14 text-center overflow-hidden">
+              <div className="absolute top-0 left-0 w-20 h-20 bg-primary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
+              <div className="absolute bottom-4 right-6 opacity-20">
+                <svg className="w-10 h-10 text-primary" viewBox="0 0 40 44" fill="currentColor">
+                  <ellipse cx="20" cy="30" rx="10" ry="9" />
+                  <circle cx="8" cy="16" r="4.5" />
+                  <circle cx="17" cy="10" r="4" />
+                  <circle cx="27" cy="10" r="4" />
+                  <circle cx="35" cy="16" r="4.5" />
+                </svg>
+              </div>
+              <div className="absolute top-6 right-8 opacity-15">
+                <svg className="w-6 h-6 text-secondary" viewBox="0 0 40 44" fill="currentColor">
+                  <ellipse cx="20" cy="30" rx="10" ry="9" />
+                  <circle cx="8" cy="16" r="4.5" />
+                  <circle cx="17" cy="10" r="4" />
+                  <circle cx="27" cy="10" r="4" />
+                  <circle cx="35" cy="16" r="4.5" />
+                </svg>
+              </div>
+              <h3 className="font-display text-2xl sm:text-3xl font-black text-dark mb-4">
+                Ready to Make a Difference?
+              </h3>
+              <p className="text-dark/50 mb-8 max-w-lg mx-auto">
+                Reach out and let us know how you would like to help. Every contribution counts.
+              </p>
+              <a
+                href="mailto:office@guardiansofgoodness.org"
+                className="inline-flex items-center gap-3 neo-border-sm neo-shadow-sm neo-hover bg-primary text-white font-bold text-lg px-10 py-5"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-              Contact us to offer your help
-            </a>
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                Contact us to offer your help
+              </a>
+            </div>
           </ScrollReveal>
         </div>
       </section>

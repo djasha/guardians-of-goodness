@@ -13,43 +13,61 @@ export default function HBSPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center">
-        <Image
-          src="/images/content/keanu1.png"
-          alt="Home Based Shelter Program"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-dark/70 to-dark/50" />
-        <div className="relative z-10 text-center px-4">
-          <ScrollReveal>
-            <div className="neo-border-sm neo-shadow-sm bg-primary text-white inline-block px-4 py-1.5 mb-6">
-              <span className="text-xs font-bold uppercase tracking-widest">Our Programs</span>
-            </div>
-          </ScrollReveal>
-          <ScrollReveal>
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4">
-              Home Based Shelter
-            </h1>
-          </ScrollReveal>
-          <ScrollReveal>
-            <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto">
-              Creating safe spaces for community cats
-            </p>
-          </ScrollReveal>
+      <section className="bg-accent py-20 sm:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <ScrollReveal>
+              <div className="neo-border-sm neo-shadow-sm bg-dark text-white inline-block px-4 py-1.5 mb-6">
+                <span className="text-xs font-bold uppercase tracking-widest">Project</span>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal>
+              <div className="flex items-center gap-4 mb-6">
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-white">
+                  Home Based Shelter (HBS)
+                </h1>
+                <svg className="w-10 h-11 text-white/30 hidden sm:block flex-shrink-0" viewBox="0 0 40 44" fill="currentColor">
+                  <ellipse cx="20" cy="30" rx="10" ry="9" />
+                  <circle cx="8" cy="16" r="4.5" />
+                  <circle cx="17" cy="10" r="4" />
+                  <circle cx="27" cy="10" r="4" />
+                  <circle cx="35" cy="16" r="4.5" />
+                </svg>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal>
+              <p className="text-lg sm:text-xl text-white/80 max-w-2xl">
+                Creating safe spaces in your neighborhood for community cats to thrive and find shelter.
+              </p>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
       {/* Content Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Left: Image Card */}
           <ScrollReveal>
-            <div>
-              <div className="neo-border-sm neo-shadow-sm bg-primary text-white inline-block px-4 py-1.5 mb-6">
+            <div className="neo-border neo-shadow bg-white p-3">
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <Image
+                  src="/images/content/hbs-image.png"
+                  alt="Home Based Shelter — safe space for cats"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* Right: Text Content */}
+          <div>
+            <ScrollReveal>
+              <div className="neo-border-sm neo-shadow-sm bg-accent text-white inline-block px-4 py-1.5 mb-6">
                 <span className="text-xs font-bold uppercase tracking-widest">About HBS</span>
               </div>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-dark mb-6">
+              <h2 className="font-display text-3xl sm:text-4xl font-black text-dark mb-6">
                 What is HBS?
               </h2>
               <p className="leading-relaxed text-dark/50 mb-6">
@@ -59,6 +77,23 @@ export default function HBSPage() {
                 consequences of urbanization) should be a common responsibility
                 of each society member.
               </p>
+            </ScrollReveal>
+
+            {/* Key Fact Cards */}
+            <ScrollReveal>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="neo-border-sm bg-cream p-4">
+                  <p className="font-display font-black text-accent text-lg mb-1">Safe Space</p>
+                  <p className="text-dark/50 text-sm">Shelter from extreme heat, cold, rain, and danger</p>
+                </div>
+                <div className="neo-border-sm bg-cream p-4">
+                  <p className="font-display font-black text-accent text-lg mb-1">Community</p>
+                  <p className="text-dark/50 text-sm">Turn gardens and yards into havens for cats</p>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal>
               <p className="leading-relaxed text-dark/50 mb-6">
                 Based on this belief, we launched an initiative to help people
                 create a safe space in their neighborhood for community cats. As
@@ -72,12 +107,14 @@ export default function HBSPage() {
                 safe space, and we are happy to guide and support everyone on
                 this path.
               </p>
+            </ScrollReveal>
 
-              {/* Cat paw decoration */}
+            {/* Paw Decoration */}
+            <ScrollReveal>
               <div className="flex gap-2 mb-8">
-                <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9"/><circle cx="8" cy="16" r="4.5"/><circle cx="17" cy="10" r="4"/><circle cx="27" cy="10" r="4"/><circle cx="35" cy="16" r="4.5"/></svg>
-                <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9"/><circle cx="8" cy="16" r="4.5"/><circle cx="17" cy="10" r="4"/><circle cx="27" cy="10" r="4"/><circle cx="35" cy="16" r="4.5"/></svg>
-                <svg className="w-5 h-5 text-primary/20" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9"/><circle cx="8" cy="16" r="4.5"/><circle cx="17" cy="10" r="4"/><circle cx="27" cy="10" r="4"/><circle cx="35" cy="16" r="4.5"/></svg>
+                <svg className="w-5 h-5 text-accent/30" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" /></svg>
+                <svg className="w-5 h-5 text-accent/30" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" /></svg>
+                <svg className="w-5 h-5 text-accent/30" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" /></svg>
               </div>
 
               <Link
@@ -99,19 +136,8 @@ export default function HBSPage() {
                   />
                 </svg>
               </Link>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal>
-            <div className="relative aspect-[4/3] neo-border neo-shadow bg-white overflow-hidden">
-              <Image
-                src="/images/content/hbs-image.png"
-                alt="Home Based Shelter — safe space for cats"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </ScrollReveal>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
     </>
