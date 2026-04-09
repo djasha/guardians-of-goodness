@@ -6,17 +6,6 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { SOCIAL } from "@/lib/constants";
 import type { NormalizedPost } from "@/lib/instagram";
 
-const fallbackImages = [
-  { src: "/images/generated/hero-cat-hd.jpg", alt: "Rescue cat portrait" },
-  { src: "/images/generated/hero-cat-cinematic.jpg", alt: "Cat close-up" },
-  { src: "/images/generated/gentle-cat.jpg", alt: "Ginger cat relaxing" },
-  { src: "/images/generated/cat-group.jpg", alt: "Cat on stairs" },
-  { src: "/images/generated/rescue-cat.jpg", alt: "Kitten being held" },
-  { src: "/images/content/cat-photo.jpg", alt: "Cats at shelter" },
-  { src: "/images/cats/cat-card-1.png", alt: "Cat for adoption" },
-  { src: "/images/cats/cat-card-2.png", alt: "Cat for adoption" },
-];
-
 function truncate(text: string, max: number): string {
   if (text.length <= max) return text;
   return text.substring(0, max).replace(/\s+\S*$/, "") + "…";
@@ -28,27 +17,8 @@ interface Props {
 
 export function InstagramFeed({ posts }: Props) {
   const reduced = useReducedMotion();
-  const hasPosts = posts && posts.length > 0;
 
-  const items = hasPosts
-    ? posts.map((p) => ({
-        id: p.id,
-        src: p.src,
-        alt: p.alt,
-        caption: p.caption,
-        postUrl: p.postUrl,
-        isSanityImage: p.isSanityImage,
-        lqip: p.lqip,
-      }))
-    : fallbackImages.map((img, i) => ({
-        id: `fallback-${i}`,
-        src: img.src,
-        alt: img.alt,
-        caption: undefined as string | undefined,
-        postUrl: SOCIAL.instagram,
-        isSanityImage: false,
-        lqip: undefined as string | undefined,
-      }));
+  if (!posts || posts.length === 0) return null;
 
   return (
     <section className="bg-cream py-20 sm:py-28 overflow-hidden">
@@ -86,7 +56,7 @@ export function InstagramFeed({ posts }: Props) {
       {/* Photo grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-          {items.map((item, i) => {
+          {posts.map((item, i) => {
             const W = reduced ? "div" : motion.div;
             const isLarge = i === 0 || i === 5;
             return (
@@ -106,13 +76,31 @@ export function InstagramFeed({ posts }: Props) {
                   rel="noopener noreferrer"
                   className="neo-border neo-shadow-sm neo-hover block overflow-hidden relative group aspect-square"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.src}
-                    alt={item.alt}
-                    loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                  {item.isSanityImage ? (
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes={
+                        isLarge
+                          ? "(max-width: 640px) 100vw, 50vw"
+                          : "(max-width: 640px) 50vw, 25vw"
+                      }
+                      {...(item.lqip && {
+                        placeholder: "blur" as const,
+                        blurDataURL: item.lqip,
+                      })}
+                    />
+                  ) : (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      loading="lazy"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  )}
 
                   {/* Hover overlay with caption */}
                   <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/85 transition-colors duration-300 flex items-center justify-center p-4">

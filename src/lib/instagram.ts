@@ -30,19 +30,6 @@ interface BeholdResponse {
 
 const INSTAGRAM_URL = "https://www.instagram.com/guardians_of_goodness/";
 
-const PLACEHOLDER_IMAGES = [
-  "/images/generated/hero-cat-hd.jpg",
-  "/images/generated/hero-cat-cinematic.jpg",
-  "/images/generated/gentle-cat.jpg",
-  "/images/generated/cat-group.jpg",
-  "/images/generated/rescue-cat.jpg",
-  "/images/content/cat-photo.jpg",
-  "/images/cats/cat-card-1.png",
-  "/images/cats/cat-card-2.png",
-  "/images/generated/hero-cat-hd.jpg",
-  "/images/generated/hero-cat-cinematic.jpg",
-];
-
 async function fetchBehold(feedId: string): Promise<NormalizedPost[]> {
   const res = await fetch(`https://feeds.behold.so/${feedId}`, {
     next: { revalidate: 3600 },
@@ -66,37 +53,23 @@ async function fetchBehold(feedId: string): Promise<NormalizedPost[]> {
 }
 
 function normalizeSanityPosts(posts: InstagramPost[]): NormalizedPost[] {
-  return posts.map((p) => {
-    // If image was uploaded to Sanity, use it directly
-    if (p.image?.asset?.url) {
-      return {
-        id: p._id,
-        src: p.image.asset.url,
-        lqip: p.image.asset.metadata?.lqip,
-        alt: p.caption ? p.caption.substring(0, 80) : "Instagram post",
-        caption: p.caption ?? undefined,
-        postUrl: p.postUrl || INSTAGRAM_URL,
-        isSanityImage: true,
-      };
-    }
-
-    // No uploaded image — use a placeholder until image is added in Sanity
-    // The captions will still show on hover from the Sanity data
-    return {
+  return posts
+    .filter((p) => p.image?.asset?.url) // Only include posts with uploaded images
+    .map((p) => ({
       id: p._id,
-      src: PLACEHOLDER_IMAGES[posts.indexOf(p) % PLACEHOLDER_IMAGES.length],
+      src: p.image!.asset.url,
+      lqip: p.image!.asset.metadata?.lqip,
       alt: p.caption ? p.caption.substring(0, 80) : "Instagram post",
       caption: p.caption ?? undefined,
       postUrl: p.postUrl || INSTAGRAM_URL,
-      isSanityImage: false,
-    };
-  });
+      isSanityImage: true,
+    }));
 }
 
 /**
  * Fetches Instagram posts using the two-tier strategy:
- * 1. If beholdFeedId is set in site settings, fetch from Behold
- * 2. Otherwise, fetch curated posts from Sanity
+ * 1. If beholdFeedId is set in site settings, fetch from Behold (auto-sync)
+ * 2. Otherwise, fetch curated posts from Sanity (manual)
  * Returns empty array if both fail.
  */
 export async function getInstagramPosts(): Promise<NormalizedPost[]> {
