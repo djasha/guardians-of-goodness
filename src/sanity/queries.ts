@@ -98,6 +98,7 @@ export const SITE_SETTINGS_QUERY = groq`
       instagram,
       linkedin
     },
+    beholdFeedId,
     impactStats[] {
       label,
       value,
@@ -105,6 +106,26 @@ export const SITE_SETTINGS_QUERY = groq`
     },
     heroHeading,
     heroSubtext
+  }
+`;
+
+export const INSTAGRAM_POSTS_QUERY = groq`
+  *[_type == "instagramPost" && visible == true] | order(order asc, _createdAt desc) {
+    _id,
+    image {
+      asset-> {
+        _id,
+        url,
+        metadata {
+          dimensions,
+          lqip
+        }
+      },
+      hotspot,
+      crop
+    },
+    caption,
+    postUrl
   }
 `;
 

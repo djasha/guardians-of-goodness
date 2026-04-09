@@ -78,6 +78,7 @@ export interface SiteSettings {
     instagram?: string;
     linkedin?: string;
   };
+  beholdFeedId?: string;
   impactStats?: {
     label: string;
     value: number;
@@ -85,6 +86,25 @@ export interface SiteSettings {
   }[];
   heroHeading?: string;
   heroSubtext?: string;
+}
+
+/** Normalized Instagram post for the feed component */
+export interface InstagramPost {
+  _id: string;
+  image: {
+    asset: {
+      _id: string;
+      url: string;
+      metadata?: {
+        dimensions?: { width: number; height: number };
+        lqip?: string;
+      };
+    };
+    hotspot?: { x: number; y: number };
+    crop?: { top: number; bottom: number; left: number; right: number };
+  };
+  caption?: string;
+  postUrl?: string;
 }
 
 export interface FormSubmission {
