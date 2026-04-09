@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { NAV_ITEMS } from "@/lib/constants";
 import { MobileNav } from "@/components/layout/MobileNav";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { cn } from "@/lib/utils";
 
 export function Header() {
@@ -142,15 +143,15 @@ export function Header() {
 
             {/* Right */}
             <div className="flex items-center gap-3">
-              <Link
-                href="/support"
-                className={cn(
-                  "hidden sm:inline-flex items-center neo-border-sm neo-shadow-sm neo-hover px-5 py-2.5 text-sm font-bold rounded-xl",
-                  onDark ? "bg-secondary text-dark border-secondary" : "bg-primary text-white"
-                )}
-              >
-                Support Us
-              </Link>
+              <div className="hidden sm:block">
+                <MagneticButton
+                  href="/support"
+                  variant={onDark ? "secondary" : "primary"}
+                  size="sm"
+                >
+                  Support Us
+                </MagneticButton>
+              </div>
 
               <button
                 onClick={() => setMobileOpen(true)}

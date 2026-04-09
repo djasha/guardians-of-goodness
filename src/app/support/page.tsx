@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -158,25 +158,10 @@ export default function SupportPage() {
               <p className="text-dark/50 mb-8 max-w-lg mx-auto">
                 Reach out and let us know how you would like to help. Every contribution counts.
               </p>
-              <a
-                href="mailto:office@guardiansofgoodness.org"
-                className="inline-flex items-center gap-3 neo-border-sm neo-shadow-sm neo-hover bg-primary text-white font-bold text-lg px-10 py-5"
-              >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-                Contact us to offer your help
-              </a>
+              <MagneticButton href="mailto:office@guardiansofgoodness.org" variant="primary" size="lg" external>
+                Contact Us
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+              </MagneticButton>
             </div>
           </ScrollReveal>
         </div>

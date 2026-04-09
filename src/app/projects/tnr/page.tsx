@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -116,25 +116,10 @@ export default function TNRPage() {
                 <svg className="w-5 h-5 text-secondary/30" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" /></svg>
               </div>
 
-              <Link
-                href="/consultation"
-                className="neo-border-sm neo-shadow-sm neo-hover bg-primary text-white font-bold px-6 py-3 inline-flex items-center gap-2"
-              >
+              <MagneticButton href="/consultation" variant="primary" size="md">
                 Join Our TNR Initiative
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </Link>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+              </MagneticButton>
             </ScrollReveal>
           </div>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export default function Error({
   error,
@@ -38,25 +39,9 @@ export default function Error({
           An unexpected error occurred. Please try again, and if the problem
           persists, let us know.
         </p>
-        <button
-          onClick={reset}
-          className="neo-border-sm neo-shadow-sm neo-hover bg-primary text-white font-bold px-6 py-3 inline-flex items-center gap-2"
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            />
-          </svg>
+        <MagneticButton onClick={reset} variant="primary" size="md">
           Try Again
-        </button>
+        </MagneticButton>
 
         {/* Paw decoration */}
         <div className="mt-10 flex justify-center">

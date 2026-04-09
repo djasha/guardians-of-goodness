@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export default function NotFound() {
   return (
@@ -22,31 +22,12 @@ export default function NotFound() {
           existed at some point, but it seems to have wandered off.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            href="/"
-            className="neo-border-sm neo-shadow-sm neo-hover bg-primary text-white font-bold px-6 py-3 inline-flex items-center gap-2"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
-            </svg>
+          <MagneticButton href="/" variant="primary" size="md">
             Back to Home
-          </Link>
-          <Link
-            href="/catalogue"
-            className="neo-border-sm neo-hover bg-cream text-dark font-bold px-6 py-3 inline-flex items-center gap-2"
-          >
+          </MagneticButton>
+          <MagneticButton href="/catalogue" variant="outline" size="md">
             Browse CATalogue
-          </Link>
+          </MagneticButton>
         </div>
 
         {/* Playful paw decoration */}

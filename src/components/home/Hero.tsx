@@ -3,11 +3,12 @@
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const primaryActions = [
-  { label: "Adopt a Cat", href: "/catalogue", bg: "bg-secondary", shadow: "neo-shadow-teal" },
-  { label: "Get Involved", href: "/consultation", bg: "bg-primary", shadow: "neo-shadow-purple" },
+  { label: "Adopt a Cat", href: "/catalogue", variant: "secondary" as const },
+  { label: "Get Involved", href: "/consultation", variant: "primary" as const },
 ];
 
 const quickLinks = [
@@ -77,16 +78,17 @@ export function Hero() {
           <M {...(!reduced && { initial: { opacity: 0, y: 15 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4, delay: 0.3 } })}>
             <div className="flex flex-wrap gap-3 mb-5">
               {primaryActions.map((action) => (
-                <Link
+                <MagneticButton
                   key={action.href}
                   href={action.href}
-                  className={`neo-border ${action.bg} ${action.shadow} neo-hover text-white font-bold px-6 py-3.5 text-sm sm:text-base inline-flex items-center gap-2 border-white/20`}
+                  variant={action.variant}
+                  size="lg"
                 >
                   {action.label}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                   </svg>
-                </Link>
+                </MagneticButton>
               ))}
             </div>
           </M>

@@ -187,7 +187,7 @@ export function JoinUsForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full rounded-full bg-primary text-white font-semibold py-3.5 px-6 hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full neo-border-sm neo-shadow-sm bg-primary text-white font-bold py-3.5 px-6 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_#1a1a2e]"
       >
         {status === "submitting" ? "Sending..." : "Send Message"}
       </button>
