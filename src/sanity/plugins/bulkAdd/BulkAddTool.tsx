@@ -6,7 +6,7 @@ import { useClient } from "sanity";
 const PURPLE = "#9b4dca";
 const TEAL = "#4ecdc4";
 const CREAM = "#faf8f5";
-const DARK = "#1a1e2e";
+const DARK = "#1a1a2e";
 
 interface CatRow {
   id: string;
@@ -360,7 +360,7 @@ export function BulkAddTool() {
         >
           {result.failed === 0
             ? `Successfully created ${result.success} cat${result.success !== 1 ? "s" : ""}!`
-            : `Created ${result.success}, failed ${result.failed}. Check the console for errors.`}
+            : `Created ${result.success}, but ${result.failed} failed. Please try adding the failed cats again.`}
         </div>
       )}
 

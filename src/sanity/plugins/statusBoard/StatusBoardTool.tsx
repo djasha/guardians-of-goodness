@@ -6,7 +6,7 @@ import { useClient } from "sanity";
 const PURPLE = "#9b4dca";
 const TEAL = "#4ecdc4";
 const CREAM = "#faf8f5";
-const DARK = "#1a1e2e";
+const DARK = "#1a1a2e";
 
 type AdoptionStatus = "available" | "pending" | "adopted";
 
@@ -44,6 +44,7 @@ export function StatusBoardTool() {
   const [filter, setFilter] = useState<AdoptionStatus | "all">("all");
   const [search, setSearch] = useState("");
   const [updating, setUpdating] = useState<Set<string>>(new Set());
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchCats() {
@@ -85,6 +86,7 @@ export function StatusBoardTool() {
           .commit();
       } catch (err) {
         console.error("Failed to update status:", err);
+        setError(`Failed to update ${cats.find(c => c._id === catId)?.name || "cat"}'s status. Please try again.`);
         // Revert on error
         setCats((prev) =>
           prev.map((c) =>
@@ -120,6 +122,33 @@ export function StatusBoardTool() {
         color: DARK,
       }}
     >
+      {/* Error banner */}
+      {error && (
+        <div
+          style={{
+            background: "#fef2f2",
+            border: "2px solid #fca5a5",
+            borderRadius: 8,
+            padding: "0.75rem 1rem",
+            marginBottom: "1rem",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            color: "#991b1b",
+            fontSize: "0.875rem",
+            fontWeight: 600,
+          }}
+        >
+          {error}
+          <button
+            onClick={() => setError(null)}
+            style={{ background: "none", border: "none", cursor: "pointer", color: "#991b1b", fontWeight: 800, fontSize: "1rem" }}
+          >
+            &times;
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <h1
         style={{

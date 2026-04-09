@@ -6,7 +6,7 @@ import { useClient } from "sanity";
 const PURPLE = "#9b4dca";
 const TEAL = "#4ecdc4";
 const CREAM = "#faf8f5";
-const DARK = "#1a1e2e";
+const DARK = "#1a1a2e";
 
 interface Stats {
   available: number;

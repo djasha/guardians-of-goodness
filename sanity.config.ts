@@ -1,5 +1,3 @@
-"use client";
-
 import { defineConfig, buildLegacyTheme } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
@@ -10,12 +8,12 @@ import { statusBoardPlugin } from "@/sanity/plugins/statusBoard";
 import { bulkAddPlugin } from "@/sanity/plugins/bulkAdd";
 
 const theme = buildLegacyTheme({
-  "--black": "#1a1e2e",
+  "--black": "#1a1a2e",
   "--white": "#faf8f5",
-  "--gray-base": "#1a1e2e",
+  "--gray-base": "#1a1a2e",
   "--gray": "#6b7280",
   "--component-bg": "#faf8f5",
-  "--component-text-color": "#1a1e2e",
+  "--component-text-color": "#1a1a2e",
 
   // Brand colors
   "--brand-primary": "#9b4dca",
@@ -32,7 +30,7 @@ const theme = buildLegacyTheme({
   "--state-danger-color": "#ff6b6b",
 
   // Navigation
-  "--main-navigation-color": "#1a1e2e",
+  "--main-navigation-color": "#1a1a2e",
   "--main-navigation-color--inverted": "#faf8f5",
 
   // Buttons

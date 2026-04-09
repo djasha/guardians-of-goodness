@@ -27,7 +27,6 @@ export interface Cat {
     bondedCat?: {
       name: string;
       slug: string;
-      photo?: string;
     };
   };
   dateAdded?: string;
@@ -52,7 +51,6 @@ export interface CatDetail extends Omit<Cat, "photo"> {
       _id: string;
       name: string;
       slug: string;
-      photo?: string;
     };
   };
 }
