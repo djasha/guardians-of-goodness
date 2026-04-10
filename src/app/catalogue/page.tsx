@@ -25,34 +25,34 @@ export default async function CataloguePage() {
 
   return (
     <>
-      {/* Hero Banner */}
-      <section className="bg-primary border-b-[6px] border-dark">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-4 tracking-tight">
+      {/* Hero — compact, blends with page */}
+      <section className="pt-24 lg:pt-28 pb-8 sm:pb-10 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black mb-3 tracking-tight">
             CATalogue
           </h1>
-          <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto mb-8">
+          <p className="text-sm sm:text-base text-gray-500 max-w-lg mx-auto mb-6">
             Every cat deserves a loving home. Browse our rescued cats and find
             your perfect companion.
           </p>
 
-          {/* Stats pills */}
+          {/* Stats — simple inline text, not flashy pills */}
           {stats && (
-            <div className="flex flex-wrap justify-center gap-3" role="status" aria-label="Catalogue statistics">
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 backdrop-blur-sm text-white font-bold text-sm border-2 border-white/30">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" aria-hidden="true" />
+            <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-gray-500" role="status" aria-label="Catalogue statistics">
+              <span className="inline-flex items-center gap-1.5 font-semibold">
+                <span className="w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true" />
                 {stats.available} Available
               </span>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 backdrop-blur-sm text-white font-bold text-sm border-2 border-white/30">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-400" aria-hidden="true" />
+              <span className="inline-flex items-center gap-1.5 font-semibold">
+                <span className="w-2 h-2 rounded-full bg-amber-400" aria-hidden="true" />
                 {stats.pending} Pending
               </span>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 backdrop-blur-sm text-white font-bold text-sm border-2 border-white/30">
-                <Home className="w-4 h-4" strokeWidth={2} aria-hidden="true" />
+              <span className="inline-flex items-center gap-1.5 font-semibold">
+                <Home className="w-3.5 h-3.5" strokeWidth={2} aria-hidden="true" />
                 {stats.adopted} Adopted
               </span>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary/80 text-white font-black text-sm border-2 border-white/30">
-                <Heart className="w-4 h-4 fill-current" strokeWidth={0} aria-hidden="true" />
+              <span className="inline-flex items-center gap-1.5 font-semibold text-primary">
+                <Heart className="w-3.5 h-3.5 fill-current" strokeWidth={0} aria-hidden="true" />
                 {stats.total} Total Rescued
               </span>
             </div>
@@ -61,15 +61,15 @@ export default async function CataloguePage() {
       </section>
 
       {/* Cat Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {error ? (
           <ScrollReveal>
             <div className="text-center py-20">
-              <CatIcon className="w-16 h-16 text-primary/25 mx-auto mb-6" strokeWidth={1.5} aria-hidden="true" />
-              <h2 className="font-display text-2xl font-black text-dark mb-3">
+              <CatIcon className="w-16 h-16 text-primary/20 mx-auto mb-6" strokeWidth={1.5} aria-hidden="true" />
+              <h2 className="font-display text-2xl font-black mb-3">
                 Catalogue Coming Soon
               </h2>
-              <p className="text-gray-600 max-w-md mx-auto">
+              <p className="text-gray-500 max-w-md mx-auto">
                 We are setting up our catalogue. Please check back soon to meet
                 our adorable cats!
               </p>
@@ -78,11 +78,11 @@ export default async function CataloguePage() {
         ) : cats.length === 0 ? (
           <ScrollReveal>
             <div className="text-center py-20">
-              <CatIcon className="w-16 h-16 text-primary/25 mx-auto mb-6" strokeWidth={1.5} aria-hidden="true" />
-              <h2 className="font-display text-2xl font-black text-dark mb-3">
+              <CatIcon className="w-16 h-16 text-primary/20 mx-auto mb-6" strokeWidth={1.5} aria-hidden="true" />
+              <h2 className="font-display text-2xl font-black mb-3">
                 No Cats Available Right Now
               </h2>
-              <p className="text-gray-600 max-w-md mx-auto">
+              <p className="text-gray-500 max-w-md mx-auto">
                 All our cats have found loving homes! Check back soon for new
                 arrivals.
               </p>

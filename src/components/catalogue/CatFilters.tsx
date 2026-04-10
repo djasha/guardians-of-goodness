@@ -185,7 +185,7 @@ export function CatFilters({
           </legend>
           <div className="flex gap-1.5" role="group" aria-label="Filter by status">
             <Pill active={filters.status === "all"} onClick={() => update({ status: "all" })}>
-              All {stats ? `(${stats.available + stats.pending})` : ""}
+              All ({totalCount})
             </Pill>
             <Pill active={filters.status === "available"} onClick={() => update({ status: "available" })}>
               Available {stats ? `(${stats.available})` : ""}

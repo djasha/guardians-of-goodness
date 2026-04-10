@@ -25,6 +25,7 @@ export interface Cat {
   bond?: {
     type?: string;
     bondedCat?: {
+      _id: string;
       name: string;
       slug: string;
     };

@@ -98,6 +98,17 @@ export const RELATED_CATS_QUERY = groq`
     adoptionStatus,
     featured,
     tags,
+    readyToTravelAbroad,
+    neutered,
+    vaccinated,
+    bond {
+      type,
+      bondedCat-> {
+        _id,
+        name,
+        "slug": slug.current
+      }
+    },
     dateAdded
   }
 `;
