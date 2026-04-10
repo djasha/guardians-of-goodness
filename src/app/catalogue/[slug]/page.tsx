@@ -123,11 +123,13 @@ export default async function CatProfilePage({ params }: Props) {
 
   if (!cat) notFound();
 
-  const relatedCats = await client.fetch<Cat[]>(RELATED_CATS_QUERY, {
-    id: cat._id,
-    ageCategory: cat.ageCategory || "",
-    tags: cat.tags || [],
-  });
+  const relatedCats = await client
+    .fetch<Cat[]>(RELATED_CATS_QUERY, {
+      id: cat._id,
+      ageCategory: cat.ageCategory || "",
+      tags: cat.tags || [],
+    })
+    .catch(() => [] as Cat[]);
 
   const shareUrl = `https://guardiansofgoodness.org/catalogue/${cat.slug}`;
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`Meet ${cat.name}! 🐱 ${shareUrl}`)}`;

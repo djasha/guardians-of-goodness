@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface PawTrail {
@@ -129,10 +129,13 @@ export function PawCursor() {
     };
   }, [reduced, createPaw]);
 
-  if (reduced) return null;
+  // Detect touch devices after mount to avoid hydration mismatch
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    setIsTouch("ontouchstart" in window);
+  }, []);
 
-  // Don't render on touch devices
-  if (typeof window !== "undefined" && "ontouchstart" in window) return null;
+  if (reduced || isTouch) return null;
 
   return <div ref={canvasRef} className="fixed inset-0 pointer-events-none z-[9999]" />;
 }

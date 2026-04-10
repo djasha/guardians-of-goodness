@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeClient } from "@/sanity/client";
+import { client } from "@/sanity/client";
+import { writeClient } from "@/sanity/writeClient";
 import { sendFormNotification } from "@/lib/email";
 import {
   joinUsSchema,
@@ -31,6 +32,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // For adoption inquiries, try to link to the cat record
+    let catRef: { _type: "reference"; _ref: string } | undefined;
+    if (formType === "adoption-inquiry" && data.catName) {
+      const cat = await client.fetch<{ _id: string } | null>(
+        `*[_type == "cat" && name == $name][0]{ _id }`,
+        { name: data.catName }
+      );
+      if (cat) {
+        catRef = { _type: "reference", _ref: cat._id };
+      }
+    }
+
     await writeClient.create({
       _type: "formSubmission",
       formType,
@@ -38,9 +51,10 @@ export async function POST(req: NextRequest) {
       email: data.email,
       phone: data.phone,
       message: data.message || data.inquiry || data.description,
-      extraFields: JSON.stringify(data),
+      extraFields: JSON.stringify(parsed.data, null, 2),
       submittedAt: new Date().toISOString(),
       status: "new",
+      ...(catRef && { cat: catRef }),
     });
 
     try {

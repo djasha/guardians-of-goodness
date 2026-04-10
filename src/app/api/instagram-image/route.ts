@@ -11,8 +11,21 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const postUrl = request.nextUrl.searchParams.get("url");
 
-  if (!postUrl || !postUrl.includes("instagram.com")) {
-    return NextResponse.json({ error: "Missing or invalid Instagram URL" }, { status: 400 });
+  if (!postUrl) {
+    return NextResponse.json({ error: "Missing URL parameter" }, { status: 400 });
+  }
+
+  // Validate URL to prevent SSRF — only allow actual Instagram domains
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(postUrl);
+  } catch {
+    return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
+  }
+
+  const allowedHosts = ["www.instagram.com", "instagram.com"];
+  if (!allowedHosts.includes(parsedUrl.hostname)) {
+    return NextResponse.json({ error: "URL must be an Instagram post URL" }, { status: 400 });
   }
 
   try {
@@ -46,14 +59,8 @@ export async function GET(request: NextRequest) {
     // Extract all base64 images (png or jpeg)
     const base64Matches = html.match(/data:image\/(?:png|jpeg|jpg|webp);base64,[A-Za-z0-9+/=]+/g);
     if (!base64Matches || base64Matches.length === 0) {
-      // Debug: return what we got
       return NextResponse.json(
-        {
-          error: "No base64 image found in embed page",
-          htmlLength: html.length,
-          hasImages: html.includes("<img"),
-          sample: html.substring(0, 500),
-        },
+        { error: "Could not extract image from Instagram embed" },
         { status: 404 }
       );
     }
