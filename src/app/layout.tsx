@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PawCursor } from "@/components/animations/PawCursor";
@@ -37,6 +38,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   );
