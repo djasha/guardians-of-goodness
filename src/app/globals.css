@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme inline {
+@theme {
   --color-primary: #9b4dca;
   --color-primary-light: #c084fc;
   --color-primary-dark: #7b3aa0;
@@ -17,6 +17,106 @@
   --font-body: var(--font-dm-sans);
 }
 
+/* ── Mystical Cat Sanctuary Theme ──────────── */
+/* Dark, enchanting, cat-shelter vibe with her brand colors */
+.theme-mystical {
+  --color-primary: #9c27b0;
+  --color-primary-light: #b54fc4;
+  --color-primary-dark: #7b1fa2;
+  --color-secondary: #009688;
+  --color-secondary-light: #26a69a;
+  --color-secondary-dark: #00796b;
+  --color-dark: #0d1017;
+  --color-dark-light: #141721;
+  --color-cream: #171c28;
+  --color-warm-gray: #1e2435;
+  --color-accent: #26a69a;
+  --color-pink: #ce93d8;
+}
+
+/* ── Mystical: body text flips to light ────── */
+.theme-mystical body {
+  color: #e2e6ed;
+}
+
+/* ── Mystical: neo-brutalist softening ─────── */
+.theme-mystical .neo-border {
+  border-color: #2d3548;
+}
+.theme-mystical .neo-border-sm {
+  border-color: #2d3548;
+}
+.theme-mystical .neo-shadow {
+  box-shadow: 4px 4px 0 rgba(156, 39, 176, 0.35);
+}
+.theme-mystical .neo-shadow-sm {
+  box-shadow: 3px 3px 0 rgba(156, 39, 176, 0.3);
+}
+.theme-mystical .neo-hover:hover {
+  box-shadow: 6px 6px 0 var(--color-primary);
+}
+
+/* ── Subtle cat doodle pattern ─────────────── */
+/* Paw prints, hearts, stars — rendered as SVG */
+.theme-mystical body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3C!-- Paw 1 --%3E%3Cg transform='translate(30,30) rotate(-15)' fill='%239c27b0'%3E%3Cellipse cx='10' cy='15' rx='5' ry='4.5'/%3E%3Ccircle cx='4' cy='8' r='2.2'/%3E%3Ccircle cx='8.5' cy='5' r='2'/%3E%3Ccircle cx='13.5' cy='5' r='2'/%3E%3Ccircle cx='17.5' cy='8' r='2.2'/%3E%3C/g%3E%3C!-- Heart 1 --%3E%3Cpath d='M105,25 C105,20 110,18 113,22 C116,18 121,20 121,25 C121,31 113,36 113,36 C113,36 105,31 105,25z' fill='%23009688'/%3E%3C!-- Star 1 --%3E%3Cpolygon points='170,30 173,38 181,38 175,43 177,51 170,46 163,51 165,43 159,38 167,38' fill='%239c27b0'/%3E%3C!-- Paw 2 --%3E%3Cg transform='translate(140,110) rotate(20)' fill='%23009688'%3E%3Cellipse cx='10' cy='15' rx='5' ry='4.5'/%3E%3Ccircle cx='4' cy='8' r='2.2'/%3E%3Ccircle cx='8.5' cy='5' r='2'/%3E%3Ccircle cx='13.5' cy='5' r='2'/%3E%3Ccircle cx='17.5' cy='8' r='2.2'/%3E%3C/g%3E%3C!-- Heart 2 --%3E%3Cpath d='M40,120 C40,115 45,113 48,117 C51,113 56,115 56,120 C56,126 48,131 48,131 C48,131 40,126 40,120z' fill='%239c27b0'/%3E%3C!-- Star 2 --%3E%3Cpolygon points='90,160 93,168 101,168 95,173 97,181 90,176 83,181 85,173 79,168 87,168' fill='%23009688'/%3E%3C!-- Paw 3 --%3E%3Cg transform='translate(160,170) rotate(-30)' fill='%239c27b0'%3E%3Cellipse cx='10' cy='15' rx='5' ry='4.5'/%3E%3Ccircle cx='4' cy='8' r='2.2'/%3E%3Ccircle cx='8.5' cy='5' r='2'/%3E%3Ccircle cx='13.5' cy='5' r='2'/%3E%3Ccircle cx='17.5' cy='8' r='2.2'/%3E%3C/g%3E%3C!-- Heart 3 --%3E%3Cpath d='M10,175 C10,170 15,168 18,172 C21,168 26,170 26,175 C26,181 18,186 18,186 C18,186 10,181 10,175z' fill='%23009688'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* Make sure main content is above the pattern */
+.theme-mystical main,
+.theme-mystical footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Section transition gradients ──────────── */
+/* Smooth color bridges between sections */
+.section-fade-in {
+  position: relative;
+}
+.section-fade-in::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Dark-to-light transition */
+.theme-mystical .section-from-dark::before {
+  background: linear-gradient(to bottom, var(--color-dark-light), transparent);
+}
+/* Light-to-dark transition */
+.theme-mystical .section-to-dark::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, var(--color-dark-light));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Mystical: scrollbar matches dark theme ── */
+.theme-mystical ::-webkit-scrollbar-track {
+  background: #0d1017;
+}
+.theme-mystical ::-webkit-scrollbar-thumb {
+  border-color: #0d1017;
+}
+
 @utility border-3 {
   border-width: 3px;
 }
@@ -31,43 +131,43 @@ html {
 
 body {
   font-family: var(--font-body), system-ui, sans-serif;
-  color: #1a1a2e;
+  color: var(--color-dark);
   background-color: var(--color-cream);
 }
 
 ::selection {
-  background-color: #9b4dca;
+  background-color: var(--color-primary);
   color: white;
 }
 
 /* ── Neobrutalist primitives ────────────────── */
 
 .neo-border {
-  border: 3px solid #1a1a2e;
+  border: 3px solid var(--color-dark);
   border-radius: 16px;
 }
 
 .neo-border-sm {
-  border: 2px solid #1a1a2e;
+  border: 2px solid var(--color-dark);
   border-radius: 12px;
 }
 
 .neo-shadow {
-  box-shadow: 4px 4px 0 #1a1a2e;
+  box-shadow: 4px 4px 0 var(--color-dark);
   border-radius: 16px;
 }
 
 .neo-shadow-sm {
-  box-shadow: 3px 3px 0 #1a1a2e;
+  box-shadow: 3px 3px 0 var(--color-dark);
   border-radius: 12px;
 }
 
 .neo-shadow-purple {
-  box-shadow: 4px 4px 0 #9b4dca;
+  box-shadow: 4px 4px 0 var(--color-primary);
 }
 
 .neo-shadow-teal {
-  box-shadow: 4px 4px 0 #4ecdc4;
+  box-shadow: 4px 4px 0 var(--color-secondary);
 }
 
 .neo-hover {
@@ -75,7 +175,7 @@ body {
 }
 .neo-hover:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 #1a1a2e;
+  box-shadow: 6px 6px 0 var(--color-dark);
 }
 
 /* Marquee */
@@ -104,13 +204,13 @@ body {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #faf7f2;
+  background: var(--color-cream);
 }
 ::-webkit-scrollbar-thumb {
-  background: #9b4dca;
+  background: var(--color-primary);
   border-radius: 10px;
-  border: 2px solid #faf7f2;
+  border: 2px solid var(--color-cream);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #7b3aa0;
+  background: var(--color-primary-dark);
 }

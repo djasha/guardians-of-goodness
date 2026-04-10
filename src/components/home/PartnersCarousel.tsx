@@ -19,7 +19,7 @@ export function PartnersCarousel() {
   const doubled = [...partners, ...partners];
 
   return (
-    <section className="bg-cream py-16 sm:py-20">
+    <section className="relative bg-cream py-16 sm:py-20 section-fade-in section-to-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 flex items-center justify-between">
         <button
           onClick={() => setShowAll(true)}

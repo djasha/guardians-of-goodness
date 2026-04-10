@@ -3,6 +3,8 @@ import { DM_Sans, Fraunces } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PawCursor } from "@/components/animations/PawCursor";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -33,10 +35,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSans.variable} ${fraunces.variable}`}>
       <body className="min-h-screen flex flex-col bg-cream">
-        <PawCursor />
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <ThemeProvider>
+          <PawCursor />
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <ThemeToggle />
+        </ThemeProvider>
       </body>
     </html>
   );

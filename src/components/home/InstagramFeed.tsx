@@ -21,7 +21,7 @@ export function InstagramFeed({ posts }: Props) {
   if (!posts || posts.length === 0) return null;
 
   return (
-    <section className="bg-cream py-20 sm:py-28 overflow-hidden">
+    <section className="relative bg-cream py-20 sm:py-28 overflow-hidden section-fade-in section-from-dark section-to-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>

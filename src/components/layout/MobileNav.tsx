@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { NAV_ITEMS, SOCIAL } from "@/lib/constants";
@@ -49,31 +48,10 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
             className="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[calc(100vw-2rem)] bg-cream neo-border border-r-0 rounded-r-none flex flex-col overflow-hidden"
-            style={{ borderRight: "none", borderTopRightRadius: 0, borderBottomRightRadius: 0, boxShadow: "-6px 0 0 #1a1a2e" }}
+            style={{ borderRight: "none", borderTopRightRadius: 0, borderBottomRightRadius: 0, boxShadow: "-6px 0 0 var(--color-dark)" }}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b-3 border-dark">
-              <Image
-                src="/images/logos/goglogo.png"
-                alt="GoG"
-                width={100}
-                height={36}
-                className="h-8 w-auto"
-              />
-              <button
-                type="button"
-                onClick={onClose}
-                className="neo-border-sm neo-hover w-10 h-10 flex items-center justify-center bg-white text-dark cursor-pointer"
-                aria-label="Close menu"
-              >
-                <svg width={18} height={18} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Nav links */}
-            <nav className="flex-1 overflow-y-auto p-5">
+            {/* Nav links — close button is the hamburger-to-X in the header */}
+            <nav className="flex-1 overflow-y-auto p-5 pt-20">
               <ul className="space-y-1">
                 {NAV_ITEMS.map((item, i) => (
                   <li key={item.label}>

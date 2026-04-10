@@ -47,7 +47,7 @@ export function PawCursor() {
       height: ${24 * paw.scale}px;
       transform: rotate(${paw.rotation}deg);
       opacity: ${paw.opacity};
-      color: ${isClick ? "#9b4dca" : "#4ecdc4"};
+      color: ${isClick ? "var(--color-primary)" : "var(--color-secondary)"};
       pointer-events: none;
       z-index: 9999;
       transition: opacity 0.8s ease, transform 0.8s ease;
@@ -83,7 +83,7 @@ export function PawCursor() {
       height: 28px;
       pointer-events: none;
       z-index: 10000;
-      color: #9b4dca;
+      color: var(--color-primary);
       transform: translate(-14px, -14px) rotate(-25deg);
       transition: transform 0.1s ease;
       filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));

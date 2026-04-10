@@ -104,7 +104,7 @@ function InfoCard({
   value: string;
 }) {
   return (
-    <div className="bg-cream rounded-xl border-3 border-dark p-4 shadow-[3px_3px_0_0_#1a1a2e]">
+    <div className="bg-cream rounded-xl border-3 border-dark p-4 shadow-[3px_3px_0_0_var(--color-dark)]">
       <p className="text-sm text-gray-500 font-semibold mb-1">{label}</p>
       <p className="font-black text-gray-900">{value}</p>
     </div>
@@ -178,7 +178,7 @@ export default async function CatProfilePage({ params }: Props) {
             {cat.photos && cat.photos.length > 0 ? (
               <PhotoGallery photos={cat.photos} name={cat.name} />
             ) : (
-              <div className="aspect-square rounded-2xl border-3 border-dark bg-gray-100 flex items-center justify-center shadow-[6px_6px_0_0_#9b4dca]" role="img" aria-label={`No photo available for ${cat.name}`}>
+              <div className="aspect-square rounded-2xl border-3 border-dark bg-gray-100 flex items-center justify-center shadow-[6px_6px_0_0_var(--color-primary)]" role="img" aria-label={`No photo available for ${cat.name}`}>
                 <span className="text-8xl" aria-hidden="true">🐱</span>
               </div>
             )}
@@ -193,7 +193,7 @@ export default async function CatProfilePage({ params }: Props) {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-[#25D366] text-white px-4 py-2 rounded-lg border-3 border-dark font-black text-sm shadow-[3px_3px_0_0_#1a1a2e] hover:-translate-y-0.5 hover:shadow-[4px_4px_0_0_#1a1a2e] transition-all min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  className="inline-flex items-center gap-2 bg-[#25D366] text-white px-4 py-2 rounded-lg border-3 border-dark font-black text-sm shadow-[3px_3px_0_0_var(--color-dark)] hover:-translate-y-0.5 hover:shadow-[4px_4px_0_0_var(--color-dark)] transition-all min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   aria-label={`Share ${cat.name}'s profile on WhatsApp`}
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -277,7 +277,7 @@ export default async function CatProfilePage({ params }: Props) {
 
               {/* Bonded pair callout */}
               {cat.bond?.bondedCat && (
-                <div className="mb-8 bg-primary/10 border-3 border-primary rounded-xl p-5 shadow-[3px_3px_0_0_#9b4dca]">
+                <div className="mb-8 bg-primary/10 border-3 border-primary rounded-xl p-5 shadow-[3px_3px_0_0_var(--color-primary)]">
                   <h2 className="font-display text-xl font-black text-primary mb-2">
                     Bonded Pair
                   </h2>
@@ -316,7 +316,7 @@ export default async function CatProfilePage({ params }: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`See ${cat.name} on Instagram (opens in new tab)`}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white px-5 py-2.5 rounded-lg border-3 border-dark font-black text-sm shadow-[3px_3px_0_0_#1a1a2e] hover:-translate-y-0.5 hover:shadow-[4px_4px_0_0_#1a1a2e] transition-all min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-primary via-pink to-secondary text-white px-5 py-2.5 rounded-lg border-3 border-dark font-black text-sm shadow-[3px_3px_0_0_var(--color-dark)] hover:-translate-y-0.5 hover:shadow-[4px_4px_0_0_var(--color-dark)] transition-all min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
                     <svg
                       className="w-5 h-5"

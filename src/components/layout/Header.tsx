@@ -8,10 +8,13 @@ import { AnimatePresence, motion } from "motion/react";
 import { NAV_ITEMS } from "@/lib/constants";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { useTheme } from "@/components/theme/ThemeProvider";
 import { cn } from "@/lib/utils";
 
 export function Header() {
   const pathname = usePathname();
+  const { theme } = useTheme();
+  const isMystical = theme === "mystical";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -49,7 +52,9 @@ export function Header() {
     (p) => p === "/" ? pathname === "/" : pathname.startsWith(p)
   );
   const hasHeroImage = isHome || pathname === "/consultation";
-  const onDark = hasDarkHero && !scrolled;
+  // In mystical mode, nav text is always light (dark bg everywhere)
+  // but logo switches from white (hero) to colored (scrolled) for visual distinction
+  const onDark = isMystical ? true : (hasDarkHero && !scrolled);
 
   return (
     <>
@@ -57,7 +62,9 @@ export function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           scrolled
-            ? "bg-cream/95 backdrop-blur-sm shadow-[0_4px_0_0_rgba(26,26,46,0.06)]"
+            ? isMystical
+              ? "bg-[#0d1017]/95 backdrop-blur-sm shadow-[0_1px_0_0_rgba(156,39,176,0.15)]"
+              : "bg-cream/95 backdrop-blur-sm shadow-[0_4px_0_0_rgba(26,26,46,0.06)]"
             : "bg-transparent",
         )}
       >
@@ -73,7 +80,7 @@ export function Header() {
                 className={cn(
                   "w-auto transition-all duration-300",
                   scrolled ? "h-9 lg:h-11" : onDark ? "h-16 lg:h-22" : "h-10 lg:h-12",
-                  onDark && "brightness-0 invert"
+                  (isMystical || (onDark && !scrolled)) && "brightness-0 invert"
                 )}
                 priority
               />
@@ -123,7 +130,10 @@ export function Header() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -4 }}
                             transition={{ duration: 0.15 }}
-                            className="absolute top-full left-0 mt-2 min-w-[180px] neo-border neo-shadow bg-white z-50 overflow-hidden"
+                            className={cn(
+                              "absolute top-full left-0 mt-2 min-w-[180px] neo-border neo-shadow z-50 overflow-hidden",
+                              isMystical ? "bg-[#1e2435] border-[#2d3548]" : "bg-white"
+                            )}
                             onMouseEnter={() => handleDropdownEnter(item.label)}
                             onMouseLeave={handleDropdownLeave}
                           >
@@ -135,7 +145,9 @@ export function Header() {
                                   "block px-4 py-3 text-sm font-semibold transition-colors",
                                   isActive(child.href)
                                     ? "text-primary bg-primary/5"
-                                    : "text-dark/70 hover:text-dark hover:bg-secondary/10",
+                                    : isMystical
+                                      ? "text-white/70 hover:text-white hover:bg-secondary/10"
+                                      : "text-dark/70 hover:text-dark hover:bg-secondary/10",
                                 )}
                               >
                                 {child.label}
@@ -163,13 +175,25 @@ export function Header() {
               </div>
 
               <button
-                onClick={() => setMobileOpen(true)}
+                onClick={() => setMobileOpen(!mobileOpen)}
                 className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 cursor-pointer text-dark"
-                aria-label="Open menu"
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
               >
-                <span className={cn("block w-6 h-[2.5px] rounded-full", onDark ? "bg-white" : "bg-dark")} />
-                <span className={cn("block w-4 h-[2.5px] rounded-full self-end", onDark ? "bg-white" : "bg-dark")} />
-                <span className={cn("block w-6 h-[2.5px] rounded-full", onDark ? "bg-white" : "bg-dark")} />
+                <span className={cn(
+                  "block w-6 h-[2.5px] rounded-full transition-all duration-300 origin-center",
+                  onDark ? "bg-white" : "bg-dark",
+                  mobileOpen && "rotate-45 translate-y-[5.5px]"
+                )} />
+                <span className={cn(
+                  "block w-4 h-[2.5px] rounded-full self-end transition-all duration-300",
+                  onDark ? "bg-white" : "bg-dark",
+                  mobileOpen && "opacity-0 scale-0"
+                )} />
+                <span className={cn(
+                  "block w-6 h-[2.5px] rounded-full transition-all duration-300 origin-center",
+                  onDark ? "bg-white" : "bg-dark",
+                  mobileOpen && "-rotate-45 -translate-y-[5.5px]"
+                )} />
               </button>
             </div>
           </div>

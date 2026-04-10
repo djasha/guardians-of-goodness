@@ -14,12 +14,12 @@ interface CatCardProps {
 const statusStyles = {
   available: {
     badge: "bg-emerald-500 text-white",
-    shadow: "shadow-[4px_4px_0_0_#4ecdc4]",
+    shadow: "shadow-[4px_4px_0_0_var(--color-secondary)]",
     label: "Available",
   },
   pending: {
     badge: "bg-amber-500 text-white",
-    shadow: "shadow-[4px_4px_0_0_#ff8c42]",
+    shadow: "shadow-[4px_4px_0_0_var(--color-accent)]",
     label: "Pending",
   },
   adopted: {
@@ -48,7 +48,7 @@ export function CatCard({ cat }: CatCardProps) {
         className={cn(
           "group block rounded-xl bg-white border-3 border-dark overflow-hidden transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
           status.shadow,
-          "hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#9b4dca]",
+          "hover:-translate-y-1 hover:shadow-[6px_6px_0_0_var(--color-primary)]",
           isAdopted && "opacity-75"
         )}
       >

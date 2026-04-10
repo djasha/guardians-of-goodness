@@ -43,7 +43,7 @@ export function PhilosophyPillars() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="bg-warm-gray py-24 sm:py-32">
+    <section className="relative bg-warm-gray py-24 sm:py-32 section-fade-in section-from-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="mb-14">

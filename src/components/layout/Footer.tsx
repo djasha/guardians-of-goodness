@@ -74,7 +74,7 @@ export function Footer() {
           <div className="flex items-center gap-3">
             <Link
               href="/consultation"
-              className={`neo-border-sm neo-shadow-teal bg-secondary text-dark font-bold px-5 py-2.5 text-sm transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_#4ecdc4] border-secondary ${focusRing}`}
+              className={`neo-border-sm neo-shadow-teal bg-secondary text-dark font-bold px-5 py-2.5 text-sm transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_var(--color-secondary)] border-secondary ${focusRing}`}
             >
               Get Involved
             </Link>
