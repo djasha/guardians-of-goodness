@@ -99,11 +99,11 @@ export default async function CatProfilePage({ params }: Props) {
   return (
     <>
       {/* Hero — name + status + specs, no separate cards */}
-      <section className="bg-primary">
+      <section className="bg-primary pt-24 lg:pt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <Link
             href="/catalogue"
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors text-sm font-semibold mb-4"
+            className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors text-sm font-semibold mb-4"
           >
             <ArrowLeft className="w-4 h-4" aria-hidden="true" />
             Back to CATalogue
@@ -280,9 +280,9 @@ export default async function CatProfilePage({ params }: Props) {
               <h2 className="font-display text-2xl font-black mb-8 text-center">
                 You Might Also Like
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
                 {relatedCats.map((relatedCat) => (
-                  <CatCard key={relatedCat._id} cat={relatedCat} />
+                  <CatCard key={relatedCat._id} cat={relatedCat} compact />
                 ))}
               </div>
             </div>

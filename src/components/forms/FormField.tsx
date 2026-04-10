@@ -21,7 +21,7 @@ export function FormField({
     <div className={cn("space-y-1.5", className)}>
       <label
         htmlFor={name}
-        className="block text-sm font-semibold text-dark/80"
+        className="block text-sm font-bold text-gray-700"
       >
         {label}
       </label>
@@ -43,7 +43,7 @@ export function Input({ hasError, className, ...props }: InputProps) {
   return (
     <input
       className={cn(
-        "w-full neo-border-sm bg-white px-4 py-3 text-dark placeholder:text-dark/30",
+        "w-full neo-border-sm bg-white px-4 py-3 text-dark placeholder:text-gray-400",
         "outline-none transition-all duration-200",
         "focus:border-primary",
         hasError
@@ -65,7 +65,7 @@ export function Textarea({ hasError, className, ...props }: TextareaProps) {
   return (
     <textarea
       className={cn(
-        "w-full neo-border-sm bg-white px-4 py-3 text-dark placeholder:text-dark/30",
+        "w-full neo-border-sm bg-white px-4 py-3 text-dark placeholder:text-gray-400",
         "outline-none transition-all duration-200 resize-none",
         "focus:border-primary",
         hasError && "border-red-400",
@@ -140,7 +140,7 @@ export function RadioGroup({
             "transition-all duration-200 text-sm",
             value === opt.value
               ? "bg-primary/5 text-primary font-bold neo-shadow-sm"
-              : "bg-white text-dark/50 hover:text-primary",
+              : "bg-white text-gray-600 hover:text-primary",
             hasError && !value && "border-red-400"
           )}
         >

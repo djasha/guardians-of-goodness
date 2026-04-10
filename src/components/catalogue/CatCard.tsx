@@ -9,6 +9,7 @@ import type { Cat as CatType } from "@/sanity/types";
 
 interface CatCardProps {
   cat: CatType;
+  compact?: boolean;
 }
 
 const statusStyles = {
@@ -29,7 +30,7 @@ const statusStyles = {
   },
 };
 
-export function CatCard({ cat }: CatCardProps) {
+export function CatCard({ cat, compact }: CatCardProps) {
   const status = statusStyles[cat.adoptionStatus] || statusStyles.available;
   const isAdopted = cat.adoptionStatus === "adopted";
   const prefersReducedMotion = useReducedMotion();
@@ -121,13 +122,13 @@ export function CatCard({ cat }: CatCardProps) {
         </div>
 
         {/* Info */}
-        <div className="p-4 border-t-3 border-dark">
-          <div className="flex items-start justify-between mb-2">
-            <h3 className="font-display text-xl font-black text-dark group-hover:text-primary transition-colors">
+        <div className={cn("border-t-3 border-dark", compact ? "p-2.5" : "p-4")}>
+          <div className="flex items-start justify-between mb-1.5">
+            <h3 className={cn("font-display font-black text-dark group-hover:text-primary transition-colors", compact ? "text-sm" : "text-xl")}>
               {cat.name}
             </h3>
             <span
-              className={cn("text-sm font-black mt-0.5 px-1.5 py-0.5 rounded border", cat.gender === "male" ? "text-blue-600 border-blue-200 bg-blue-50" : "text-pink-600 border-pink-200 bg-pink-50")}
+              className={cn("font-black px-1.5 py-0.5 rounded border", compact ? "text-[10px]" : "text-sm", cat.gender === "male" ? "text-blue-600 border-blue-200 bg-blue-50" : "text-pink-600 border-pink-200 bg-pink-50")}
               aria-label={cat.gender === "male" ? "Male" : "Female"}
             >
               {cat.gender === "male" ? "M" : "F"}
@@ -135,21 +136,21 @@ export function CatCard({ cat }: CatCardProps) {
           </div>
 
           {/* Meta chips */}
-          <div className="flex flex-wrap gap-1.5 mb-3">
+          <div className="flex flex-wrap gap-1 mb-2">
             {cat.ageCategory && (
-              <span className="text-xs px-2 py-1 rounded-md bg-primary/10 text-primary font-bold border border-primary/20">
+              <span className={cn("rounded-md bg-primary/10 text-primary font-bold border border-primary/20", compact ? "text-[10px] px-1.5 py-0.5" : "text-xs px-2 py-1")}>
                 {cat.ageCategory}
               </span>
             )}
             {cat.breed && (
-              <span className="text-xs px-2 py-1 rounded-md bg-secondary/10 text-secondary-dark font-bold border border-secondary/20">
+              <span className={cn("rounded-md bg-secondary/10 text-secondary-dark font-bold border border-secondary/20", compact ? "text-[10px] px-1.5 py-0.5" : "text-xs px-2 py-1")}>
                 {cat.breed}
               </span>
             )}
           </div>
 
-          {/* Personality tags (first 3) */}
-          {cat.tags && cat.tags.length > 0 && (
+          {/* Personality tags — hide in compact */}
+          {!compact && cat.tags && cat.tags.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-3">
               {cat.tags.slice(0, 3).map((tag) => (
                 <span
@@ -167,21 +168,23 @@ export function CatCard({ cat }: CatCardProps) {
             </div>
           )}
 
-          {/* Health indicators */}
-          <div className="flex gap-2 text-xs text-gray-500" aria-label="Health status">
-            {cat.neutered && (
-              <span className="flex items-center gap-1">
-                <Check className="w-3 h-3 text-secondary" strokeWidth={3} aria-hidden="true" />
-                Neutered
-              </span>
-            )}
-            {cat.vaccinated && (
-              <span className="flex items-center gap-1">
-                <Check className="w-3 h-3 text-secondary" strokeWidth={3} aria-hidden="true" />
-                Vaccinated
-              </span>
-            )}
-          </div>
+          {/* Health indicators — hide in compact */}
+          {!compact && (
+            <div className="flex gap-2 text-xs text-gray-500" aria-label="Health status">
+              {cat.neutered && (
+                <span className="flex items-center gap-1">
+                  <Check className="w-3 h-3 text-secondary" strokeWidth={3} aria-hidden="true" />
+                  Neutered
+                </span>
+              )}
+              {cat.vaccinated && (
+                <span className="flex items-center gap-1">
+                  <Check className="w-3 h-3 text-secondary" strokeWidth={3} aria-hidden="true" />
+                  Vaccinated
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Bond info */}
           {cat.bond?.bondedCat && (
