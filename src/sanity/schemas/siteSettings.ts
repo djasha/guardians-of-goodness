@@ -9,47 +9,56 @@ export default defineType({
       name: "heroHeading",
       title: "Hero Heading",
       type: "string",
+      description: "The big heading text on the homepage hero section.",
     }),
     defineField({
       name: "heroSubtext",
       title: "Hero Subtext",
       type: "text",
       rows: 3,
+      description: "The smaller text below the heading on the homepage.",
     }),
     defineField({
       name: "email",
       title: "Email",
       type: "string",
+      description: "Contact email shown in the footer and contact page.",
     }),
     defineField({
       name: "address",
       title: "Address",
       type: "string",
+      description: "Physical address shown in the footer.",
     }),
     defineField({
       name: "phone",
       title: "Phone",
       type: "string",
+      description: "Phone number shown in the footer and contact page.",
     }),
     defineField({
       name: "socialLinks",
       title: "Social Links",
       type: "object",
+      description: "Links to your social media profiles.",
       fields: [
         defineField({
           name: "facebook",
           title: "Facebook",
           type: "url",
+          description: "Full URL to your Facebook page.",
         }),
         defineField({
           name: "instagram",
           title: "Instagram",
           type: "url",
+          description: "Full URL to your Instagram profile.",
         }),
         defineField({
           name: "linkedin",
           title: "LinkedIn",
           type: "url",
+          description: "Full URL to your LinkedIn page.",
         }),
       ],
     }),
@@ -64,6 +73,7 @@ export default defineType({
       name: "impactStats",
       title: "Impact Stats",
       type: "array",
+      description: "The numbers shown on the homepage (e.g. 200+ cats rescued, 7 vet partners).",
       of: [
         {
           type: "object",
@@ -72,18 +82,21 @@ export default defineType({
               name: "label",
               title: "Label",
               type: "string",
+              description: "What this stat counts (e.g. 'Cats Rescued')",
               validation: (rule) => rule.required(),
             }),
             defineField({
               name: "value",
               title: "Value",
               type: "number",
+              description: "The number to display",
               validation: (rule) => rule.required(),
             }),
             defineField({
               name: "suffix",
               title: "Suffix",
               type: "string",
+              description: "Optional text after the number (e.g. '+' to show '200+')",
             }),
           ],
           preview: {

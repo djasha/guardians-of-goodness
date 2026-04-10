@@ -33,28 +33,31 @@ export default defineType({
     {
       name: "core",
       title: "Core Info",
+      description: "The essential info needed to list a cat. Fill this in first.",
       options: { collapsible: false },
     },
     {
       name: "details",
       title: "Details",
-      description: "Add more details about this cat",
+      description: "Extra info that makes the profile richer. You can add these later.",
       options: { collapsible: true, collapsed: true },
     },
     {
       name: "health",
       title: "Health & Travel",
+      description: "Medical status and travel readiness.",
       options: { collapsible: true, collapsed: true },
     },
     {
       name: "bonds",
       title: "Bonds",
-      description: "Is this cat bonded with another?",
+      description: "Link bonded cats together so they show up as a pair on the website.",
       options: { collapsible: true, collapsed: true },
     },
     {
       name: "advanced",
       title: "Advanced",
+      description: "Optional extras like Instagram links and adoption fees.",
       options: { collapsible: true, collapsed: true },
     },
   ],
@@ -72,6 +75,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       fieldset: "core",
+      description: "Auto-generated from the name. This is the URL path for the cat's page.",
       options: { source: "name", maxLength: 96 },
       validation: (rule) => rule.required(),
     }),
@@ -80,6 +84,7 @@ export default defineType({
       title: "Photos",
       type: "array",
       fieldset: "core",
+      description: "Upload at least one photo. The first photo is the main one shown in the catalogue.",
       of: [{ type: "image", options: { hotspot: true } }],
       validation: (rule) => rule.required().min(1),
     }),
@@ -102,6 +107,7 @@ export default defineType({
       title: "Age Category",
       type: "string",
       fieldset: "core",
+      description: "Pick the closest age range — this is used for the filter buttons on the website.",
       options: { list: AGE_CATEGORIES, layout: "radio" },
       validation: (rule) => rule.required(),
     }),
@@ -117,6 +123,7 @@ export default defineType({
       title: "Adoption Status",
       type: "string",
       fieldset: "core",
+      description: "Controls whether this cat shows as Available, Pending, or Adopted on the website.",
       options: {
         list: [
           { title: "Available", value: "available" },
@@ -150,6 +157,7 @@ export default defineType({
       title: "Breed",
       type: "string",
       fieldset: "details",
+      description: "e.g. Persian, Siamese, Domestic Shorthair. Leave blank if unknown.",
     }),
     defineField({
       name: "color",
@@ -163,6 +171,7 @@ export default defineType({
       title: "Personality Tags",
       type: "array",
       fieldset: "details",
+      description: "Select personality traits — these show as tags on the cat's profile and help with filtering.",
       of: [{ type: "string" }],
       options: {
         list: PERSONALITY_TAGS.map((tag) => ({ title: tag, value: tag })),
@@ -191,6 +200,7 @@ export default defineType({
       title: "Neutered",
       type: "boolean",
       fieldset: "health",
+      description: "Toggle on if this cat has been neutered.",
       initialValue: true,
     }),
     defineField({
@@ -198,6 +208,7 @@ export default defineType({
       title: "Vaccinated",
       type: "boolean",
       fieldset: "health",
+      description: "Toggle on if this cat has been vaccinated.",
       initialValue: true,
     }),
     defineField({
@@ -205,6 +216,7 @@ export default defineType({
       title: "Microchipped",
       type: "boolean",
       fieldset: "health",
+      description: "Toggle on if this cat has been microchipped.",
       initialValue: true,
     }),
     defineField({
@@ -212,6 +224,7 @@ export default defineType({
       title: "Ready to Travel Abroad",
       type: "boolean",
       fieldset: "health",
+      description: "Turn on if this cat has an EU pet passport and is ready to travel.",
       initialValue: false,
     }),
     defineField({
@@ -219,6 +232,7 @@ export default defineType({
       title: "Special Needs",
       type: "string",
       fieldset: "health",
+      description: "Describe any special care needed (e.g. medication, diet, mobility). Leave blank if none.",
     }),
 
     // === BONDS (collapsed) ===
@@ -232,6 +246,7 @@ export default defineType({
           name: "type",
           title: "Bond Type",
           type: "string",
+          description: "How is this cat bonded with another?",
           options: {
             list: [
               { title: "Bonded Pair", value: "bonded-pair" },
@@ -244,6 +259,7 @@ export default defineType({
           name: "bondedCat",
           title: "Bonded Cat",
           type: "reference",
+          description: "Select the cat this one is bonded with. They'll be shown together on the website.",
           to: [{ type: "cat" }],
         }),
       ],
@@ -255,18 +271,21 @@ export default defineType({
       title: "Instagram Post URL",
       type: "url",
       fieldset: "advanced",
+      description: "Paste the Instagram post URL for this cat (optional). Shows a link on their profile.",
     }),
     defineField({
       name: "adoptionFee",
       title: "Adoption Fee",
       type: "number",
       fieldset: "advanced",
+      description: "Set an adoption fee in euros (optional). Shows on the cat's profile page.",
     }),
     defineField({
       name: "dateAdded",
       title: "Date Added",
       type: "date",
       fieldset: "advanced",
+      description: "When this cat was added. Auto-fills to today.",
       initialValue: () => new Date().toISOString().split("T")[0],
     }),
   ],

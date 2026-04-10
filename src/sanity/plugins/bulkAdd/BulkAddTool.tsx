@@ -84,6 +84,13 @@ export function BulkAddTool() {
         await client.create({
           _type: "cat",
           name: row.name,
+          slug: {
+            _type: "slug",
+            current: row.name
+              .toLowerCase()
+              .replace(/\s+/g, "-")
+              .replace(/[^a-z0-9-]/g, ""),
+          },
           gender: row.gender,
           ageCategory: row.ageCategory,
           photos: [
@@ -144,7 +151,7 @@ export function BulkAddTool() {
         Bulk Add Cats
       </h1>
       <p style={{ color: "#6b7280", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
-        Upload multiple photos to create cat profiles quickly.
+        Upload photos from your phone or computer. Each photo becomes a new cat profile. You can edit the details later in the cat editor.
       </p>
 
       {/* File Input */}
@@ -167,7 +174,7 @@ export function BulkAddTool() {
           Click to select photos
         </p>
         <p style={{ fontSize: "0.8rem", color: "#6b7280", margin: 0 }}>
-          Select multiple images at once
+          You can select multiple photos at once. Accepted: JPG, PNG, HEIC
         </p>
         <input
           ref={fileInputRef}
@@ -370,6 +377,7 @@ export function BulkAddTool() {
 
       {/* Create Button */}
       {rows.length > 0 && !creating && (
+        <div>
         <button
           onClick={handleCreateAll}
           style={{
@@ -397,6 +405,18 @@ export function BulkAddTool() {
         >
           Create All Cats ({rows.length})
         </button>
+        <p
+          style={{
+            fontSize: "0.8rem",
+            color: "#6b7280",
+            textAlign: "center",
+            marginTop: "0.5rem",
+          }}
+          title="Creates all cats as Available. You can edit more details like breed, personality, and health status later."
+        >
+          Creates all cats as Available. You can edit more details like breed, personality, and health status later.
+        </p>
+        </div>
       )}
     </div>
   );

@@ -86,6 +86,19 @@ export function DashboardTool() {
         </p>
       </div>
 
+      {/* Welcome help text */}
+      <p
+        style={{
+          fontSize: "0.95rem",
+          color: "#6b7280",
+          lineHeight: 1.6,
+          marginBottom: "1.5rem",
+          textAlign: "center",
+        }}
+      >
+        Welcome! This is your control center. Here's what you can do:
+      </p>
+
       {/* Stats Row */}
       {loading ? (
         <p style={{ textAlign: "center", color: "#6b7280" }}>
@@ -145,25 +158,25 @@ export function DashboardTool() {
         <ActionCard
           icon={<Cat style={{ width: 24, height: 24, color: PURPLE }} />}
           title="Manage Cats"
-          description='Go to the Content tab and select "Cats" to add, edit, or update cat profiles and their adoption status.'
+          description="Add new cats, edit their profiles, change photos, and update their details."
           color={PURPLE}
         />
         <ActionCard
           icon={<ClipboardList style={{ width: 24, height: 24, color: TEAL }} />}
           title="Quick Status Board"
-          description='Switch to the "Status Board" tool in the top nav to quickly change cat statuses with one click.'
+          description="Change a cat's status (Available → Pending → Adopted) with just one click. No need to open each cat."
           color={TEAL}
         />
         <ActionCard
           icon={<Upload style={{ width: 24, height: 24, color: "#ff8c42" }} />}
           title="Bulk Add Cats"
-          description='Switch to the "Bulk Add" tool in the top nav to upload multiple cat photos and create profiles at once.'
+          description="Got multiple cat photos? Upload them all at once and create profiles quickly."
           color="#ff8c42"
         />
         <ActionCard
           icon={<Mail style={{ width: 24, height: 24, color: "#ff6b6b" }} />}
           title="Check Messages"
-          description='Go to the Content tab and select "Form Submissions" to review and respond to new inquiries.'
+          description="See adoption inquiries, volunteer applications, and consultation requests from the website."
           color="#ff6b6b"
         />
       </div>

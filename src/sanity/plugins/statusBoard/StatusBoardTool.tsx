@@ -162,6 +162,16 @@ export function StatusBoardTool() {
         <ClipboardList style={{ width: 24, height: 24, display: "inline-block", verticalAlign: "middle", marginRight: 8 }} />{" "}
         Quick Status Board
       </h1>
+      <p
+        style={{
+          fontSize: "0.9rem",
+          color: "#6b7280",
+          marginTop: "-0.75rem",
+          marginBottom: "1.5rem",
+        }}
+      >
+        Click any cat's status to change it. Available → Pending → Adopted → Available.
+      </p>
 
       {/* Filters */}
       <div
@@ -196,6 +206,7 @@ export function StatusBoardTool() {
         <input
           type="text"
           placeholder="Search by name..."
+          title="Type a cat's name to find them quickly"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           style={{
@@ -323,9 +334,9 @@ export function StatusBoardTool() {
           textAlign: "center",
         }}
       >
-        Click a status pill to cycle: <strong>Available</strong> →{" "}
-        <strong>Pending</strong> → <strong>Adopted</strong> →{" "}
-        <strong>Available</strong>
+        <strong>How it works:</strong> Click the colored status button on any cat to cycle
+        through <strong>Available</strong> → <strong>Pending</strong> →{" "}
+        <strong>Adopted</strong>. Changes save automatically.
       </div>
     </div>
   );
