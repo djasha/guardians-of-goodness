@@ -46,16 +46,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-const statusColor = {
-  available: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  pending: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  adopted: "bg-gray-500/20 text-gray-400 border-gray-500/30",
-};
-
-const statusLabel = {
-  available: "Available for Adoption",
-  pending: "Adoption Pending",
-  adopted: "Found a Home",
+const statusConfig = {
+  available: { color: "text-emerald-400", dot: "bg-emerald-400", label: "Available" },
+  pending: { color: "text-amber-400", dot: "bg-amber-400", label: "Pending" },
+  adopted: { color: "text-gray-400", dot: "bg-gray-400", label: "Adopted" },
 };
 
 export default async function CatProfilePage({ params }: Props) {
@@ -98,35 +92,44 @@ export default async function CatProfilePage({ params }: Props) {
 
   return (
     <>
-      {/* Hero — name + status + specs, no separate cards */}
-      <section className="bg-primary pt-24 lg:pt-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      {/* Hero — blends with page, no jarring color block */}
+      <section className="pt-24 lg:pt-28 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
           <Link
             href="/catalogue"
-            className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors text-sm font-semibold mb-4"
+            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-primary transition-colors text-sm font-medium mb-5"
           >
             <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-            Back to CATalogue
+            CATalogue
           </Link>
 
-          <div className="flex flex-wrap items-center gap-3 mb-2">
-            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-white">
-              {cat.name}
-            </h1>
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wide border ${statusColor[cat.adoptionStatus]}`}>
-              {statusLabel[cat.adoptionStatus]}
-            </span>
-          </div>
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black mb-2">
+            {cat.name}
+          </h1>
 
-          {/* Inline specs — no labels, no boxes */}
-          <p className="text-white/70 text-sm sm:text-base font-medium">
-            {specs.join(" · ")}
-            {cat.location && (
-              <span className="inline-flex items-center gap-1 ml-2">
-                <MapPin className="w-3.5 h-3.5" aria-hidden="true" /> {cat.location}
+          {/* Specs + status in one clean line */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-500">
+            <span className={`inline-flex items-center gap-1.5 font-semibold ${statusConfig[cat.adoptionStatus].color}`}>
+              <span className={`w-2 h-2 rounded-full ${statusConfig[cat.adoptionStatus].dot}`} aria-hidden="true" />
+              {statusConfig[cat.adoptionStatus].label}
+            </span>
+            <span className="text-gray-300" aria-hidden="true">·</span>
+            {specs.map((spec, i) => (
+              <span key={i} className="flex items-center gap-1">
+                {i > 0 && <span className="text-gray-300 mr-1" aria-hidden="true">·</span>}
+                {spec}
               </span>
+            ))}
+            {cat.location && (
+              <>
+                <span className="text-gray-300" aria-hidden="true">·</span>
+                <span className="inline-flex items-center gap-1">
+                  <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
+                  {cat.location}
+                </span>
+              </>
             )}
-          </p>
+          </div>
         </div>
       </section>
 
@@ -149,28 +152,17 @@ export default async function CatProfilePage({ params }: Props) {
           <ScrollReveal>
             <div className="space-y-6">
 
-              {/* Health strip — compact inline badges */}
-              <div className="flex flex-wrap gap-2">
-                {healthItems.map(({ label, active }) => (
-                  <span
-                    key={label}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border ${
-                      active
-                        ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
-                        : "bg-warm-gray text-gray-400 border-gray-200 line-through opacity-50"
-                    }`}
-                  >
-                    {active ? (
-                      <Check className="w-3.5 h-3.5" strokeWidth={3} aria-hidden="true" />
-                    ) : (
-                      <X className="w-3.5 h-3.5" strokeWidth={3} aria-hidden="true" />
-                    )}
+              {/* Health — simple text list, not flashy badges */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500">
+                {healthItems.filter(h => h.active).map(({ label }) => (
+                  <span key={label} className="inline-flex items-center gap-1">
+                    <Check className="w-3 h-3 text-secondary" strokeWidth={3} aria-hidden="true" />
                     {label}
                   </span>
                 ))}
                 {cat.readyToTravelAbroad && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-secondary/10 text-secondary border border-secondary/20">
-                    <Plane className="w-3.5 h-3.5" strokeWidth={2.5} aria-hidden="true" />
+                  <span className="inline-flex items-center gap-1">
+                    <Plane className="w-3 h-3 text-secondary" strokeWidth={2.5} aria-hidden="true" />
                     EU Ready
                   </span>
                 )}
@@ -182,7 +174,7 @@ export default async function CatProfilePage({ params }: Props) {
                   {cat.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/15"
+                      className="px-2.5 py-1 rounded-full text-xs font-medium bg-warm-gray text-gray-600"
                     >
                       {tag}
                     </span>
