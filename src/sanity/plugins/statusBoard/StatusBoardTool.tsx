@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useClient } from "sanity";
+import { ClipboardList, Cat } from "lucide-react";
 
 const PURPLE = "#9b4dca";
 const TEAL = "#4ecdc4";
@@ -158,7 +159,8 @@ export function StatusBoardTool() {
           color: DARK,
         }}
       >
-        📋 Quick Status Board
+        <ClipboardList style={{ width: 24, height: 24, display: "inline-block", verticalAlign: "middle", marginRight: 8 }} />{" "}
+        Quick Status Board
       </h1>
 
       {/* Filters */}
@@ -262,7 +264,7 @@ export function StatusBoardTool() {
                       }}
                     />
                   ) : (
-                    <span style={{ fontSize: "2.5rem" }}>🐱</span>
+                    <Cat style={{ width: 40, height: 40, color: "#9b4dca" }} />
                   )}
                 </div>
 

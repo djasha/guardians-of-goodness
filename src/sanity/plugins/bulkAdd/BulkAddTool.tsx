@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useClient } from "sanity";
+import { Upload, Camera } from "lucide-react";
 
 const PURPLE = "#9b4dca";
 const TEAL = "#4ecdc4";
@@ -139,7 +140,8 @@ export function BulkAddTool() {
           color: DARK,
         }}
       >
-        📦 Bulk Add Cats
+        <Upload style={{ width: 24, height: 24, display: "inline-block", verticalAlign: "middle", marginRight: 8 }} />{" "}
+        Bulk Add Cats
       </h1>
       <p style={{ color: "#6b7280", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
         Upload multiple photos to create cat profiles quickly.
@@ -158,7 +160,9 @@ export function BulkAddTool() {
         }}
         onClick={() => fileInputRef.current?.click()}
       >
-        <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>📸</div>
+        <div style={{ marginBottom: "0.5rem", display: "flex", justifyContent: "center" }}>
+          <Camera style={{ width: 32, height: 32, color: PURPLE }} />
+        </div>
         <p style={{ fontWeight: 600, color: DARK, margin: "0 0 0.25rem" }}>
           Click to select photos
         </p>

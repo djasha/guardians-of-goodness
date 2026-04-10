@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useClient } from "sanity";
+import { Cat, ClipboardList, Upload, Mail } from "lucide-react";
 
 const PURPLE = "#9b4dca";
 const TEAL = "#4ecdc4";
@@ -67,7 +68,9 @@ export function DashboardTool() {
           border: `3px solid ${PURPLE}`,
         }}
       >
-        <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>🐱</div>
+        <div style={{ marginBottom: "0.5rem", display: "flex", justifyContent: "center" }}>
+          <Cat style={{ width: 40, height: 40, color: TEAL }} />
+        </div>
         <h1
           style={{
             fontSize: "1.75rem",
@@ -102,21 +105,21 @@ export function DashboardTool() {
             count={stats.available}
             bg="#d1fae5"
             accent="#065f46"
-            emoji="🟢"
+            icon={<div style={{ width: 12, height: 12, borderRadius: "50%", backgroundColor: "#22c55e" }} />}
           />
           <StatCard
             label="Pending Cats"
             count={stats.pending}
             bg="#fef3c7"
             accent="#92400e"
-            emoji="🟡"
+            icon={<div style={{ width: 12, height: 12, borderRadius: "50%", backgroundColor: "#f59e0b" }} />}
           />
           <StatCard
             label="New Messages"
             count={stats.newMessages}
             bg="#fee2e2"
             accent="#991b1b"
-            emoji="🔴"
+            icon={<div style={{ width: 12, height: 12, borderRadius: "50%", backgroundColor: "#ef4444" }} />}
           />
         </div>
       )}
@@ -140,25 +143,25 @@ export function DashboardTool() {
         }}
       >
         <ActionCard
-          emoji="🐾"
+          icon={<Cat style={{ width: 24, height: 24, color: PURPLE }} />}
           title="Manage Cats"
           description='Go to the Content tab and select "Cats" to add, edit, or update cat profiles and their adoption status.'
           color={PURPLE}
         />
         <ActionCard
-          emoji="📋"
+          icon={<ClipboardList style={{ width: 24, height: 24, color: TEAL }} />}
           title="Quick Status Board"
           description='Switch to the "Status Board" tool in the top nav to quickly change cat statuses with one click.'
           color={TEAL}
         />
         <ActionCard
-          emoji="📦"
+          icon={<Upload style={{ width: 24, height: 24, color: "#ff8c42" }} />}
           title="Bulk Add Cats"
           description='Switch to the "Bulk Add" tool in the top nav to upload multiple cat photos and create profiles at once.'
           color="#ff8c42"
         />
         <ActionCard
-          emoji="📬"
+          icon={<Mail style={{ width: 24, height: 24, color: "#ff6b6b" }} />}
           title="Check Messages"
           description='Go to the Content tab and select "Form Submissions" to review and respond to new inquiries.'
           color="#ff6b6b"
@@ -173,13 +176,13 @@ function StatCard({
   count,
   bg,
   accent,
-  emoji,
+  icon,
 }: {
   label: string;
   count: number;
   bg: string;
   accent: string;
-  emoji: string;
+  icon: ReactNode;
 }) {
   return (
     <div
@@ -191,7 +194,7 @@ function StatCard({
         border: `2px solid ${accent}22`,
       }}
     >
-      <div style={{ fontSize: "1.5rem", marginBottom: "0.25rem" }}>{emoji}</div>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: "0.25rem" }}>{icon}</div>
       <div
         style={{
           fontSize: "2rem",
@@ -219,12 +222,12 @@ function StatCard({
 }
 
 function ActionCard({
-  emoji,
+  icon,
   title,
   description,
   color,
 }: {
-  emoji: string;
+  icon: ReactNode;
   title: string;
   description: string;
   color: string;
@@ -239,7 +242,7 @@ function ActionCard({
         boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
       }}
     >
-      <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>{emoji}</div>
+      <div style={{ marginBottom: "0.5rem" }}>{icon}</div>
       <h3
         style={{
           fontSize: "1rem",
