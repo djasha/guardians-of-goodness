@@ -13,18 +13,15 @@ export const metadata: Metadata = {
 };
 
 export default async function CataloguePage() {
-  let cats: Cat[] = [];
-  let stats: CatalogueStats | undefined;
-  let error = false;
+  const cats = await client
+    .fetch<Cat[]>(ALL_CATS_QUERY, {}, { signal: AbortSignal.timeout(10000) })
+    .catch(() => null);
 
-  try {
-    [cats, stats] = await Promise.all([
-      client.fetch<Cat[]>(ALL_CATS_QUERY),
-      client.fetch<CatalogueStats>(CATALOGUE_STATS_QUERY),
-    ]);
-  } catch {
-    error = true;
-  }
+  const stats = await client
+    .fetch<CatalogueStats>(CATALOGUE_STATS_QUERY, {}, { signal: AbortSignal.timeout(5000) })
+    .catch(() => undefined);
+
+  const error = cats === null;
 
   return (
     <>

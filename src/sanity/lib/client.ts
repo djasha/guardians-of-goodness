@@ -6,5 +6,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // Must be false — project uses tag-based revalidation via /api/revalidate
+  useCdn: process.env.NODE_ENV === 'development',
+  // Production: false (tag-based revalidation via /api/revalidate)
+  // Development: true (CDN for faster local loads)
 })
