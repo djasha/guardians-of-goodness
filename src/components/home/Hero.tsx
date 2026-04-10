@@ -6,11 +6,6 @@ import Link from "next/link";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-const primaryActions = [
-  { label: "Adopt a Cat", href: "/catalogue", variant: "secondary" as const },
-  { label: "Get Involved", href: "/consultation", variant: "primary" as const },
-];
-
 const quickLinks = [
   { label: "TNR Project", href: "/projects/tnr" },
   { label: "Home Shelter", href: "/projects/hbs" },

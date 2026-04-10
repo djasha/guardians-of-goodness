@@ -77,7 +77,18 @@ export interface Article {
   title: string;
   slug: string;
   excerpt?: string;
-  coverImage?: string;
+  coverImage?: {
+    asset: {
+      _id: string;
+      url: string;
+      metadata?: {
+        dimensions?: { width: number; height: number };
+        lqip?: string;
+      };
+    };
+    hotspot?: { x: number; y: number };
+    crop?: { top: number; bottom: number; left: number; right: number };
+  };
   body?: PortableTextBlock[];
   publishedAt?: string;
   tags?: string[];

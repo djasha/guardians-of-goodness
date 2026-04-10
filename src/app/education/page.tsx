@@ -63,10 +63,10 @@ export default async function EducationPage() {
                   href={`/education/${article.slug}`}
                   className="group block neo-border neo-shadow neo-hover bg-white overflow-hidden"
                 >
-                  {article.coverImage ? (
+                  {article.coverImage?.asset?.url ? (
                     <div className="relative aspect-[16/10] overflow-hidden">
                       <Image
-                        src={article.coverImage}
+                        src={article.coverImage.asset.url}
                         alt={article.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"

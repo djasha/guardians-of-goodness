@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/client";
 import { ARTICLE_BY_SLUG_QUERY, ARTICLES_QUERY } from "@/sanity/queries";
+import { PortableText } from "@portabletext/react";
 import type { Article } from "@/sanity/types";
 import { formatDate } from "@/lib/utils";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description:
         article.excerpt || `Read "${article.title}" on Guardians of Goodness.`,
       openGraph: {
-        images: article.coverImage ? [{ url: article.coverImage }] : [],
+        images: article.coverImage?.asset?.url ? [{ url: article.coverImage.asset.url }] : [],
       },
     };
   } catch {
@@ -116,10 +117,10 @@ export default async function ArticlePage({ params }: Props) {
             </header>
 
             {/* Cover Image */}
-            {article.coverImage && (
+            {article.coverImage?.asset?.url && (
               <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-lg mb-10">
                 <Image
-                  src={article.coverImage}
+                  src={article.coverImage.asset.url}
                   alt={article.title}
                   fill
                   className="object-cover"
@@ -137,12 +138,7 @@ export default async function ArticlePage({ params }: Props) {
               )}
 
               {article.body ? (
-                <div className="leading-relaxed text-gray-600">
-                  {/* Portable Text renderer can be added here */}
-                  <p className="text-gray-500 italic">
-                    Full article content will be rendered with Portable Text.
-                  </p>
-                </div>
+                <PortableText value={article.body} />
               ) : (
                 <p className="text-gray-500 italic">
                   Article content is being prepared.
