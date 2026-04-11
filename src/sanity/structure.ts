@@ -130,6 +130,17 @@ export const structure: StructureResolver = (S) =>
                       { field: "submittedAt", direction: "desc" },
                     ])
                 ),
+              S.listItem()
+                .title("Spam")
+                .icon(() => "🚫")
+                .child(
+                  S.documentTypeList("formSubmission")
+                    .title("Spam")
+                    .filter('_type == "formSubmission" && status == "spam"')
+                    .defaultOrdering([
+                      { field: "submittedAt", direction: "desc" },
+                    ])
+                ),
             ])
         ),
 

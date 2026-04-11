@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useClient } from "sanity";
 import { ClipboardList, Cat } from "lucide-react";
 
@@ -68,9 +68,14 @@ export function StatusBoardTool() {
     fetchCats();
   }, [client]);
 
+  // Use a ref for the cat name lookup to avoid stale closure in useCallback
+  const catsRef = useRef(cats);
+  catsRef.current = cats;
+
   const handleStatusChange = useCallback(
     async (catId: string, currentStatus: AdoptionStatus) => {
       const newStatus = nextStatus(currentStatus);
+      const catName = catsRef.current.find(c => c._id === catId)?.name || "cat";
 
       // Optimistic update
       setCats((prev) =>
@@ -87,7 +92,7 @@ export function StatusBoardTool() {
           .commit();
       } catch (err) {
         console.error("Failed to update status:", err);
-        setError(`Failed to update ${cats.find(c => c._id === catId)?.name || "cat"}'s status. Please try again.`);
+        setError(`Failed to update ${catName}'s status. Please try again.`);
         // Revert on error
         setCats((prev) =>
           prev.map((c) =>

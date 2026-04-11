@@ -65,7 +65,23 @@ export function BulkAddTool() {
     });
   }
 
+  function generateUniqueSlug(name: string, index: number, allNames: string[]): string {
+    const base = name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") || `cat-${Date.now()}`;
+    // Check if this name appears earlier in the batch — if so, append index
+    const duplicatesBefore = allNames.slice(0, index).filter(n =>
+      n.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") === base
+    ).length;
+    return duplicatesBefore > 0 ? `${base}-${duplicatesBefore + 1}` : base;
+  }
+
   async function handleCreateAll() {
+    // Validate: all rows must have a name
+    const emptyNames = rows.filter(r => !r.name.trim());
+    if (emptyNames.length > 0) {
+      setResult({ success: 0, failed: emptyNames.length });
+      return;
+    }
+
     if (rows.length === 0) return;
     setCreating(true);
     setProgress({ current: 0, total: rows.length });
@@ -73,6 +89,7 @@ export function BulkAddTool() {
 
     let success = 0;
     let failed = 0;
+    const allNames = rows.map(r => r.name);
 
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
@@ -80,17 +97,12 @@ export function BulkAddTool() {
         // Upload image
         const imageAsset = await client.assets.upload("image", row.file);
 
-        // Create cat document
+        // Create cat document with unique slug
+        const slug = generateUniqueSlug(row.name, i, allNames);
         await client.create({
           _type: "cat",
           name: row.name,
-          slug: {
-            _type: "slug",
-            current: row.name
-              .toLowerCase()
-              .replace(/\s+/g, "-")
-              .replace(/[^a-z0-9-]/g, ""),
-          },
+          slug: { _type: "slug", current: slug },
           gender: row.gender,
           ageCategory: row.ageCategory,
           photos: [
