@@ -12,8 +12,11 @@ function getResend(): Resend {
   return _resend;
 }
 
-const RECIPIENT = "office@guardiansofgoodness.org";
-const FROM = "Guardians of Goodness <noreply@guardiansofgoodness.org>";
+const RECIPIENT = process.env.NOTIFICATION_EMAIL || "office@guardiansofgoodness.org";
+// TODO: Once guardiansofgoodness.org is verified in Resend (resend.com/domains),
+// change FROM to: "Guardians of Goodness <noreply@guardiansofgoodness.org>"
+// Until then, onboarding@resend.dev can only send to the Resend account owner's email.
+const FROM = process.env.RESEND_FROM_EMAIL || "Guardians of Goodness <onboarding@resend.dev>";
 
 type FormType = "join-us" | "consultation" | "adoption-inquiry" | "contact";
 

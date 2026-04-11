@@ -53,7 +53,9 @@ Custom plugins at `/studio`:
 | `NEXT_PUBLIC_SANITY_DATASET` | Vercel + .env.local | `production` |
 | `SANITY_API_TOKEN` | Vercel + .env.local | Write token (server-only) |
 | `REVALIDATION_SECRET` | Vercel + .env.local | Webhook auth |
-| `RESEND_API_KEY` | Vercel (pending) | Email notifications |
+| `RESEND_API_KEY` | Vercel + .env.local | Email notifications via Resend |
+| `RESEND_FROM_EMAIL` | Vercel (optional) | Custom sender once domain is verified |
+| `NOTIFICATION_EMAIL` | Vercel (optional) | Override recipient (default: office@guardiansofgoodness.org) |
 
 ## Commands
 
