@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { Zap, Eye, ArrowRight } from "lucide-react";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { PawPrint } from "@/components/ui/PawPrint";
+import { client } from "@/sanity/client";
+import { ABOUT_PAGE_QUERY } from "@/sanity/queries";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -8,7 +12,7 @@ export const metadata: Metadata = {
     "Learn about Guardians of Goodness — a non-profit organization dedicated to creating a friendly environment for cats and dogs in Jordan.",
 };
 
-const timelineEvents = [
+const defaultTimelineEvents = [
   {
     year: "2020",
     title: "Where It All Began",
@@ -29,23 +33,36 @@ const timelineEvents = [
   },
 ];
 
-const PawPrint = ({ className = "" }: { className?: string }) => (
-  <svg className={`w-5 h-5 text-primary/20 ${className}`} viewBox="0 0 40 44" fill="currentColor">
-    <ellipse cx="20" cy="30" rx="10" ry="9" />
-    <circle cx="8" cy="16" r="4.5" />
-    <circle cx="17" cy="10" r="4" />
-    <circle cx="27" cy="10" r="4" />
-    <circle cx="35" cy="16" r="4.5" />
-  </svg>
-);
+export default async function AboutPage() {
+  const pageData = await client.fetch(ABOUT_PAGE_QUERY, {}, { next: { tags: ["aboutPage"] } }).catch(() => null);
 
-export default function AboutPage() {
+  const heroTitle = pageData?.heroTitle || "Who We Are";
+  const heroSubtext = pageData?.heroSubtext || "Guardians of Goodness is a non-profit organization that focuses on creating a friendly environment for cats and dogs in Jordan and empowering people active in the mentioned above sphere with knowledge, expertise and technical support.";
+  const heroImage = pageData?.heroImage?.asset?.url || "/images/real-cats/free-1.png";
+  const missionTitle = pageData?.missionTitle || "Our Mission";
+  const missionText = pageData?.missionText || "To decrease the number of stray cats and dogs in Jordan and improve the quality of their lives through creating a friendly environment for them.";
+  const visionTitle = pageData?.visionTitle || "Our Vision";
+  const visionText = pageData?.visionText || "Every life on this planet is valuable and deserves to be treated decently and live in harmony with all creatures on the Globe.";
+  const timelineEvents: { year: string; title: string; text: string; image: string }[] =
+    pageData?.timelineEvents?.length > 0
+      ? pageData.timelineEvents.map(
+          (event: { year: string; title: string; text: string; image?: { asset?: { url?: string } } }, index: number) => ({
+            year: event.year,
+            title: event.title,
+            text: event.text,
+            image: event.image?.asset?.url || `/images/content/about-timeline-${index + 1}.png`,
+          })
+        )
+      : defaultTimelineEvents;
+  const quoteText = pageData?.quoteText || "The greatness of a nation can be judged by the way its animals are treated.";
+  const quoteAuthor = pageData?.quoteAuthor || "Mahatma Gandhi";
+
   return (
     <>
       {/* Hero Section */}
       <section className="relative bg-dark overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/images/real-cats/free-1.png" alt="" fill className="object-cover" priority />
+          <Image src={heroImage} alt="" fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/60 to-dark/25" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24">
@@ -56,13 +73,10 @@ export default function AboutPage() {
                   <span className="text-xs font-bold uppercase tracking-widest">About Us</span>
                 </div>
                 <h1 className="font-display font-black text-white text-4xl sm:text-5xl lg:text-6xl mb-6">
-                  Who We Are
+                  {heroTitle}
                 </h1>
                 <p className="text-lg sm:text-xl leading-relaxed text-white/80">
-                  Guardians of Goodness is a non-profit organization that focuses on
-                  creating a friendly environment for cats and dogs in Jordan and
-                  empowering people active in the mentioned above sphere with
-                  knowledge, expertise and technical support.
+                  {heroSubtext}
                 </p>
               </div>
             </ScrollReveal>
@@ -77,27 +91,13 @@ export default function AboutPage() {
             <div className="relative bg-white neo-border neo-shadow p-8 sm:p-10 h-full overflow-hidden">
               <div className="absolute top-0 left-0 w-16 h-16 bg-primary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
               <div className="inline-flex items-center justify-center w-14 h-14 neo-border-sm bg-primary/10 mb-6">
-                <svg
-                  className="w-7 h-7 text-primary"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
+                <Zap className="w-8 h-8 text-white" aria-hidden="true" />
               </div>
               <h2 className="font-display text-2xl sm:text-3xl font-black text-dark mb-4">
-                Our Mission
+                {missionTitle}
               </h2>
               <p className="leading-relaxed text-dark/50">
-                To decrease the number of stray cats and dogs in Jordan and
-                improve the quality of their lives through creating a friendly
-                environment for them.
+                {missionText}
               </p>
             </div>
           </ScrollReveal>
@@ -106,31 +106,13 @@ export default function AboutPage() {
             <div className="relative bg-white neo-border neo-shadow p-8 sm:p-10 h-full overflow-hidden">
               <div className="absolute top-0 left-0 w-16 h-16 bg-secondary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
               <div className="inline-flex items-center justify-center w-14 h-14 neo-border-sm bg-secondary/10 mb-6">
-                <svg
-                  className="w-7 h-7 text-secondary"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                  />
-                </svg>
+                <Eye className="w-8 h-8 text-white" aria-hidden="true" />
               </div>
               <h2 className="font-display text-2xl sm:text-3xl font-black text-dark mb-4">
-                Our Vision
+                {visionTitle}
               </h2>
               <p className="leading-relaxed text-dark/50">
-                Every life on this planet is valuable and deserves to be treated
-                decently and live in harmony with all creatures on the Globe.
+                {visionText}
               </p>
             </div>
           </ScrollReveal>
@@ -185,13 +167,7 @@ export default function AboutPage() {
                     {/* Center paw print */}
                     <div className="hidden md:flex items-center justify-center shrink-0 z-10">
                       <div className="bg-warm-gray p-1">
-                        <svg className="w-6 h-6 text-primary" viewBox="0 0 40 44" fill="currentColor">
-                          <ellipse cx="20" cy="30" rx="10" ry="9" />
-                          <circle cx="8" cy="16" r="4.5" />
-                          <circle cx="17" cy="10" r="4" />
-                          <circle cx="27" cy="10" r="4" />
-                          <circle cx="35" cy="16" r="4.5" />
-                        </svg>
+                        <PawPrint className="w-6 h-6 text-primary" />
                       </div>
                     </div>
 
@@ -230,10 +206,10 @@ export default function AboutPage() {
               <PawPrint className="w-5 h-5 text-accent" />
             </div>
             <blockquote className="font-display text-2xl sm:text-3xl font-black text-dark mb-4 leading-snug">
-              &ldquo;The greatness of a nation can be judged by the way its animals are treated.&rdquo;
+              &ldquo;{quoteText}&rdquo;
             </blockquote>
             <p className="text-dark/50 text-lg">
-              &mdash; Mahatma Gandhi
+              &mdash; {quoteAuthor}
             </p>
           </div>
         </ScrollReveal>

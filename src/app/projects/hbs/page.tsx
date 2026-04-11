@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { PawPrint } from "@/components/ui/PawPrint";
+import { client } from "@/sanity/client";
+import { PROJECT_PAGE_QUERY } from "@/sanity/queries";
 
 export const metadata: Metadata = {
   title: "HBS — Home Based Shelter",
@@ -9,39 +13,34 @@ export const metadata: Metadata = {
     "Learn about our Home Based Shelter initiative — helping people create safe spaces for community cats in their neighborhoods.",
 };
 
-export default function HBSPage() {
+export default async function HBSPage() {
+  const pageData = await client.fetch(PROJECT_PAGE_QUERY, { id: "projectPage-hbs" }, { next: { tags: ["projectPage"] } }).catch(() => null);
   return (
     <>
       {/* Hero Section */}
       <section className="relative bg-accent overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/images/content/cat-photo.jpg" alt="" fill className="object-cover" priority />
+          <Image src={pageData?.heroImage?.asset?.url || "/images/content/cat-photo.jpg"} alt="" fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-r from-accent/85 via-accent/60 to-accent/25" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
           <div className="max-w-3xl">
             <ScrollReveal>
               <div className="neo-border-sm neo-shadow-sm bg-dark text-white inline-block px-4 py-1.5 mb-6">
-                <span className="text-xs font-bold uppercase tracking-widest">Project</span>
+                <span className="text-xs font-bold uppercase tracking-widest">{pageData?.heroBadge || "Project"}</span>
               </div>
             </ScrollReveal>
             <ScrollReveal>
               <div className="flex items-center gap-4 mb-6">
                 <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-white">
-                  Home Based Shelter (HBS)
+                  {pageData?.heroTitle || "Home Based Shelter (HBS)"}
                 </h1>
-                <svg className="w-10 h-11 text-white/30 hidden sm:block flex-shrink-0" viewBox="0 0 40 44" fill="currentColor">
-                  <ellipse cx="20" cy="30" rx="10" ry="9" />
-                  <circle cx="8" cy="16" r="4.5" />
-                  <circle cx="17" cy="10" r="4" />
-                  <circle cx="27" cy="10" r="4" />
-                  <circle cx="35" cy="16" r="4.5" />
-                </svg>
+                <PawPrint className="w-10 h-11 text-white/30 hidden sm:block flex-shrink-0" />
               </div>
             </ScrollReveal>
             <ScrollReveal>
               <p className="text-lg sm:text-xl text-white/80 max-w-2xl">
-                Creating safe spaces in your neighborhood for community cats to thrive and find shelter.
+                {pageData?.heroSubtext || "Creating safe spaces in your neighborhood for community cats to thrive and find shelter."}
               </p>
             </ScrollReveal>
           </div>
@@ -56,7 +55,7 @@ export default function HBSPage() {
             <div className="neo-border neo-shadow bg-white p-3">
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
-                  src="/images/content/hbs-image.png"
+                  src={pageData?.contentImage?.asset?.url || "/images/content/hbs-image.png"}
                   alt="Home Based Shelter — safe space for cats"
                   fill
                   className="object-cover"
@@ -69,10 +68,10 @@ export default function HBSPage() {
           <div>
             <ScrollReveal>
               <div className="neo-border-sm neo-shadow-sm bg-accent text-white inline-block px-4 py-1.5 mb-6">
-                <span className="text-xs font-bold uppercase tracking-widest">About HBS</span>
+                <span className="text-xs font-bold uppercase tracking-widest">{pageData?.contentBadge || "About HBS"}</span>
               </div>
               <h2 className="font-display text-3xl sm:text-4xl font-black text-dark mb-6">
-                What is HBS?
+                {pageData?.contentTitle || "What is HBS?"}
               </h2>
               <p className="leading-relaxed text-dark/50 mb-6">
                 We promote the understanding that stray animals are an integral
@@ -86,14 +85,25 @@ export default function HBSPage() {
             {/* Key Fact Cards */}
             <ScrollReveal>
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="neo-border-sm bg-cream p-4">
-                  <p className="font-display font-black text-accent text-lg mb-1">Safe Space</p>
-                  <p className="text-dark/50 text-sm">Shelter from extreme heat, cold, rain, and danger</p>
-                </div>
-                <div className="neo-border-sm bg-cream p-4">
-                  <p className="font-display font-black text-accent text-lg mb-1">Community</p>
-                  <p className="text-dark/50 text-sm">Turn gardens and yards into havens for cats</p>
-                </div>
+                {pageData?.facts ? (
+                  pageData.facts.map((fact: { _key: string; value: string; description: string }) => (
+                    <div key={fact._key} className="neo-border-sm bg-cream p-4">
+                      <p className="font-display font-black text-accent text-lg mb-1">{fact.value}</p>
+                      <p className="text-dark/50 text-sm">{fact.description}</p>
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <div className="neo-border-sm bg-cream p-4">
+                      <p className="font-display font-black text-accent text-lg mb-1">Safe Space</p>
+                      <p className="text-dark/50 text-sm">Shelter from extreme heat, cold, rain, and danger</p>
+                    </div>
+                    <div className="neo-border-sm bg-cream p-4">
+                      <p className="font-display font-black text-accent text-lg mb-1">Community</p>
+                      <p className="text-dark/50 text-sm">Turn gardens and yards into havens for cats</p>
+                    </div>
+                  </>
+                )}
               </div>
             </ScrollReveal>
 
@@ -116,14 +126,14 @@ export default function HBSPage() {
             {/* Paw Decoration */}
             <ScrollReveal>
               <div className="flex gap-2 mb-8">
-                <svg className="w-5 h-5 text-accent/30" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" /></svg>
-                <svg className="w-5 h-5 text-accent/30" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" /></svg>
-                <svg className="w-5 h-5 text-accent/30" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" /></svg>
+                <PawPrint className="w-5 h-5 text-accent/30" />
+                <PawPrint className="w-5 h-5 text-accent/30" />
+                <PawPrint className="w-5 h-5 text-accent/30" />
               </div>
 
-              <MagneticButton href="/consultation" variant="primary" size="md">
-                Apply for Membership
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+              <MagneticButton href={pageData?.ctaLink || "/consultation"} variant="primary" size="md">
+                {pageData?.ctaText || "Apply for Membership"}
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </MagneticButton>
             </ScrollReveal>
           </div>

@@ -7,6 +7,8 @@ import { JoinCTA } from "@/components/home/JoinCTA";
 import { InstagramFeed } from "@/components/home/InstagramFeed";
 import { getInstagramPosts } from "@/lib/instagram";
 import { organizationJsonLd } from "@/lib/jsonLd";
+import { client } from "@/sanity/client";
+import { HOME_PAGE_QUERY } from "@/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Guardians of Goodness — For Animal Welfare",
@@ -16,7 +18,10 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const instagramPosts = await getInstagramPosts();
+  const [instagramPosts, pageData] = await Promise.all([
+    getInstagramPosts(),
+    client.fetch(HOME_PAGE_QUERY, {}, { next: { tags: ["homePage"] } }).catch(() => null),
+  ]);
 
   return (
     <>
@@ -26,7 +31,7 @@ export default async function HomePage() {
           __html: JSON.stringify(organizationJsonLd()),
         }}
       />
-      <Hero />
+      <Hero data={pageData} />
       <PhilosophyPillars />
       <PartnersCarousel />
       <ImpactStats />

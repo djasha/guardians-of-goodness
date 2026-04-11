@@ -222,3 +222,118 @@ export const ARTICLE_BY_SLUG_QUERY = groq`
     seoDescription
   }
 `;
+
+// ── Page singleton queries ────────────────────────────
+
+export const HOME_PAGE_QUERY = groq`
+  *[_type == "homePage" && _id == "homePage"][0] {
+    heroHeading,
+    heroHighlight,
+    heroSubtext,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    ctaPrimary,
+    ctaPrimaryLink,
+    ctaSecondary,
+    ctaSecondaryLink,
+    heroStats[] { _key, value, label },
+    quoteText,
+    quoteAuthor
+  }
+`;
+
+export const ABOUT_PAGE_QUERY = groq`
+  *[_type == "aboutPage" && _id == "aboutPage"][0] {
+    heroTitle,
+    heroSubtext,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    missionTitle,
+    missionText,
+    visionTitle,
+    visionText,
+    timelineEvents[] {
+      _key,
+      year,
+      title,
+      text,
+      image {
+        asset-> { _id, url, metadata { dimensions, lqip } },
+        alt
+      }
+    },
+    quoteText,
+    quoteAuthor
+  }
+`;
+
+export const PROJECT_PAGE_QUERY = groq`
+  *[_type == "projectPage" && _id == $id][0] {
+    heroTitle,
+    heroSubtext,
+    heroBadge,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    contentBadge,
+    contentTitle,
+    contentBody,
+    contentImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    facts[] { _key, value, description },
+    ctaText,
+    ctaLink
+  }
+`;
+
+export const SUPPORT_PAGE_QUERY = groq`
+  *[_type == "supportPage" && _id == "supportPage"][0] {
+    heroTitle,
+    heroSubtext,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    contentTitle,
+    contentSubtext,
+    helpMethods[] { _key, title, description, icon },
+    ctaTitle,
+    ctaText,
+    ctaButtonText,
+    ctaButtonLink
+  }
+`;
+
+export const CONSULTATION_PAGE_QUERY = groq`
+  *[_type == "consultationPage" && _id == "consultationPage"][0] {
+    heroTitle,
+    heroSubtext,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    formTitle,
+    formSubtext,
+    trustPoints[] { _key, text }
+  }
+`;
+
+export const CONTACT_PAGE_QUERY = groq`
+  *[_type == "contactPage" && _id == "contactPage"][0] {
+    heroTitle,
+    heroSubtext,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    emailOverride,
+    addressOverride
+  }
+`;
