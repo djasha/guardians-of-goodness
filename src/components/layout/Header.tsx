@@ -80,7 +80,7 @@ export function Header() {
                 className={cn(
                   "w-auto transition-all duration-300",
                   scrolled ? "h-9 lg:h-11" : onDark ? "h-16 lg:h-22" : "h-10 lg:h-12",
-                  (isMystical || (onDark && !scrolled)) && "brightness-0 invert"
+                  (isMystical ? !scrolled : (onDark && !scrolled)) && "brightness-0 invert"
                 )}
                 priority
               />
@@ -181,17 +181,17 @@ export function Header() {
               >
                 <span className={cn(
                   "block w-6 h-[2.5px] rounded-full transition-all duration-300 origin-center",
-                  onDark ? "bg-white" : "bg-dark",
+                  onDark ? "bg-[#ffffff]" : "bg-dark",
                   mobileOpen && "rotate-45 translate-y-[5.5px]"
                 )} />
                 <span className={cn(
                   "block w-4 h-[2.5px] rounded-full self-end transition-all duration-300",
-                  onDark ? "bg-white" : "bg-dark",
+                  onDark ? "bg-[#ffffff]" : "bg-dark",
                   mobileOpen && "opacity-0 scale-0"
                 )} />
                 <span className={cn(
                   "block w-6 h-[2.5px] rounded-full transition-all duration-300 origin-center",
-                  onDark ? "bg-white" : "bg-dark",
+                  onDark ? "bg-[#ffffff]" : "bg-dark",
                   mobileOpen && "-rotate-45 -translate-y-[5.5px]"
                 )} />
               </button>

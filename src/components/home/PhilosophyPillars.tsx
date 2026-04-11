@@ -3,10 +3,13 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useTheme } from "@/components/theme/ThemeProvider";
+import { cn } from "@/lib/utils";
+import { Heart, Stethoscope, Home, ShieldCheck } from "lucide-react";
 
 const pillars = [
   {
-    num: "01",
+    icon: Heart,
     title: "Right to Live Naturally",
     text: "All animals have the right to live in respect to their natural needs and behavioral patterns, in an environment that allows them to meet the basic calls of their kind.",
     color: "bg-secondary",
@@ -14,7 +17,7 @@ const pillars = [
     image: "/images/generated/cat-group.jpg",
   },
   {
-    num: "02",
+    icon: Stethoscope,
     title: "Disease Prevention & Treatment",
     text: "All animals have the right to receive veterinary care in case of disease or accident, as well as preventive medicine like neutering and vaccination.",
     color: "bg-primary",
@@ -22,7 +25,7 @@ const pillars = [
     image: "/images/generated/rescue-cat.jpg",
   },
   {
-    num: "03",
+    icon: Home,
     title: "Food, Water & Shelter",
     text: "Each animal, whether feral or domestic, should be granted constant access to food, water of proper quality, and a safe place to protect itself from harsh conditions.",
     color: "bg-accent",
@@ -30,7 +33,7 @@ const pillars = [
     image: "/images/generated/gentle-cat.jpg",
   },
   {
-    num: "04",
+    icon: ShieldCheck,
     title: "Freedom from Exploitation",
     text: "We are against any kind of animal exploitation that aims to please human desires at the cost of animal welfare. No animal abuse should be tolerated by society.",
     color: "bg-dark",
@@ -41,6 +44,8 @@ const pillars = [
 
 export function PhilosophyPillars() {
   const reduced = useReducedMotion();
+  const { theme } = useTheme();
+  const isMystical = theme === "mystical";
 
   return (
     <section className="relative bg-warm-gray py-24 sm:py-32 section-fade-in section-from-dark">
@@ -60,16 +65,22 @@ export function PhilosophyPillars() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {pillars.map((pillar, i) => {
             const W = reduced ? "div" : motion.div;
+            const Icon = pillar.icon;
             return (
               <W
-                key={pillar.num}
+                key={pillar.title}
                 {...(!reduced && {
                   initial: { opacity: 0, y: 20 },
                   whileInView: { opacity: 1, y: 0 },
                   viewport: { once: true, amount: 0.2 },
                   transition: { duration: 0.4, delay: i * 0.1 },
                 })}
-                className="neo-border neo-shadow neo-hover cursor-default overflow-hidden relative group h-[380px] sm:h-[420px]"
+                className={cn(
+                  "cursor-default overflow-hidden relative group h-[380px] sm:h-[420px]",
+                  isMystical
+                    ? "rounded-2xl border border-white/5"
+                    : "neo-border neo-shadow neo-hover"
+                )}
               >
                 {/* Full bleed image */}
                 <Image
@@ -81,16 +92,29 @@ export function PhilosophyPillars() {
                 />
 
                 {/* Dark overlay for readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/30 to-dark/10" />
+                <div className={cn(
+                  "absolute inset-0",
+                  isMystical
+                    ? "bg-gradient-to-t from-[#141721] via-dark/60 to-dark/40"
+                    : "bg-gradient-to-t from-dark/80 via-dark/30 to-dark/10"
+                )} />
 
-                {/* Number badge */}
-                <div className={`absolute top-4 right-4 ${pillar.color} neo-border-sm w-11 h-11 flex items-center justify-center z-10`}>
-                  <span className={`font-display font-black text-sm ${pillar.textColor}`}>{pillar.num}</span>
+                {/* Icon badge */}
+                <div className={cn(
+                  "absolute top-4 right-4 w-11 h-11 flex items-center justify-center z-10",
+                  isMystical
+                    ? `${pillar.color} rounded-xl`
+                    : `${pillar.color} neo-border-sm`
+                )}>
+                  <Icon className={`w-5 h-5 ${pillar.textColor}`} strokeWidth={2} aria-hidden="true" />
                 </div>
 
                 {/* Content — pinned to bottom with colored bg */}
                 <div className="absolute bottom-0 left-0 right-0 z-10">
-                  <div className={`${pillar.color} p-6 sm:p-7`}>
+                  <div className={cn(
+                    `${pillar.color} p-6 sm:p-7`,
+                    isMystical && "bg-opacity-80 backdrop-blur-sm"
+                  )}>
                     <h3 className={`font-display text-xl sm:text-2xl font-black ${pillar.textColor} mb-2`}>
                       {pillar.title}
                     </h3>

@@ -48,7 +48,7 @@ export default function AboutPage() {
           <Image src="/images/real-cats/free-1.png" alt="" fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/60 to-dark/25" />
         </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24">
           <div className="max-w-3xl">
             <ScrollReveal>
               <div>

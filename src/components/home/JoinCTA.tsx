@@ -4,9 +4,12 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { JoinUsForm } from "@/components/forms/JoinUsForm";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useTheme } from "@/components/theme/ThemeProvider";
 
 export function JoinCTA() {
   const reduced = useReducedMotion();
+  const { theme } = useTheme();
+  const isMystical = theme === "mystical";
   const M = reduced ? "div" : motion.div;
 
   return (
@@ -15,6 +18,13 @@ export function JoinCTA() {
       <div className="absolute inset-0 opacity-10">
         <Image src="/images/generated/cat-group.jpg" alt="" fill className="object-cover" />
       </div>
+      {/* Gradient fades for smooth section blending */}
+      {isMystical && (
+        <>
+          <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#141721] to-transparent z-[1]" />
+          <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#0d1017] to-transparent z-[1]" />
+        </>
+      )}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">

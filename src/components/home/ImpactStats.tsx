@@ -5,6 +5,7 @@ import Link from "next/link";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { motion } from "motion/react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useTheme } from "@/components/theme/ThemeProvider";
 
 const highlights = [
   {
@@ -41,6 +42,8 @@ const highlights = [
 
 export function ImpactStats() {
   const reduced = useReducedMotion();
+  const { theme } = useTheme();
+  const isMystical = theme === "mystical";
 
   return (
     <section className="relative py-20 sm:py-28 overflow-hidden">
@@ -52,7 +55,18 @@ export function ImpactStats() {
           fill
           className="object-cover"
         />
+        {/* Dark overlay — gradient fades from edges into bg color */}
         <div className="absolute inset-0 bg-dark/85" />
+        {isMystical && (
+          <>
+            {/* Top fade — blend into section above */}
+            <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#141721] to-transparent z-[1]" />
+            {/* Bottom fade — blend into section below */}
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#141721] to-transparent z-[1]" />
+            {/* Side fades */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#141721]/40 via-transparent to-[#141721]/40 z-[1]" />
+          </>
+        )}
       </div>
 
       {/* Decorative paw prints */}

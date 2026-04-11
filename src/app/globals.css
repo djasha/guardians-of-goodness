@@ -21,25 +21,146 @@
 /* Dark, enchanting, cat-shelter vibe with her brand colors */
 .theme-mystical {
   --color-primary: #9c27b0;
-  --color-primary-light: #b54fc4;
+  --color-primary-light: #c96ddb;
   --color-primary-dark: #7b1fa2;
-  --color-secondary: #009688;
+  --color-secondary: #00796b;
   --color-secondary-light: #26a69a;
-  --color-secondary-dark: #00796b;
+  --color-secondary-dark: #00695c;
   --color-dark: #0d1017;
   --color-dark-light: #141721;
-  --color-cream: #171c28;
-  --color-warm-gray: #1e2435;
+  --color-cream: #141721;
+  --color-warm-gray: #141721;
   --color-accent: #26a69a;
   --color-pink: #ce93d8;
 }
 
-/* ── Mystical: body text flips to light ────── */
+/* ══════════════════════════════════════════════
+   MYSTICAL DARK THEME — SYSTEMATIC OVERRIDES
+
+   Instead of overriding individual classes, we
+   override Tailwind's CSS variable palette so
+   ALL utilities auto-adapt. One source of truth.
+   ══════════════════════════════════════════════ */
+
+/* ── 1. BODY TEXT ──────────────────────────── */
 .theme-mystical body {
   color: #e2e6ed;
 }
 
-/* ── Mystical: neo-brutalist softening ─────── */
+/* ── 2. GRAY PALETTE INVERSION ─────────────── */
+/* Overrides Tailwind's --color-gray-* variables.
+   Every text-gray-*, bg-gray-*, border-gray-*
+   utility automatically picks up these values.
+   No per-component overrides needed.            */
+.theme-mystical {
+  --color-gray-50:  #1e2435;
+  --color-gray-100: #1a1f2e;
+  --color-gray-200: #2d3548;
+  --color-gray-300: #3a4358;
+  --color-gray-400: #6b7580;
+  --color-gray-500: #7d879a;
+  --color-gray-600: #9aa3b5;
+  --color-gray-700: #b8c0ce;
+  --color-gray-800: #d5dce6;
+  --color-gray-900: #e2e6ed;
+  --color-gray-950: #f0f2f5;
+}
+
+/* ── 3. WHITE SURFACE → DARK SURFACE ───────── */
+.theme-mystical .bg-white {
+  background-color: #1e2435;
+}
+
+/* ── 4. SEMANTIC COLOR PALETTE (dark-safe) ─── */
+/* Blue badges/indicators */
+.theme-mystical {
+  --color-blue-50:  rgba(59, 130, 246, 0.12);
+  --color-blue-100: rgba(59, 130, 246, 0.18);
+  --color-blue-200: rgba(59, 130, 246, 0.3);
+  --color-blue-600: #60a5fa;
+  /* Pink badges */
+  --color-pink-50:  rgba(236, 72, 153, 0.12);
+  --color-pink-100: rgba(236, 72, 153, 0.18);
+  --color-pink-200: rgba(236, 72, 153, 0.3);
+  --color-pink-600: #f472b6;
+  /* Yellow/warning */
+  --color-yellow-50:  rgba(234, 179, 8, 0.1);
+  --color-yellow-100: rgba(234, 179, 8, 0.15);
+  --color-yellow-400: rgba(234, 179, 8, 0.4);
+  --color-yellow-800: #fbbf24;
+  /* Amber (pending status) */
+  --color-amber-50:  rgba(245, 158, 11, 0.1);
+  --color-amber-400: rgba(245, 158, 11, 0.4);
+  /* Emerald (available status) */
+  --color-emerald-50: rgba(16, 185, 129, 0.1);
+  /* Red (errors) */
+  --color-red-50:  rgba(239, 68, 68, 0.1);
+  --color-red-500: #f87171;
+}
+
+/* ── 5. BRAND TEXT CONTRAST BOOST ──────────── */
+/* Primary #9c27b0 as bg → fine (white text 6.3:1)
+   As text on dark bg → only 2.7:1 → boost */
+.theme-mystical .text-primary {
+  color: #c96ddb;
+}
+.theme-mystical .text-primary-dark {
+  color: #b54fc4;
+}
+.theme-mystical .text-secondary {
+  color: #26a69a;
+}
+.theme-mystical .text-secondary-dark {
+  color: #009688;
+}
+.theme-mystical .border-primary {
+  border-color: #b54fc4;
+}
+
+/* ── 6. TEXT-DARK FLIP ─────────────────────── */
+/* text-dark uses --color-dark which is #0d1017 in mystical.
+   Override the class directly so dark text → light text. */
+.theme-mystical .text-dark {
+  color: #e2e6ed;
+}
+.theme-mystical .text-dark\/70 {
+  color: rgba(226, 230, 237, 0.7);
+}
+.theme-mystical .text-dark\/60 {
+  color: rgba(226, 230, 237, 0.6);
+}
+.theme-mystical .text-dark\/50 {
+  color: rgba(226, 230, 237, 0.5);
+}
+.theme-mystical .text-dark\/40 {
+  color: rgba(226, 230, 237, 0.4);
+}
+
+/* ── 7. BORDER-DARK SOFTEN ─────────────────── */
+.theme-mystical .border-dark {
+  border-color: #2d3548;
+}
+
+/* ── 8. PROSE (article content) DARK MODE ──── */
+.theme-mystical .prose {
+  --tw-prose-body: #b8c0ce;
+  --tw-prose-headings: #e2e6ed;
+  --tw-prose-links: #c96ddb;
+  --tw-prose-bold: #e2e6ed;
+  --tw-prose-counters: #7d879a;
+  --tw-prose-bullets: #7d879a;
+  --tw-prose-hr: #2d3548;
+  --tw-prose-quotes: #d5dce6;
+  --tw-prose-quote-borders: #9c27b0;
+  --tw-prose-captions: #7d879a;
+  --tw-prose-code: #c96ddb;
+  --tw-prose-pre-code: #e2e6ed;
+  --tw-prose-pre-bg: #0d1017;
+  --tw-prose-th-borders: #2d3548;
+  --tw-prose-td-borders: #1e2435;
+}
+
+/* ── 9. NEO-BRUTALIST SOFTENING ────────────── */
 .theme-mystical .neo-border {
   border-color: #2d3548;
 }
@@ -64,7 +185,7 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.018;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3C!-- Paw 1 --%3E%3Cg transform='translate(30,30) rotate(-15)' fill='%239c27b0'%3E%3Cellipse cx='10' cy='15' rx='5' ry='4.5'/%3E%3Ccircle cx='4' cy='8' r='2.2'/%3E%3Ccircle cx='8.5' cy='5' r='2'/%3E%3Ccircle cx='13.5' cy='5' r='2'/%3E%3Ccircle cx='17.5' cy='8' r='2.2'/%3E%3C/g%3E%3C!-- Heart 1 --%3E%3Cpath d='M105,25 C105,20 110,18 113,22 C116,18 121,20 121,25 C121,31 113,36 113,36 C113,36 105,31 105,25z' fill='%23009688'/%3E%3C!-- Star 1 --%3E%3Cpolygon points='170,30 173,38 181,38 175,43 177,51 170,46 163,51 165,43 159,38 167,38' fill='%239c27b0'/%3E%3C!-- Paw 2 --%3E%3Cg transform='translate(140,110) rotate(20)' fill='%23009688'%3E%3Cellipse cx='10' cy='15' rx='5' ry='4.5'/%3E%3Ccircle cx='4' cy='8' r='2.2'/%3E%3Ccircle cx='8.5' cy='5' r='2'/%3E%3Ccircle cx='13.5' cy='5' r='2'/%3E%3Ccircle cx='17.5' cy='8' r='2.2'/%3E%3C/g%3E%3C!-- Heart 2 --%3E%3Cpath d='M40,120 C40,115 45,113 48,117 C51,113 56,115 56,120 C56,126 48,131 48,131 C48,131 40,126 40,120z' fill='%239c27b0'/%3E%3C!-- Star 2 --%3E%3Cpolygon points='90,160 93,168 101,168 95,173 97,181 90,176 83,181 85,173 79,168 87,168' fill='%23009688'/%3E%3C!-- Paw 3 --%3E%3Cg transform='translate(160,170) rotate(-30)' fill='%239c27b0'%3E%3Cellipse cx='10' cy='15' rx='5' ry='4.5'/%3E%3Ccircle cx='4' cy='8' r='2.2'/%3E%3Ccircle cx='8.5' cy='5' r='2'/%3E%3Ccircle cx='13.5' cy='5' r='2'/%3E%3Ccircle cx='17.5' cy='8' r='2.2'/%3E%3C/g%3E%3C!-- Heart 3 --%3E%3Cpath d='M10,175 C10,170 15,168 18,172 C21,168 26,170 26,175 C26,181 18,186 18,186 C18,186 10,181 10,175z' fill='%23009688'/%3E%3C/svg%3E");
   background-size: 200px 200px;
 }
@@ -111,10 +232,10 @@
 
 /* ── Mystical: scrollbar matches dark theme ── */
 .theme-mystical ::-webkit-scrollbar-track {
-  background: #0d1017;
+  background: #141721;
 }
 .theme-mystical ::-webkit-scrollbar-thumb {
-  border-color: #0d1017;
+  border-color: #141721;
 }
 
 @utility border-3 {
