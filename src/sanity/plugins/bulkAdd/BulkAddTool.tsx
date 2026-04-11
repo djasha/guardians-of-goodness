@@ -140,22 +140,13 @@ export function BulkAddTool() {
   }
 
   return (
-    <div
-      style={{
-        padding: "2rem",
-        maxWidth: 900,
-        margin: "0 auto",
-        fontFamily:
-          '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        color: DARK,
-      }}
-    >
+    <div style={{ padding: "1rem", maxWidth: 900, margin: "0 auto", fontFamily: '"Inter", system-ui, sans-serif', color: DARK }}>
       {/* Header */}
       <h1
         style={{
-          fontSize: "1.5rem",
+          fontSize: "1.1rem",
           fontWeight: 800,
-          marginBottom: "0.5rem",
+          marginBottom: "0.25rem",
           color: DARK,
         }}
       >
@@ -168,26 +159,12 @@ export function BulkAddTool() {
 
       {/* File Input */}
       <div
-        style={{
-          padding: "2rem",
-          border: `3px dashed ${PURPLE}`,
-          borderRadius: 12,
-          textAlign: "center",
-          background: CREAM,
-          marginBottom: "1.5rem",
-          cursor: "pointer",
-        }}
+        style={{ padding: "1.25rem", border: `2px dashed ${PURPLE}`, borderRadius: 10, textAlign: "center", background: CREAM, marginBottom: "1rem", cursor: "pointer" }}
         onClick={() => fileInputRef.current?.click()}
       >
-        <div style={{ marginBottom: "0.5rem", display: "flex", justifyContent: "center" }}>
-          <Camera style={{ width: 32, height: 32, color: PURPLE }} />
-        </div>
-        <p style={{ fontWeight: 600, color: DARK, margin: "0 0 0.25rem" }}>
-          Click to select photos
-        </p>
-        <p style={{ fontSize: "0.8rem", color: "#6b7280", margin: 0 }}>
-          You can select multiple photos at once. Accepted: JPG, PNG, HEIC
-        </p>
+        <Camera style={{ width: 24, height: 24, color: PURPLE, margin: "0 auto 0.25rem" }} />
+        <p style={{ fontWeight: 600, color: DARK, margin: "0 0 0.15rem", fontSize: "0.85rem" }}>Tap to select photos</p>
+        <p style={{ fontSize: "0.7rem", color: "#6b7280", margin: 0 }}>Multiple at once. JPG, PNG, HEIC</p>
         <input
           ref={fileInputRef}
           type="file"
@@ -218,63 +195,34 @@ export function BulkAddTool() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "1rem",
-                padding: "0.75rem",
-                marginBottom: "0.75rem",
+                gap: "0.5rem",
+                flexWrap: "wrap",
+                padding: "0.5rem",
+                marginBottom: "0.5rem",
                 background: "#fff",
-                borderRadius: 10,
+                borderRadius: 8,
                 border: "2px solid #e5e7eb",
               }}
             >
               {/* Preview */}
-              <img
-                src={row.previewUrl}
-                alt="Preview"
-                style={{
-                  width: 64,
-                  height: 64,
-                  objectFit: "cover",
-                  borderRadius: 8,
-                  flexShrink: 0,
-                }}
-              />
+              <img src={row.previewUrl} alt="Preview" style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 6, flexShrink: 0 }} />
 
               {/* Name */}
               <input
                 type="text"
                 value={row.name}
                 onChange={(e) => updateRow(row.id, { name: e.target.value })}
-                placeholder="Cat name"
+                placeholder="Name"
                 disabled={creating}
-                style={{
-                  flex: 1,
-                  padding: "0.4rem 0.6rem",
-                  borderRadius: 6,
-                  border: "2px solid #e5e7eb",
-                  fontSize: "0.9rem",
-                  fontWeight: 600,
-                  minWidth: 100,
-                  outline: "none",
-                }}
+                style={{ flex: "1 1 80px", padding: "0.3rem 0.5rem", borderRadius: 6, border: "1px solid #e5e7eb", fontSize: "0.8rem", fontWeight: 600, minWidth: 0, outline: "none" }}
               />
 
               {/* Gender */}
               <select
                 value={row.gender}
-                onChange={(e) =>
-                  updateRow(row.id, {
-                    gender: e.target.value as "male" | "female",
-                  })
-                }
+                onChange={(e) => updateRow(row.id, { gender: e.target.value as "male" | "female" })}
                 disabled={creating}
-                style={{
-                  padding: "0.4rem 0.6rem",
-                  borderRadius: 6,
-                  border: "2px solid #e5e7eb",
-                  fontSize: "0.85rem",
-                  outline: "none",
-                  background: "#fff",
-                }}
+                style={{ padding: "0.3rem 0.4rem", borderRadius: 6, border: "1px solid #e5e7eb", fontSize: "0.75rem", outline: "none", background: "#fff" }}
               >
                 <option value="female">Female</option>
                 <option value="male">Male</option>
@@ -292,8 +240,8 @@ export function BulkAddTool() {
                 style={{
                   padding: "0.4rem 0.6rem",
                   borderRadius: 6,
-                  border: "2px solid #e5e7eb",
-                  fontSize: "0.85rem",
+                  border: "1px solid #e5e7eb",
+                  fontSize: "0.75rem",
                   outline: "none",
                   background: "#fff",
                 }}
@@ -308,15 +256,7 @@ export function BulkAddTool() {
               <button
                 onClick={() => removeRow(row.id)}
                 disabled={creating}
-                style={{
-                  background: "none",
-                  border: "none",
-                  fontSize: "1.2rem",
-                  cursor: creating ? "not-allowed" : "pointer",
-                  opacity: creating ? 0.3 : 0.6,
-                  padding: "0.25rem",
-                  flexShrink: 0,
-                }}
+                style={{ background: "none", border: "none", fontSize: "0.9rem", cursor: creating ? "not-allowed" : "pointer", opacity: creating ? 0.3 : 0.5, padding: "0.2rem", flexShrink: 0 }}
                 title="Remove"
               >
                 ✕

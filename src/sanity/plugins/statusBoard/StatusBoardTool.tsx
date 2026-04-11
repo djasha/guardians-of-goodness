@@ -118,131 +118,51 @@ export function StatusBoardTool() {
   });
 
   return (
-    <div
-      style={{
-        padding: "2rem",
-        maxWidth: 1100,
-        margin: "0 auto",
-        fontFamily:
-          '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        color: DARK,
-      }}
-    >
+    <div style={{ padding: "1rem", maxWidth: 1100, margin: "0 auto", fontFamily: '"Inter", system-ui, sans-serif', color: DARK }}>
       {/* Error banner */}
       {error && (
-        <div
-          style={{
-            background: "#fef2f2",
-            border: "2px solid #fca5a5",
-            borderRadius: 8,
-            padding: "0.75rem 1rem",
-            marginBottom: "1rem",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            color: "#991b1b",
-            fontSize: "0.875rem",
-            fontWeight: 600,
-          }}
-        >
+        <div style={{ background: "#fef2f2", border: "2px solid #fca5a5", borderRadius: 8, padding: "0.5rem 0.75rem", marginBottom: "0.75rem", display: "flex", justifyContent: "space-between", alignItems: "center", color: "#991b1b", fontSize: "0.8rem", fontWeight: 600 }}>
           {error}
-          <button
-            onClick={() => setError(null)}
-            style={{ background: "none", border: "none", cursor: "pointer", color: "#991b1b", fontWeight: 800, fontSize: "1rem" }}
-          >
-            &times;
-          </button>
+          <button onClick={() => setError(null)} style={{ background: "none", border: "none", cursor: "pointer", color: "#991b1b", fontWeight: 800, fontSize: "1rem", padding: "0.25rem" }}>&times;</button>
         </div>
       )}
 
       {/* Header */}
-      <h1
-        style={{
-          fontSize: "1.5rem",
-          fontWeight: 800,
-          marginBottom: "1.5rem",
-          color: DARK,
-        }}
-      >
-        <ClipboardList style={{ width: 24, height: 24, display: "inline-block", verticalAlign: "middle", marginRight: 8 }} />{" "}
-        Quick Status Board
-      </h1>
-      <p
-        style={{
-          fontSize: "0.9rem",
-          color: "#6b7280",
-          marginTop: "-0.75rem",
-          marginBottom: "1.5rem",
-        }}
-      >
-        Click any cat's status to change it. Available → Pending → Adopted → Available.
-      </p>
+      <div style={{ marginBottom: "0.75rem" }}>
+        <h1 style={{ fontSize: "1.1rem", fontWeight: 800, color: DARK, margin: 0, display: "flex", alignItems: "center", gap: 6 }}>
+          <ClipboardList style={{ width: 18, height: 18 }} /> Status Board
+        </h1>
+        <p style={{ fontSize: "0.75rem", color: "#6b7280", margin: "0.25rem 0 0" }}>Tap a status to change it. Saves automatically.</p>
+      </div>
 
-      {/* Filters */}
-      <div
-        style={{
-          display: "flex",
-          gap: "0.75rem",
-          marginBottom: "1.5rem",
-          flexWrap: "wrap",
-          alignItems: "center",
-        }}
-      >
+      {/* Filters + Search */}
+      <div style={{ display: "flex", gap: "0.35rem", marginBottom: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
         {FILTER_OPTIONS.map((opt) => (
           <button
             key={opt.value}
             onClick={() => setFilter(opt.value)}
-            style={{
-              padding: "0.5rem 1rem",
-              borderRadius: 8,
-              border: `2px solid ${filter === opt.value ? PURPLE : "#e5e7eb"}`,
-              background: filter === opt.value ? PURPLE : "#fff",
-              color: filter === opt.value ? "#fff" : DARK,
-              fontWeight: 600,
-              fontSize: "0.85rem",
-              cursor: "pointer",
-              transition: "all 0.15s",
-            }}
+            style={{ padding: "0.35rem 0.65rem", borderRadius: 6, border: `2px solid ${filter === opt.value ? PURPLE : "#e5e7eb"}`, background: filter === opt.value ? PURPLE : "#fff", color: filter === opt.value ? "#fff" : DARK, fontWeight: 600, fontSize: "0.75rem", cursor: "pointer" }}
           >
             {opt.label}
           </button>
         ))}
-
         <input
           type="text"
-          placeholder="Search by name..."
+          placeholder="Search..."
           title="Type a cat's name to find them quickly"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{
-            padding: "0.5rem 1rem",
-            borderRadius: 8,
-            border: "2px solid #e5e7eb",
-            fontSize: "0.85rem",
-            marginLeft: "auto",
-            minWidth: 200,
-            outline: "none",
-          }}
+          style={{ padding: "0.35rem 0.65rem", borderRadius: 6, border: "2px solid #e5e7eb", fontSize: "0.75rem", flex: "1 1 120px", minWidth: 0, outline: "none" }}
         />
       </div>
 
       {/* Grid */}
       {loading ? (
-        <p style={{ textAlign: "center", color: "#6b7280" }}>
-          Loading cats...
-        </p>
+        <p style={{ textAlign: "center", color: "#6b7280", fontSize: "0.85rem" }}>Loading...</p>
       ) : filteredCats.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#6b7280" }}>
-          No cats found.
-        </p>
+        <p style={{ textAlign: "center", color: "#6b7280", fontSize: "0.85rem" }}>No cats found.</p>
       ) : (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-            gap: "1rem",
-          }}
-        >
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "0.5rem" }}>
           {filteredCats.map((cat) => {
             const statusColor = STATUS_COLORS[cat.adoptionStatus];
             const isUpdating = updating.has(cat._id);
@@ -261,7 +181,7 @@ export function StatusBoardTool() {
                 <div
                   style={{
                     width: "100%",
-                    height: 140,
+                    height: 100,
                     background: CREAM,
                     display: "flex",
                     alignItems: "center",
@@ -285,38 +205,15 @@ export function StatusBoardTool() {
                 </div>
 
                 {/* Info */}
-                <div style={{ padding: "0.75rem" }}>
-                  <div
-                    style={{
-                      fontWeight: 700,
-                      fontSize: "0.95rem",
-                      marginBottom: "0.5rem",
-                      color: DARK,
-                    }}
-                  >
+                <div style={{ padding: "0.5rem" }}>
+                  <div style={{ fontWeight: 700, fontSize: "0.8rem", marginBottom: "0.25rem", color: DARK, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                     {cat.name || "Unnamed"}
                   </div>
                   <button
-                    onClick={() =>
-                      handleStatusChange(cat._id, cat.adoptionStatus)
-                    }
+                    onClick={() => handleStatusChange(cat._id, cat.adoptionStatus)}
                     disabled={isUpdating}
-                    style={{
-                      display: "inline-block",
-                      padding: "0.3rem 0.75rem",
-                      borderRadius: 20,
-                      background: statusColor.bg,
-                      color: statusColor.text,
-                      fontWeight: 700,
-                      fontSize: "0.75rem",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.05em",
-                      border: "none",
-                      cursor: isUpdating ? "wait" : "pointer",
-                      opacity: isUpdating ? 0.6 : 1,
-                      transition: "opacity 0.15s",
-                    }}
-                    title={`Click to change to "${nextStatus(cat.adoptionStatus)}"`}
+                    style={{ display: "inline-block", padding: "0.2rem 0.5rem", borderRadius: 12, background: statusColor.bg, color: statusColor.text, fontWeight: 700, fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.04em", border: "none", cursor: isUpdating ? "wait" : "pointer", opacity: isUpdating ? 0.6 : 1 }}
+                    title={`Tap to change to "${nextStatus(cat.adoptionStatus)}"`}
                   >
                     {cat.adoptionStatus}
                   </button>
@@ -328,20 +225,8 @@ export function StatusBoardTool() {
       )}
 
       {/* Legend */}
-      <div
-        style={{
-          marginTop: "2rem",
-          padding: "1rem",
-          background: CREAM,
-          borderRadius: 8,
-          fontSize: "0.8rem",
-          color: "#6b7280",
-          textAlign: "center",
-        }}
-      >
-        <strong>How it works:</strong> Click the colored status button on any cat to cycle
-        through <strong>Available</strong> → <strong>Pending</strong> →{" "}
-        <strong>Adopted</strong>. Changes save automatically.
+      <div style={{ marginTop: "1rem", padding: "0.5rem 0.75rem", background: CREAM, borderRadius: 6, fontSize: "0.7rem", color: "#6b7280", textAlign: "center" }}>
+        Tap status to cycle: <strong>Available → Pending → Adopted</strong>. Auto-saves.
       </div>
     </div>
   );

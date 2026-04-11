@@ -27,11 +27,7 @@ export function DashboardTool() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const result = await client.fetch<{
-          available: number;
-          pending: number;
-          newMessages: number;
-        }>(`{
+        const result = await client.fetch<Stats>(`{
           "available": count(*[_type == "cat" && adoptionStatus == "available"]),
           "pending": count(*[_type == "cat" && adoptionStatus == "pending"]),
           "newMessages": count(*[_type == "formSubmission" && status == "new"])
@@ -47,235 +43,59 @@ export function DashboardTool() {
   }, [client]);
 
   return (
-    <div
-      style={{
-        padding: "2rem",
-        maxWidth: 960,
-        margin: "0 auto",
-        fontFamily:
-          '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        color: DARK,
-      }}
-    >
+    <div style={{ padding: "1rem", maxWidth: 960, margin: "0 auto", fontFamily: '"Inter", system-ui, sans-serif', color: DARK }}>
       {/* Header */}
-      <div
-        style={{
-          textAlign: "center",
-          marginBottom: "2rem",
-          padding: "2rem",
-          background: DARK,
-          borderRadius: 12,
-          border: `3px solid ${PURPLE}`,
-        }}
-      >
-        <div style={{ marginBottom: "0.5rem", display: "flex", justifyContent: "center" }}>
-          <Cat style={{ width: 40, height: 40, color: TEAL }} />
-        </div>
-        <h1
-          style={{
-            fontSize: "1.75rem",
-            fontWeight: 800,
-            color: CREAM,
-            margin: 0,
-          }}
-        >
-          Guardians of Goodness
-        </h1>
-        <p style={{ color: TEAL, margin: "0.5rem 0 0", fontSize: "0.95rem" }}>
-          Studio Dashboard
-        </p>
+      <div style={{ textAlign: "center", marginBottom: "1.25rem", padding: "1.25rem", background: DARK, borderRadius: 10, border: `2px solid ${PURPLE}` }}>
+        <Cat style={{ width: 28, height: 28, color: TEAL, margin: "0 auto 0.25rem" }} />
+        <h1 style={{ fontSize: "1.25rem", fontWeight: 800, color: CREAM, margin: 0 }}>Guardians of Goodness</h1>
+        <p style={{ color: TEAL, margin: "0.25rem 0 0", fontSize: "0.8rem" }}>Studio Dashboard</p>
       </div>
 
-      {/* Welcome help text */}
-      <p
-        style={{
-          fontSize: "0.95rem",
-          color: "#6b7280",
-          lineHeight: 1.6,
-          marginBottom: "1.5rem",
-          textAlign: "center",
-        }}
-      >
-        Welcome! This is your control center. Here's what you can do:
+      {/* Welcome */}
+      <p style={{ fontSize: "0.8rem", color: "#6b7280", marginBottom: "1rem", textAlign: "center" }}>
+        Welcome! This is your control center.
       </p>
 
-      {/* Stats Row */}
+      {/* Stats */}
       {loading ? (
-        <p style={{ textAlign: "center", color: "#6b7280" }}>
-          Loading stats...
-        </p>
+        <p style={{ textAlign: "center", color: "#6b7280", fontSize: "0.85rem" }}>Loading...</p>
       ) : (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "1rem",
-            marginBottom: "2rem",
-          }}
-        >
-          <StatCard
-            label="Available Cats"
-            count={stats.available}
-            bg="#d1fae5"
-            accent="#065f46"
-            icon={<div style={{ width: 12, height: 12, borderRadius: "50%", backgroundColor: "#22c55e" }} />}
-          />
-          <StatCard
-            label="Pending Cats"
-            count={stats.pending}
-            bg="#fef3c7"
-            accent="#92400e"
-            icon={<div style={{ width: 12, height: 12, borderRadius: "50%", backgroundColor: "#f59e0b" }} />}
-          />
-          <StatCard
-            label="New Messages"
-            count={stats.newMessages}
-            bg="#fee2e2"
-            accent="#991b1b"
-            icon={<div style={{ width: 12, height: 12, borderRadius: "50%", backgroundColor: "#ef4444" }} />}
-          />
+        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.25rem" }}>
+          <StatCard label="Available" count={stats.available} color="#22c55e" bg="#d1fae5" />
+          <StatCard label="Pending" count={stats.pending} color="#f59e0b" bg="#fef3c7" />
+          <StatCard label="Messages" count={stats.newMessages} color="#ef4444" bg="#fee2e2" />
         </div>
       )}
 
-      {/* Action Cards */}
-      <h2
-        style={{
-          fontSize: "1.2rem",
-          fontWeight: 700,
-          marginBottom: "1rem",
-          color: DARK,
-        }}
-      >
-        Quick Actions
-      </h2>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "1rem",
-        }}
-      >
-        <ActionCard
-          icon={<Cat style={{ width: 24, height: 24, color: PURPLE }} />}
-          title="Manage Cats"
-          description="Add new cats, edit their profiles, change photos, and update their details."
-          color={PURPLE}
-        />
-        <ActionCard
-          icon={<ClipboardList style={{ width: 24, height: 24, color: TEAL }} />}
-          title="Quick Status Board"
-          description="Change a cat's status (Available → Pending → Adopted) with just one click. No need to open each cat."
-          color={TEAL}
-        />
-        <ActionCard
-          icon={<Upload style={{ width: 24, height: 24, color: "#ff8c42" }} />}
-          title="Bulk Add Cats"
-          description="Got multiple cat photos? Upload them all at once and create profiles quickly."
-          color="#ff8c42"
-        />
-        <ActionCard
-          icon={<Mail style={{ width: 24, height: 24, color: "#ff6b6b" }} />}
-          title="Check Messages"
-          description="See adoption inquiries, volunteer applications, and consultation requests from the website."
-          color="#ff6b6b"
-        />
+      {/* Quick Actions */}
+      <p style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "#9ca3af", marginBottom: "0.5rem" }}>Quick Actions</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <ActionRow icon={<Cat style={{ width: 18, height: 18 }} />} title="Manage Cats" desc="Add, edit, or update cat profiles." color={PURPLE} />
+        <ActionRow icon={<ClipboardList style={{ width: 18, height: 18 }} />} title="Status Board" desc="Change status with one click." color={TEAL} />
+        <ActionRow icon={<Upload style={{ width: 18, height: 18 }} />} title="Bulk Add" desc="Upload multiple photos at once." color="#ff8c42" />
+        <ActionRow icon={<Mail style={{ width: 18, height: 18 }} />} title="Messages" desc="Review adoption inquiries." color="#ff6b6b" />
       </div>
     </div>
   );
 }
 
-function StatCard({
-  label,
-  count,
-  bg,
-  accent,
-  icon,
-}: {
-  label: string;
-  count: number;
-  bg: string;
-  accent: string;
-  icon: ReactNode;
-}) {
+function StatCard({ label, count, color, bg }: { label: string; count: number; color: string; bg: string }) {
   return (
-    <div
-      style={{
-        background: bg,
-        borderRadius: 10,
-        padding: "1.25rem",
-        textAlign: "center",
-        border: `2px solid ${accent}22`,
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "center", marginBottom: "0.25rem" }}>{icon}</div>
-      <div
-        style={{
-          fontSize: "2rem",
-          fontWeight: 800,
-          color: accent,
-          lineHeight: 1,
-        }}
-      >
-        {count}
-      </div>
-      <div
-        style={{
-          fontSize: "0.8rem",
-          fontWeight: 600,
-          color: accent,
-          marginTop: "0.25rem",
-          textTransform: "uppercase",
-          letterSpacing: "0.05em",
-        }}
-      >
-        {label}
-      </div>
+    <div style={{ flex: 1, background: bg, borderRadius: 8, padding: "0.75rem 0.5rem", textAlign: "center" }}>
+      <div style={{ fontSize: "1.5rem", fontWeight: 800, color, lineHeight: 1 }}>{count}</div>
+      <div style={{ fontSize: "0.65rem", fontWeight: 600, color, textTransform: "uppercase", letterSpacing: "0.04em", marginTop: "0.15rem" }}>{label}</div>
     </div>
   );
 }
 
-function ActionCard({
-  icon,
-  title,
-  description,
-  color,
-}: {
-  icon: ReactNode;
-  title: string;
-  description: string;
-  color: string;
-}) {
+function ActionRow({ icon, title, desc, color }: { icon: ReactNode; title: string; desc: string; color: string }) {
   return (
-    <div
-      style={{
-        background: "#fff",
-        borderRadius: 10,
-        padding: "1.25rem",
-        borderLeft: `4px solid ${color}`,
-        boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
-      }}
-    >
-      <div style={{ marginBottom: "0.5rem" }}>{icon}</div>
-      <h3
-        style={{
-          fontSize: "1rem",
-          fontWeight: 700,
-          margin: "0 0 0.5rem",
-          color: DARK,
-        }}
-      >
-        {title}
-      </h3>
-      <p
-        style={{
-          fontSize: "0.85rem",
-          color: "#6b7280",
-          margin: 0,
-          lineHeight: 1.5,
-        }}
-      >
-        {description}
-      </p>
+    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem", background: "#fff", borderRadius: 8, borderLeft: `3px solid ${color}` }}>
+      <div style={{ color, flexShrink: 0 }}>{icon}</div>
+      <div>
+        <div style={{ fontSize: "0.85rem", fontWeight: 700, color: DARK }}>{title}</div>
+        <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>{desc}</div>
+      </div>
     </div>
   );
 }
