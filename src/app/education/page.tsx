@@ -6,6 +6,7 @@ import { ARTICLES_QUERY } from "@/sanity/queries";
 import type { Article } from "@/sanity/types";
 import { formatDate } from "@/lib/utils";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { PawPrint } from "@/components/ui/PawPrint";
 
 export const metadata: Metadata = {
   title: "Information Center",
@@ -18,7 +19,7 @@ export default async function EducationPage() {
   let error = false;
 
   try {
-    articles = await client.fetch<Article[]>(ARTICLES_QUERY);
+    articles = await client.fetch<Article[]>(ARTICLES_QUERY, {}, { next: { tags: ["article"] } });
   } catch {
     error = true;
   }
@@ -30,7 +31,7 @@ export default async function EducationPage() {
       {/* Hero Section */}
       <section className="relative bg-secondary overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/images/real-cats/insta-6.png" alt="" fill className="object-cover" priority />
+          <Image src="/images/real-cats/cat-petted.jpg" alt="" fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-r from-secondary/85 via-secondary/60 to-secondary/25" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
@@ -74,7 +75,7 @@ export default async function EducationPage() {
                     </div>
                   ) : (
                     <div className="aspect-[16/10] bg-cream flex items-center justify-center">
-                      <svg className="w-12 h-12 text-primary/20" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9"/><circle cx="8" cy="16" r="4.5"/><circle cx="17" cy="10" r="4"/><circle cx="27" cy="10" r="4"/><circle cx="35" cy="16" r="4.5"/></svg>
+                      <PawPrint className="w-12 h-12 text-primary/20" />
                     </div>
                   )}
                   <div className="p-6">
@@ -112,7 +113,7 @@ export default async function EducationPage() {
           <ScrollReveal>
             <div className="text-center py-20">
               <div className="inline-flex items-center justify-center w-24 h-24 neo-border neo-shadow bg-white mb-6">
-                <svg className="w-12 h-12 text-primary/20" viewBox="0 0 40 44" fill="currentColor"><ellipse cx="20" cy="30" rx="10" ry="9"/><circle cx="8" cy="16" r="4.5"/><circle cx="17" cy="10" r="4"/><circle cx="27" cy="10" r="4"/><circle cx="35" cy="16" r="4.5"/></svg>
+                <PawPrint className="w-12 h-12 text-primary/20" />
               </div>
               <h2 className="font-display text-3xl font-bold text-dark mb-3">
                 Coming Soon

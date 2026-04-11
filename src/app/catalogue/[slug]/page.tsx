@@ -9,6 +9,8 @@ import {
   RELATED_CATS_QUERY,
 } from "@/sanity/queries";
 import type { Cat, CatDetail } from "@/sanity/types";
+import { SITE } from "@/lib/constants";
+import { breadcrumbJsonLd } from "@/lib/jsonLd";
 import { PhotoGallery } from "@/components/catalogue/PhotoGallery";
 import { AdoptionInquiryForm } from "@/components/forms/AdoptionInquiryForm";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
@@ -30,13 +32,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   try {
-    const cat = await client.fetch<CatDetail | null>(CAT_BY_SLUG_QUERY, { slug });
+    const cat = await client.fetch<CatDetail | null>(CAT_BY_SLUG_QUERY, { slug }, { next: { tags: ["cat"] } });
     if (!cat) return { title: "Cat Not Found" };
     return {
-      title: cat.name,
-      description: cat.description
-        ? `Meet ${cat.name} — ${cat.description}`
-        : `Meet ${cat.name}, a rescued cat looking for a forever home.`,
+      title: cat.seoTitle || cat.name,
+      description: cat.seoDescription
+        || (cat.description ? `Meet ${cat.name} — ${cat.description}` : `Meet ${cat.name}, a rescued cat looking for a forever home.`),
+      alternates: { canonical: `/catalogue/${slug}` },
       openGraph: {
         images: cat.photos?.[0]?.asset?.url ? [{ url: cat.photos[0].asset.url }] : [],
       },
@@ -57,7 +59,7 @@ export default async function CatProfilePage({ params }: Props) {
 
   let cat: CatDetail | null = null;
   try {
-    cat = await client.fetch<CatDetail | null>(CAT_BY_SLUG_QUERY, { slug });
+    cat = await client.fetch<CatDetail | null>(CAT_BY_SLUG_QUERY, { slug }, { next: { tags: ["cat"] } });
   } catch {
     notFound();
   }
@@ -69,10 +71,11 @@ export default async function CatProfilePage({ params }: Props) {
       id: cat._id,
       ageCategory: cat.ageCategory || "",
       tags: cat.tags || [],
-    })
+    }, { next: { tags: ["cat"] } })
     .catch(() => [] as Cat[]);
 
-  const shareUrl = `https://guardiansofgoodness.org/catalogue/${cat.slug}`;
+  const status = statusConfig[cat.adoptionStatus as keyof typeof statusConfig] ?? statusConfig.available;
+  const shareUrl = `${SITE.url}/catalogue/${cat.slug}`;
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`Meet ${cat.name}! ${shareUrl}`)}`;
 
   // Compact specs — only truthy values
@@ -92,6 +95,16 @@ export default async function CatProfilePage({ params }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd([
+            { name: "Home", url: SITE.url },
+            { name: "CATalogue", url: `${SITE.url}/catalogue` },
+            { name: cat.name, url: `${SITE.url}/catalogue/${cat.slug}` },
+          ])),
+        }}
+      />
       {/* Hero — blends with page, no jarring color block */}
       <section className="pt-24 lg:pt-28 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
@@ -109,9 +122,9 @@ export default async function CatProfilePage({ params }: Props) {
 
           {/* Specs + status in one clean line */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-500">
-            <span className={`inline-flex items-center gap-1.5 font-semibold ${statusConfig[cat.adoptionStatus].color}`}>
-              <span className={`w-2 h-2 rounded-full ${statusConfig[cat.adoptionStatus].dot}`} aria-hidden="true" />
-              {statusConfig[cat.adoptionStatus].label}
+            <span className={`inline-flex items-center gap-1.5 font-semibold ${status.color}`}>
+              <span className={`w-2 h-2 rounded-full ${status.dot}`} aria-hidden="true" />
+              {status.label}
             </span>
             <span className="text-gray-300" aria-hidden="true">·</span>
             {specs.map((spec, i) => (

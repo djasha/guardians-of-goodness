@@ -5,4 +5,32 @@ import siteSettings from "./siteSettings";
 import formSubmission from "./formSubmission";
 import instagramPost from "./instagramPost";
 
-export const schemaTypes = [cat, partner, article, siteSettings, formSubmission, instagramPost];
+// Page singletons — one document per page, editable from Studio
+import homePage from "./pages/homePage";
+import aboutPage from "./pages/aboutPage";
+import projectPage from "./pages/projectPage";
+import supportPage from "./pages/supportPage";
+import consultationPage from "./pages/consultationPage";
+import contactPage from "./pages/contactPage";
+
+export const schemaTypes = [
+  // Content
+  cat,
+  partner,
+  article,
+  instagramPost,
+
+  // Forms
+  formSubmission,
+
+  // Settings
+  siteSettings,
+
+  // Pages
+  homePage,
+  aboutPage,
+  projectPage,
+  supportPage,
+  consultationPage,
+  contactPage,
+];

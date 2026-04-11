@@ -36,8 +36,8 @@ export const ALL_CATS_QUERY = groq`
 export const CATALOGUE_STATS_QUERY = groq`{
   "available": count(*[_type == "cat" && visible != false && adoptionStatus == "available"]),
   "pending": count(*[_type == "cat" && visible != false && adoptionStatus == "pending"]),
-  "adopted": count(*[_type == "cat" && adoptionStatus == "adopted"]),
-  "total": count(*[_type == "cat"])
+  "adopted": count(*[_type == "cat" && visible != false && adoptionStatus == "adopted"]),
+  "total": count(*[_type == "cat" && visible != false])
 }`;
 
 export const CAT_BY_SLUG_QUERY = groq`
@@ -46,6 +46,7 @@ export const CAT_BY_SLUG_QUERY = groq`
     name,
     "slug": slug.current,
     photos[] {
+      _key,
       asset-> {
         _id,
         url,
@@ -53,7 +54,8 @@ export const CAT_BY_SLUG_QUERY = groq`
           dimensions,
           lqip
         }
-      }
+      },
+      alt
     },
     age,
     ageCategory,
@@ -81,7 +83,9 @@ export const CAT_BY_SLUG_QUERY = groq`
         "slug": slug.current
       }
     },
-    dateAdded
+    dateAdded,
+    seoTitle,
+    seoDescription
   }
 `;
 
@@ -170,7 +174,7 @@ export const SITE_SETTINGS_QUERY = groq`
 `;
 
 export const ARTICLES_QUERY = groq`
-  *[_type == "article"] | order(publishedAt desc) {
+  *[_type == "article" && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) {
     _id,
     title,
     "slug": slug.current,
@@ -188,8 +192,12 @@ export const ARTICLES_QUERY = groq`
   }
 `;
 
+export const ARTICLE_SLUGS_QUERY = groq`
+  *[_type == "article" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] { "slug": slug.current }
+`;
+
 export const ARTICLE_BY_SLUG_QUERY = groq`
-  *[_type == "article" && slug.current == $slug][0] {
+  *[_type == "article" && slug.current == $slug && defined(publishedAt) && publishedAt <= now()][0] {
     _id,
     title,
     "slug": slug.current,
@@ -204,10 +212,13 @@ export const ARTICLE_BY_SLUG_QUERY = groq`
         }
       },
       hotspot,
-      crop
+      crop,
+      alt
     },
     body,
     publishedAt,
-    tags
+    tags,
+    seoTitle,
+    seoDescription
   }
 `;

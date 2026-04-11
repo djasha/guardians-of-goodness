@@ -36,6 +36,7 @@ export interface Cat {
 /** Full cat from CAT_BY_SLUG_QUERY (detail view) */
 export interface CatDetail extends Omit<Cat, "photo"> {
   photos: {
+    _key: string;
     asset: {
       url: string;
       metadata?: {
@@ -43,9 +44,12 @@ export interface CatDetail extends Omit<Cat, "photo"> {
         lqip?: string;
       };
     };
+    alt?: string;
   }[];
   instagramPostUrl?: string;
   adoptionFee?: number;
+  seoTitle?: string;
+  seoDescription?: string;
   bond?: {
     type?: string;
     bondedCat?: {
@@ -89,10 +93,13 @@ export interface Article {
     };
     hotspot?: { x: number; y: number };
     crop?: { top: number; bottom: number; left: number; right: number };
+    alt?: string;
   };
   body?: PortableTextBlock[];
   publishedAt?: string;
   tags?: string[];
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface SiteSettings {

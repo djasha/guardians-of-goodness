@@ -74,14 +74,14 @@ function normalizeSanityPosts(posts: InstagramPost[]): NormalizedPost[] {
  */
 export async function getInstagramPosts(): Promise<NormalizedPost[]> {
   try {
-    const settings = await client.fetch<SiteSettings>(SITE_SETTINGS_QUERY);
+    const settings = await client.fetch<SiteSettings>(SITE_SETTINGS_QUERY, {}, { next: { tags: ["siteSettings"] } });
 
     if (settings?.beholdFeedId) {
       const beholdPosts = await fetchBehold(settings.beholdFeedId);
       if (beholdPosts.length > 0) return beholdPosts;
     }
 
-    const sanityPosts = await client.fetch<InstagramPost[]>(INSTAGRAM_POSTS_QUERY);
+    const sanityPosts = await client.fetch<InstagramPost[]>(INSTAGRAM_POSTS_QUERY, {}, { next: { tags: ["instagramPost"] } });
     if (sanityPosts && sanityPosts.length > 0) {
       return normalizeSanityPosts(sanityPosts);
     }

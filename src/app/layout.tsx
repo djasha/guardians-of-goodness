@@ -25,6 +25,15 @@ export const metadata: Metadata = {
   },
   description:
     "Guardians of Goodness is a nonprofit organization based in Amman, Jordan, dedicated to animal welfare through TNR programs, humane behavior support, education, and community outreach.",
+  metadataBase: new URL("https://guardiansofgoodness.org"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Guardians of Goodness",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

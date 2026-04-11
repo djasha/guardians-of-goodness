@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { client } from "@/sanity/client";
-import { ARTICLE_BY_SLUG_QUERY, ARTICLES_QUERY } from "@/sanity/queries";
+import { ARTICLE_BY_SLUG_QUERY, ARTICLE_SLUGS_QUERY } from "@/sanity/queries";
 import { PortableText } from "@portabletext/react";
 import type { Article } from "@/sanity/types";
 import { formatDate } from "@/lib/utils";
+import { SITE } from "@/lib/constants";
+import { articleJsonLd, breadcrumbJsonLd } from "@/lib/jsonLd";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
 type Props = {
@@ -15,7 +18,7 @@ type Props = {
 
 export async function generateStaticParams() {
   try {
-    const articles = await client.fetch<Article[]>(ARTICLES_QUERY);
+    const articles = await client.fetch<{ slug: string }[]>(ARTICLE_SLUGS_QUERY);
     return articles.map((article) => ({ slug: article.slug }));
   } catch {
     return [];
@@ -28,7 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const article = await client.fetch<Article | null>(
       ARTICLE_BY_SLUG_QUERY,
-      { slug }
+      { slug },
+      { next: { tags: ["article"] } }
     );
 
     if (!article) {
@@ -36,9 +40,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
 
     return {
-      title: article.title,
-      description:
-        article.excerpt || `Read "${article.title}" on Guardians of Goodness.`,
+      title: article.seoTitle || article.title,
+      description: article.seoDescription
+        || article.excerpt || `Read "${article.title}" on Guardians of Goodness.`,
+      alternates: { canonical: `/education/${slug}` },
       openGraph: {
         images: article.coverImage?.asset?.url ? [{ url: article.coverImage.asset.url }] : [],
       },
@@ -55,7 +60,7 @@ export default async function ArticlePage({ params }: Props) {
   try {
     article = await client.fetch<Article | null>(ARTICLE_BY_SLUG_QUERY, {
       slug,
-    });
+    }, { next: { tags: ["article"] } });
   } catch {
     notFound();
   }
@@ -66,25 +71,35 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleJsonLd({
+            title: article.title,
+            slug: article.slug,
+            excerpt: article.excerpt,
+            publishedAt: article.publishedAt,
+            coverImageUrl: article.coverImage?.asset?.url,
+          })),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd([
+            { name: "Home", url: SITE.url },
+            { name: "Education", url: `${SITE.url}/education` },
+            { name: article.title, url: `${SITE.url}/education/${article.slug}` },
+          ])),
+        }}
+      />
       {/* Back link */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <Link
           href="/education"
           className="inline-flex items-center gap-2 text-gray-500 hover:text-secondary transition-colors"
         >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M7 16l-4-4m0 0l4-4m-4 4h18"
-            />
-          </svg>
+          <ArrowLeft className="w-5 h-5" aria-hidden="true" />
           Back to Information Center
         </Link>
       </div>

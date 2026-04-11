@@ -1,9 +1,11 @@
-import { defineType, defineField } from "sanity";
+import { defineType, defineField, defineArrayMember } from "sanity";
+import { CogIcon } from "@sanity/icons";
 
 export default defineType({
   name: "siteSettings",
   title: "Site Settings",
   type: "document",
+  icon: CogIcon,
   fields: [
     defineField({
       name: "heroHeading",
@@ -23,6 +25,7 @@ export default defineType({
       title: "Email",
       type: "string",
       description: "Contact email shown in the footer and contact page.",
+      validation: (rule) => rule.email(),
     }),
     defineField({
       name: "address",
@@ -75,7 +78,7 @@ export default defineType({
       type: "array",
       description: "The numbers shown on the homepage (e.g. 200+ cats rescued, 7 vet partners).",
       of: [
-        {
+        defineArrayMember({
           type: "object",
           fields: [
             defineField({
@@ -112,7 +115,7 @@ export default defineType({
               };
             },
           },
-        },
+        }),
       ],
     }),
   ],
