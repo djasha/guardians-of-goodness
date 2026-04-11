@@ -13,13 +13,11 @@ export const metadata: Metadata = {
 };
 
 export default async function CataloguePage() {
-  const cats = await client
-    .fetch<Cat[]>(ALL_CATS_QUERY, {}, { signal: AbortSignal.timeout(10000) })
-    .catch(() => null);
-
-  const stats = await client
-    .fetch<CatalogueStats>(CATALOGUE_STATS_QUERY, {}, { signal: AbortSignal.timeout(5000) })
-    .catch(() => undefined);
+  // Fetch cats and stats in parallel — if one fails, the other still works
+  const [cats, stats] = await Promise.all([
+    client.fetch<Cat[]>(ALL_CATS_QUERY, {}, { signal: AbortSignal.timeout(10000) }).catch(() => null),
+    client.fetch<CatalogueStats>(CATALOGUE_STATS_QUERY, {}, { signal: AbortSignal.timeout(5000) }).catch(() => undefined),
+  ]);
 
   const error = cats === null;
 

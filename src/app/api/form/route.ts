@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     let catRef: { _type: "reference"; _ref: string } | undefined;
     if (formType === "adoption-inquiry" && data.catName) {
       const cat = await client.fetch<{ _id: string } | null>(
-        `*[_type == "cat" && name == $name][0]{ _id }`,
+        `*[_type == "cat" && lower(name) == lower($name)][0]{ _id }`,
         { name: data.catName }
       );
       if (cat) {
