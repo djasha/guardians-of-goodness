@@ -21,6 +21,7 @@ export function ConsultationForm() {
     city: "",
     inquiry: "",
   });
+  const [honeypot, setHoneypot] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success">(
     "idle"
@@ -59,10 +60,37 @@ export function ConsultationForm() {
       const res = await fetch("/api/form", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ formType: "consultation", ...result.data }),
+        body: JSON.stringify({
+          formType: "consultation",
+          website: honeypot,
+          ...result.data,
+        }),
       });
 
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) {
+        if (res.status === 400) {
+          const payload = await res.json().catch(() => null);
+          const fieldErrors = payload?.error;
+          if (fieldErrors && typeof fieldErrors === "object") {
+            const next: Record<string, string> = {};
+            for (const [key, msgs] of Object.entries(fieldErrors)) {
+              if (Array.isArray(msgs) && msgs[0]) next[key] = String(msgs[0]);
+            }
+            if (Object.keys(next).length > 0) {
+              setErrors(next);
+              setStatus("idle");
+              return;
+            }
+          }
+        } else if (res.status === 429) {
+          setErrors({
+            form: "Too many submissions. Please try again in a little while.",
+          });
+          setStatus("idle");
+          return;
+        }
+        throw new Error("Failed");
+      }
       setStatus("success");
     } catch {
       setErrors({ form: "Something went wrong. Please try again." });
@@ -78,10 +106,25 @@ export function ConsultationForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Honeypot — hidden from humans and assistive tech */}
+      <div aria-hidden="true" className="absolute -left-[9999px] top-0 h-0 w-0 overflow-hidden">
+        <label htmlFor="website-url-consult">Website (leave blank)</label>
+        <input
+          id="website-url-consult"
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <FormField label="Name" name="name" error={errors.name}>
           <Input
             id="name"
+            name="name"
+            autoComplete="name"
             placeholder="Your name"
             value={formData.name}
             onChange={(e) => handleChange("name", e.target.value)}
@@ -91,7 +134,10 @@ export function ConsultationForm() {
         <FormField label="Email" name="email" error={errors.email}>
           <Input
             id="email"
+            name="email"
             type="email"
+            autoComplete="email"
+            spellCheck={false}
             placeholder="your@email.com"
             value={formData.email}
             onChange={(e) => handleChange("email", e.target.value)}
@@ -104,6 +150,10 @@ export function ConsultationForm() {
         <FormField label="Phone" name="phone" error={errors.phone}>
           <Input
             id="phone"
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
             placeholder="Your phone number"
             value={formData.phone}
             onChange={(e) => handleChange("phone", e.target.value)}
@@ -113,6 +163,8 @@ export function ConsultationForm() {
         <FormField label="City" name="city" error={errors.city}>
           <Input
             id="city"
+            name="city"
+            autoComplete="address-level2"
             placeholder="Your city"
             value={formData.city}
             onChange={(e) => handleChange("city", e.target.value)}
@@ -134,7 +186,8 @@ export function ConsultationForm() {
       <FormField label="Your Inquiry" name="inquiry" error={errors.inquiry}>
         <Textarea
           id="inquiry"
-          placeholder="Tell us how we can help..."
+          name="inquiry"
+          placeholder="Tell us how we can help…"
           value={formData.inquiry}
           onChange={(e) => handleChange("inquiry", e.target.value)}
           hasError={!!errors.inquiry}
@@ -142,7 +195,7 @@ export function ConsultationForm() {
       </FormField>
 
       {errors.form && (
-        <p className="text-red-500 text-sm text-center">{errors.form}</p>
+        <p className="text-red-500 text-sm text-center" role="alert">{errors.form}</p>
       )}
 
       <button
@@ -150,7 +203,7 @@ export function ConsultationForm() {
         disabled={status === "submitting"}
         className="w-full neo-border-sm neo-shadow-sm bg-primary text-white font-bold py-3.5 px-6 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_var(--color-dark)]"
       >
-        {status === "submitting" ? "Sending..." : "Send Message"}
+        {status === "submitting" ? "Sending…" : "Send Message"}
       </button>
     </form>
   );

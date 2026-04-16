@@ -21,8 +21,8 @@ export function JoinCTA() {
       {/* Gradient fades for smooth section blending */}
       {isMystical && (
         <>
-          <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#141721] to-transparent z-[1]" />
-          <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#0d1017] to-transparent z-[1]" />
+          <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-dark-light to-transparent z-[1]" />
+          <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-dark to-transparent z-[1]" />
         </>
       )}
 
@@ -76,7 +76,7 @@ export function JoinCTA() {
               <h3 className="font-display text-2xl font-bold text-dark mb-1">
                 Get Involved
               </h3>
-              <p className="text-dark/40 text-sm mb-6">
+              <p className="text-dark/60 text-sm mb-6">
                 Fill out the form and we&apos;ll reach out to you.
               </p>
               <JoinUsForm />

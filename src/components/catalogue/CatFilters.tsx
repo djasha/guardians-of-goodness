@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { CatalogueStats } from "@/sanity/types";
 
@@ -137,20 +138,7 @@ export function CatFilters({
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-5">
         <div className="relative flex-1">
           <label htmlFor="cat-search" className="sr-only">Search cats by name, breed, or color</label>
-          <svg
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2.5}
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-            />
-          </svg>
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={2.5} aria-hidden="true" />
           <input
             id="cat-search"
             type="search"

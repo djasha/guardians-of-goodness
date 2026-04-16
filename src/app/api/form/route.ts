@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { client } from "@/sanity/client";
 import { writeClient } from "@/sanity/writeClient";
 import { sendFormNotification } from "@/lib/email";
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 import {
   joinUsSchema,
   consultationSchema,
@@ -14,11 +15,36 @@ const schemas = {
   "adoption-inquiry": adoptionInquirySchema,
 } as const;
 
+/** Fake-success response for bot traffic so the attacker has no signal. */
+const FAKE_SUCCESS = NextResponse.json({ success: true });
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { formType, ...data } = body;
+    const { formType, website, ...data } = body;
 
+    // ── 1. Honeypot — real users never fill the "website" field ──
+    if (typeof website === "string" && website.trim() !== "") {
+      // Don't tell the bot. Pretend it worked.
+      return FAKE_SUCCESS;
+    }
+
+    // ── 2. Per-IP rate limit (best-effort in-memory) ──
+    const ip = getClientIp(req.headers);
+    const limit = checkRateLimit(`form:${ip}`);
+    if (!limit.allowed) {
+      return NextResponse.json(
+        { error: "Too many submissions. Please try again later." },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(limit.retryAfterSeconds ?? 3600),
+          },
+        }
+      );
+    }
+
+    // ── 3. Validate form type + payload ──
     const schema = schemas[formType as keyof typeof schemas];
     if (!schema) {
       return NextResponse.json({ error: "Invalid form type" }, { status: 400 });
@@ -32,7 +58,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // For adoption inquiries, try to link to the cat record
+    // ── 4. Duplicate-submission guard (60s window) ──
+    // Catches accidental double-clicks and simple bots reusing the same email.
+    const sinceIso = new Date(Date.now() - 60_000).toISOString();
+    const dupe = await client.fetch<{ _id: string } | null>(
+      `*[_type == "formSubmission" && email == $email && formType == $formType && submittedAt > $since][0]{ _id }`,
+      { email: parsed.data.email, formType, since: sinceIso }
+    );
+    if (dupe) {
+      return FAKE_SUCCESS;
+    }
+
+    // ── 5. For adoption inquiries, try to link to the cat record ──
     let catRef: { _type: "reference"; _ref: string } | undefined;
     if (formType === "adoption-inquiry" && data.catName) {
       const cat = await client.fetch<{ _id: string } | null>(

@@ -1,11 +1,12 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
+
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useClient } from "sanity";
 import { ClipboardList, Cat } from "lucide-react";
 
 const PURPLE = "#9b4dca";
-const TEAL = "#4ecdc4";
 const CREAM = "#faf8f5";
 const DARK = "#1a1a2e";
 

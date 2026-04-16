@@ -1,4 +1,5 @@
-import { defineType, defineField } from "sanity";
+import { defineType, defineField, defineArrayMember } from "sanity";
+import { CaseIcon } from "@sanity/icons";
 
 const PERSONALITY_TAGS = [
   "playful",
@@ -29,6 +30,7 @@ export default defineType({
   name: "cat",
   title: "Cat",
   type: "document",
+  icon: CaseIcon,
   fieldsets: [
     {
       name: "core",
@@ -60,6 +62,12 @@ export default defineType({
       description: "Optional extras like Instagram links and adoption fees.",
       options: { collapsible: true, collapsed: true },
     },
+    {
+      name: "seo",
+      title: "SEO",
+      description: "Override how this cat appears in Google search results.",
+      options: { collapsible: true, collapsed: true },
+    },
   ],
   fields: [
     // === CORE (always visible) ===
@@ -85,7 +93,20 @@ export default defineType({
       type: "array",
       fieldset: "core",
       description: "Upload at least one photo. The first photo is the main one shown in the catalogue.",
-      of: [{ type: "image", options: { hotspot: true } }],
+      of: [
+        defineArrayMember({
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Alt Text",
+              type: "string",
+              description: "Describe the photo for accessibility (e.g. 'Orange tabby cat playing with a toy')",
+            }),
+          ],
+        }),
+      ],
       validation: (rule) => rule.required().min(1),
     }),
     defineField({
@@ -172,7 +193,7 @@ export default defineType({
       type: "array",
       fieldset: "details",
       description: "Select personality traits — these show as tags on the cat's profile and help with filtering.",
-      of: [{ type: "string" }],
+      of: [defineArrayMember({ type: "string" })],
       options: {
         list: PERSONALITY_TAGS.map((tag) => ({ title: tag, value: tag })),
         layout: "tags",
@@ -287,6 +308,25 @@ export default defineType({
       fieldset: "advanced",
       description: "When this cat was added. Auto-fills to today.",
       initialValue: () => new Date().toISOString().split("T")[0],
+    }),
+
+    // === SEO (collapsed) ===
+    defineField({
+      name: "seoTitle",
+      title: "SEO Title",
+      type: "string",
+      fieldset: "seo",
+      description: "Override the page title for search engines. Leave empty to use the cat's name.",
+      validation: (rule) => rule.max(60).warning("Keep under 60 characters for best search results"),
+    }),
+    defineField({
+      name: "seoDescription",
+      title: "SEO Description",
+      type: "text",
+      fieldset: "seo",
+      rows: 3,
+      description: "Override the page description. Leave empty to use the cat's description.",
+      validation: (rule) => rule.max(160).warning("Keep under 160 characters for best search results"),
     }),
   ],
   preview: {

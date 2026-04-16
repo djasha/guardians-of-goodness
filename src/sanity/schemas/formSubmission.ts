@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { EnvelopeIcon } from "@sanity/icons";
 
 const statusEmoji: Record<string, string> = {
   new: "🔴",
@@ -18,6 +19,7 @@ export default defineType({
   name: "formSubmission",
   title: "Form Submission",
   type: "document",
+  icon: EnvelopeIcon,
   groups: [
     { name: "submission", title: "Submission", default: true },
     { name: "admin", title: "Admin" },

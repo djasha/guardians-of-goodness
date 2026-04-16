@@ -4,6 +4,84 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title("Guardians of Goodness")
     .items([
+      // --- Pages (editable content for each website page) ---
+      S.listItem()
+        .title("Pages")
+        .icon(() => "📄")
+        .child(
+          S.list()
+            .title("Edit Page Content")
+            .items([
+              S.listItem()
+                .title("Homepage")
+                .icon(() => "🏠")
+                .child(
+                  S.document()
+                    .schemaType("homePage")
+                    .documentId("homePage")
+                    .title("Homepage")
+                ),
+              S.listItem()
+                .title("About")
+                .icon(() => "👥")
+                .child(
+                  S.document()
+                    .schemaType("aboutPage")
+                    .documentId("aboutPage")
+                    .title("About Page")
+                ),
+              S.divider(),
+              S.listItem()
+                .title("TNR Project")
+                .icon(() => "🏥")
+                .child(
+                  S.document()
+                    .schemaType("projectPage")
+                    .documentId("projectPage-tnr")
+                    .title("TNR Project Page")
+                ),
+              S.listItem()
+                .title("Home Shelter Project")
+                .icon(() => "🏡")
+                .child(
+                  S.document()
+                    .schemaType("projectPage")
+                    .documentId("projectPage-hbs")
+                    .title("Home Shelter Page")
+                ),
+              S.divider(),
+              S.listItem()
+                .title("Support")
+                .icon(() => "💜")
+                .child(
+                  S.document()
+                    .schemaType("supportPage")
+                    .documentId("supportPage")
+                    .title("Support Page")
+                ),
+              S.listItem()
+                .title("Consultation")
+                .icon(() => "💬")
+                .child(
+                  S.document()
+                    .schemaType("consultationPage")
+                    .documentId("consultationPage")
+                    .title("Consultation Page")
+                ),
+              S.listItem()
+                .title("Contact")
+                .icon(() => "📧")
+                .child(
+                  S.document()
+                    .schemaType("contactPage")
+                    .documentId("contactPage")
+                    .title("Contact Page")
+                ),
+            ])
+        ),
+
+      S.divider(),
+
       // --- Cats ---
       S.listItem()
         .title("Cats")
@@ -73,7 +151,9 @@ export const structure: StructureResolver = (S) =>
                 .child(
                   S.documentTypeList("formSubmission")
                     .title("All Messages")
-                    .filter('_type == "formSubmission" && status != "archived" && status != "spam"')
+                    .filter(
+                      '_type == "formSubmission" && status != "archived" && status != "spam"'
+                    )
                     .defaultOrdering([
                       { field: "submittedAt", direction: "desc" },
                     ])
@@ -125,7 +205,9 @@ export const structure: StructureResolver = (S) =>
                 .child(
                   S.documentTypeList("formSubmission")
                     .title("Archived Messages")
-                    .filter('_type == "formSubmission" && status == "archived"')
+                    .filter(
+                      '_type == "formSubmission" && status == "archived"'
+                    )
                     .defaultOrdering([
                       { field: "submittedAt", direction: "desc" },
                     ])
@@ -136,7 +218,9 @@ export const structure: StructureResolver = (S) =>
                 .child(
                   S.documentTypeList("formSubmission")
                     .title("Spam")
-                    .filter('_type == "formSubmission" && status == "spam"')
+                    .filter(
+                      '_type == "formSubmission" && status == "spam"'
+                    )
                     .defaultOrdering([
                       { field: "submittedAt", direction: "desc" },
                     ])
@@ -149,6 +233,9 @@ export const structure: StructureResolver = (S) =>
       // --- Content ---
       S.documentTypeListItem("article").title("Articles").icon(() => "📰"),
       S.documentTypeListItem("partner").title("Partners").icon(() => "🤝"),
+      S.documentTypeListItem("instagramPost")
+        .title("Instagram Posts")
+        .icon(() => "📸"),
 
       S.divider(),
 

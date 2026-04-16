@@ -3,12 +3,17 @@ import { readFileSync, readdirSync } from "fs";
 import { join } from "path";
 
 const client = createClient({
-  projectId: "tkfaqa7c",
-  dataset: "production",
-  apiVersion: "2024-01-01",
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "tkfaqa7c",
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+  apiVersion: "2026-04-09",
   useCdn: false,
-  token: "skrCK5hLK2QimR5OaTEy4PZyFsjIAjKdPUCxOZpLrfzqpzMCtqM3w7lq4vSkTK7wkMYwnbI8OzvcEfdGz",
+  token: process.env.SANITY_API_TOKEN,
 });
+
+if (!process.env.SANITY_API_TOKEN) {
+  console.error("Missing SANITY_API_TOKEN. Export a Sanity write token before running this script.");
+  process.exit(1);
+}
 
 const IMG_DIR = "/Users/Djasha/Claude COde/guardians of goodness/instagram temp pics";
 

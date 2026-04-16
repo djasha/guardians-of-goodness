@@ -1,7 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useSyncExternalStore } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+
+// Static touch detection via useSyncExternalStore — no cascading renders.
+const subscribeNoop = () => () => {};
+const getTouchSnapshot = () => "ontouchstart" in window;
+const getTouchServerSnapshot = () => false;
 
 interface PawTrail {
   x: number;
@@ -20,7 +25,6 @@ export function PawCursor() {
   const canvasRef = useRef<HTMLDivElement>(null);
   const trailsRef = useRef<PawTrail[]>([]);
   const lastPosRef = useRef({ x: 0, y: 0 });
-  const frameRef = useRef<number>(0);
   const idCounter = useRef(0);
   const distanceRef = useRef(0);
 
@@ -125,15 +129,15 @@ export function PawCursor() {
       document.body.style.cursor = "";
       styleEl.remove();
       cursor.remove();
-      cancelAnimationFrame(frameRef.current);
     };
   }, [reduced, createPaw]);
 
-  // Detect touch devices after mount to avoid hydration mismatch
-  const [isTouch, setIsTouch] = useState(false);
-  useEffect(() => {
-    setIsTouch("ontouchstart" in window);
-  }, []);
+  // Detect touch devices without setState-in-effect
+  const isTouch = useSyncExternalStore(
+    subscribeNoop,
+    getTouchSnapshot,
+    getTouchServerSnapshot
+  );
 
   if (reduced || isTouch) return null;
 

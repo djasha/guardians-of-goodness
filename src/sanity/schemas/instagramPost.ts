@@ -1,10 +1,11 @@
 import { defineType, defineField } from "sanity";
+import { ImageIcon } from "@sanity/icons";
 
 export default defineType({
   name: "instagramPost",
   title: "Instagram Post",
   type: "document",
-  icon: () => "📸",
+  icon: ImageIcon,
   fields: [
     defineField({
       name: "image",

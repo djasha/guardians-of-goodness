@@ -44,8 +44,8 @@ export function Input({ hasError, className, ...props }: InputProps) {
     <input
       className={cn(
         "w-full neo-border-sm bg-white px-4 py-3 text-dark placeholder:text-gray-400",
-        "outline-none transition-all duration-200",
-        "focus:border-primary",
+        "outline-none transition-all duration-200 focus:border-primary",
+        "focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
         hasError
           ? "border-red-300 focus:border-red-500 focus:ring-red-200"
           : "border-gray-200",
@@ -66,8 +66,8 @@ export function Textarea({ hasError, className, ...props }: TextareaProps) {
     <textarea
       className={cn(
         "w-full neo-border-sm bg-white px-4 py-3 text-dark placeholder:text-gray-400",
-        "outline-none transition-all duration-200 resize-none",
-        "focus:border-primary",
+        "outline-none transition-all duration-200 resize-none focus:border-primary",
+        "focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
         hasError && "border-red-400",
         className
       )}
@@ -94,8 +94,8 @@ export function Select({
     <select
       className={cn(
         "w-full neo-border-sm bg-white px-4 py-3 text-dark",
-        "outline-none transition-all duration-200 appearance-none",
-        "focus:border-primary",
+        "outline-none transition-all duration-200 appearance-none focus:border-primary",
+        "focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
         hasError && "border-red-400",
         className
       )}
@@ -137,7 +137,7 @@ export function RadioGroup({
           key={opt.value}
           className={cn(
             "flex items-center gap-2 neo-border-sm px-4 py-2.5 cursor-pointer",
-            "transition-all duration-200 text-sm",
+            "transition-all duration-200 text-sm focus-within:ring-2 focus-within:ring-primary/40 focus-within:ring-offset-2 focus-within:ring-offset-white",
             value === opt.value
               ? "bg-primary/5 text-primary font-bold neo-shadow-sm"
               : "bg-white text-gray-600 hover:text-primary",

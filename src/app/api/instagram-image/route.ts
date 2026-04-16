@@ -29,8 +29,9 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Fetch the embed page
-    const embedUrl = postUrl.endsWith("/") ? postUrl + "embed/" : postUrl + "/embed/";
+    // Fetch the embed page — strip trailing /embed/ if already present, then re-add
+    const cleanUrl = postUrl.replace(/\/embed\/?$/, "").replace(/\/$/, "");
+    const embedUrl = cleanUrl + "/embed/";
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
@@ -48,8 +49,9 @@ export async function GET(request: NextRequest) {
     clearTimeout(timeout);
 
     if (!res.ok) {
+      console.error(`Instagram embed fetch failed: ${res.status} ${res.statusText}`);
       return NextResponse.json(
-        { error: `Embed fetch failed: ${res.status} ${res.statusText}` },
+        { error: "Could not load image" },
         { status: 502 }
       );
     }
@@ -85,7 +87,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ error: `Failed to process image: ${message}` }, { status: 500 });
+    console.error("Instagram image processing error:", err instanceof Error ? err.message : err);
+    return NextResponse.json({ error: "Could not load image" }, { status: 500 });
   }
 }

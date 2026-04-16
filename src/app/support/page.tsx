@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { DollarSign, Users, Share2, ArrowRight, Mail, HandHeart, type LucideIcon } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { PawPrint } from "@/components/ui/PawPrint";
+import { client } from "@/sanity/client";
+import { SUPPORT_PAGE_QUERY } from "@/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Support Us",
@@ -9,13 +13,66 @@ export const metadata: Metadata = {
     "Support Guardians of Goodness — your contribution helps us rescue and care for stray animals in Jordan.",
 };
 
-export default function SupportPage() {
+const defaultHelpMethods = [
+  {
+    title: "Donate",
+    description: "Financial contributions help cover vet costs, food, and shelter.",
+  },
+  {
+    title: "Volunteer",
+    description: "Give your time and skills to help with our rescue and care programs.",
+  },
+  {
+    title: "Spread the Word",
+    description: "Share our mission with friends and family to raise awareness.",
+  },
+];
+
+const helpMethodStyles: {
+  Icon: LucideIcon;
+  cornerClassName: string;
+  iconWrapClassName: string;
+  iconClassName: string;
+}[] = [
+  {
+    Icon: DollarSign,
+    cornerClassName: "bg-primary",
+    iconWrapClassName: "bg-primary/10",
+    iconClassName: "text-primary",
+  },
+  {
+    Icon: Users,
+    cornerClassName: "bg-secondary",
+    iconWrapClassName: "bg-secondary/10",
+    iconClassName: "text-secondary",
+  },
+  {
+    Icon: Share2,
+    cornerClassName: "bg-accent",
+    iconWrapClassName: "bg-accent/10",
+    iconClassName: "text-accent",
+  },
+];
+
+export default async function SupportPage() {
+  const pageData = await client.fetch(SUPPORT_PAGE_QUERY, {}, { next: { tags: ["supportPage"] } }).catch(() => null);
+
+  const heroTitle = pageData?.heroTitle || "Your Support is Crucial";
+  const heroSubtext = pageData?.heroSubtext || "Every act of kindness makes a difference";
+  const heroImage = pageData?.heroImage?.asset?.url || "/images/real-cats/cats-cuddling.jpg";
+  const contentTitle = pageData?.contentTitle || "How You Can Help";
+  const contentSubtext = pageData?.contentSubtext || "We are non-profit, which means our abilities are defined by the level of your participation. We appreciate any contribution that may help us get closer to our goals.";
+  const helpMethods = pageData?.helpMethods || defaultHelpMethods;
+  const ctaTitle = pageData?.ctaTitle || "Ready to Make a Difference?";
+  const ctaText = pageData?.ctaText || "Reach out and let us know how you would like to help. Every contribution counts.";
+  const ctaButtonText = pageData?.ctaButtonText || "Contact Us";
+  const ctaButtonLink = pageData?.ctaButtonLink || "mailto:office@guardiansofgoodness.org";
   return (
     <>
       {/* Hero Section */}
       <section className="relative bg-primary overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/images/real-cats/cats-window.png" alt="" fill className="object-cover" priority />
+          <Image src={heroImage} alt="" fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/60 to-primary/25" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
@@ -25,10 +82,10 @@ export default function SupportPage() {
                 <span className="text-xs font-bold uppercase tracking-widest">Support Us</span>
               </div>
               <h1 className="font-display font-black text-white text-4xl sm:text-5xl lg:text-6xl mb-6">
-                Your Support is Crucial
+                {heroTitle}
               </h1>
               <p className="text-lg sm:text-xl text-white/80">
-                Every act of kindness makes a difference
+                {heroSubtext}
               </p>
             </div>
           </ScrollReveal>
@@ -44,93 +101,78 @@ export default function SupportPage() {
                 <span className="text-xs font-bold uppercase tracking-widest">Why It Matters</span>
               </div>
               <h2 className="font-display text-3xl sm:text-4xl font-black text-dark mb-6">
-                How You Can Help
+                {contentTitle}
               </h2>
-              <p className="text-lg leading-relaxed text-dark/50 max-w-2xl mx-auto">
-                We are non-profit, which means our abilities are defined by the
-                level of your participation. We appreciate any contribution that
-                may help us get closer to our goals.
+              <p className="text-lg leading-relaxed text-dark/60 max-w-2xl mx-auto">
+                {contentSubtext}
               </p>
             </div>
           </ScrollReveal>
 
           <ScrollReveal>
             <div className="grid sm:grid-cols-3 gap-8 mb-16">
-              <div className="relative bg-white neo-border neo-shadow neo-hover p-8 text-center overflow-hidden">
-                <div className="absolute top-0 left-0 w-12 h-12 bg-primary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
-                <div className="inline-flex items-center justify-center w-16 h-16 neo-border-sm bg-primary/10 mb-4">
-                  <svg
-                    className="w-8 h-8 text-primary"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="font-display text-xl font-black text-dark mb-2">
-                  Donate
-                </h3>
-                <p className="text-dark/50 text-sm">
-                  Financial contributions help cover vet costs, food, and
-                  shelter.
-                </p>
-              </div>
+              {helpMethods.map((method: { title: string; description: string }, index: number) => {
+                const style = helpMethodStyles[index % helpMethodStyles.length];
+                const Icon = style.Icon;
+                return (
+                  <div key={method.title} className="relative bg-white neo-border neo-shadow neo-hover p-8 text-center overflow-hidden">
+                    <div className={`absolute top-0 left-0 w-12 h-12 ${style.cornerClassName}`} style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
+                    <div className={`inline-flex items-center justify-center w-16 h-16 neo-border-sm ${style.iconWrapClassName} mb-4`}>
+                      <Icon className={`w-8 h-8 ${style.iconClassName}`} strokeWidth={2} aria-hidden="true" />
+                    </div>
+                    <h3 className="font-display text-xl font-black text-dark mb-2">
+                      {method.title}
+                    </h3>
+                    <p className="text-dark/60 text-sm">
+                      {method.description}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </ScrollReveal>
 
-              <div className="relative bg-white neo-border neo-shadow neo-hover p-8 text-center overflow-hidden">
-                <div className="absolute top-0 left-0 w-12 h-12 bg-secondary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
-                <div className="inline-flex items-center justify-center w-16 h-16 neo-border-sm bg-secondary/10 mb-4">
-                  <svg
-                    className="w-8 h-8 text-secondary"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
+          {/* Donate Section */}
+          <ScrollReveal>
+            <div className="mb-16">
+              <h3 className="font-display text-2xl sm:text-3xl font-black text-dark mb-8 text-center">
+                Ways to Donate
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="neo-border neo-shadow bg-white p-8">
+                  <div className="inline-flex items-center justify-center w-12 h-12 neo-border-sm bg-secondary/10 mb-4">
+                    <Mail className="w-6 h-6 text-secondary" strokeWidth={2} aria-hidden="true" />
+                  </div>
+                  <h4 className="font-display text-lg font-bold text-dark mb-2">
+                    Bank Transfer
+                  </h4>
+                  <p className="text-dark/60 text-sm mb-4">
+                    Contact us for bank transfer details. We accept transfers in JOD, USD, and EUR.
+                  </p>
+                  <a
+                    href="mailto:office@guardiansofgoodness.org?subject=Donation%20Inquiry"
+                    className="text-secondary font-semibold text-sm hover:underline inline-flex items-center gap-1"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
+                    Request Details <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                  </a>
                 </div>
-                <h3 className="font-display text-xl font-black text-dark mb-2">
-                  Volunteer
-                </h3>
-                <p className="text-dark/50 text-sm">
-                  Give your time and skills to help with our rescue and care
-                  programs.
-                </p>
-              </div>
-
-              <div className="relative bg-white neo-border neo-shadow neo-hover p-8 text-center overflow-hidden">
-                <div className="absolute top-0 left-0 w-12 h-12 bg-accent" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
-                <div className="inline-flex items-center justify-center w-16 h-16 neo-border-sm bg-accent/10 mb-4">
-                  <svg
-                    className="w-8 h-8 text-accent"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
+                <div className="neo-border neo-shadow bg-white p-8">
+                  <div className="inline-flex items-center justify-center w-12 h-12 neo-border-sm bg-primary/10 mb-4">
+                    <HandHeart className="w-6 h-6 text-primary" strokeWidth={2} aria-hidden="true" />
+                  </div>
+                  <h4 className="font-display text-lg font-bold text-dark mb-2">
+                    In-Kind Donations
+                  </h4>
+                  <p className="text-dark/60 text-sm mb-4">
+                    We accept cat food, medical supplies, carriers, and shelter materials. Drop-off at our Amman location.
+                  </p>
+                  <a
+                    href="mailto:office@guardiansofgoodness.org?subject=In-Kind%20Donation"
+                    className="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                    />
-                  </svg>
+                    Coordinate Drop-off <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                  </a>
                 </div>
-                <h3 className="font-display text-xl font-black text-dark mb-2">
-                  Spread the Word
-                </h3>
-                <p className="text-dark/50 text-sm">
-                  Share our mission with friends and family to raise awareness.
-                </p>
               </div>
             </div>
           </ScrollReveal>
@@ -140,32 +182,20 @@ export default function SupportPage() {
             <div className="relative bg-white neo-border neo-shadow p-10 sm:p-14 text-center overflow-hidden">
               <div className="absolute top-0 left-0 w-20 h-20 bg-primary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
               <div className="absolute bottom-4 right-6 opacity-20">
-                <svg className="w-10 h-10 text-primary" viewBox="0 0 40 44" fill="currentColor">
-                  <ellipse cx="20" cy="30" rx="10" ry="9" />
-                  <circle cx="8" cy="16" r="4.5" />
-                  <circle cx="17" cy="10" r="4" />
-                  <circle cx="27" cy="10" r="4" />
-                  <circle cx="35" cy="16" r="4.5" />
-                </svg>
+                <PawPrint className="w-10 h-10 text-primary" />
               </div>
               <div className="absolute top-6 right-8 opacity-15">
-                <svg className="w-6 h-6 text-secondary" viewBox="0 0 40 44" fill="currentColor">
-                  <ellipse cx="20" cy="30" rx="10" ry="9" />
-                  <circle cx="8" cy="16" r="4.5" />
-                  <circle cx="17" cy="10" r="4" />
-                  <circle cx="27" cy="10" r="4" />
-                  <circle cx="35" cy="16" r="4.5" />
-                </svg>
+                <PawPrint className="w-6 h-6 text-secondary" />
               </div>
               <h3 className="font-display text-2xl sm:text-3xl font-black text-dark mb-4">
-                Ready to Make a Difference?
+                {ctaTitle}
               </h3>
-              <p className="text-dark/50 mb-8 max-w-lg mx-auto">
-                Reach out and let us know how you would like to help. Every contribution counts.
+              <p className="text-dark/60 mb-8 max-w-lg mx-auto">
+                {ctaText}
               </p>
-              <MagneticButton href="mailto:office@guardiansofgoodness.org" variant="primary" size="lg" external>
-                Contact Us
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+              <MagneticButton href={ctaButtonLink} variant="primary" size="lg" external>
+                {ctaButtonText}
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </MagneticButton>
             </div>
           </ScrollReveal>

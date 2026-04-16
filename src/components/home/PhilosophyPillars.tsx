@@ -95,7 +95,7 @@ export function PhilosophyPillars() {
                 <div className={cn(
                   "absolute inset-0",
                   isMystical
-                    ? "bg-gradient-to-t from-[#141721] via-dark/60 to-dark/40"
+                    ? "bg-gradient-to-t from-dark-light via-dark/60 to-dark/40"
                     : "bg-gradient-to-t from-dark/80 via-dark/30 to-dark/10"
                 )} />
 

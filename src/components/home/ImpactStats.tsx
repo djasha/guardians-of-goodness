@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { PawPrint } from "@/components/ui/PawPrint";
 import { motion } from "motion/react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTheme } from "@/components/theme/ThemeProvider";
@@ -60,38 +61,30 @@ export function ImpactStats() {
         {isMystical && (
           <>
             {/* Top fade — blend into section above */}
-            <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#141721] to-transparent z-[1]" />
+            <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-dark-light to-transparent z-[1]" />
             {/* Bottom fade — blend into section below */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#141721] to-transparent z-[1]" />
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark-light to-transparent z-[1]" />
             {/* Side fades */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#141721]/40 via-transparent to-[#141721]/40 z-[1]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-dark-light/40 via-transparent to-dark-light/40 z-[1]" />
           </>
         )}
       </div>
 
       {/* Decorative paw prints */}
       <div className="absolute top-12 right-[10%] opacity-[0.04]">
-        <svg className="w-32 h-32 text-white rotate-12" viewBox="0 0 40 44" fill="currentColor">
-          <ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" />
-        </svg>
+        <PawPrint className="w-32 h-32 text-white rotate-12" />
       </div>
       <div className="absolute bottom-16 left-[5%] opacity-[0.03]">
-        <svg className="w-20 h-20 text-white -rotate-20" viewBox="0 0 40 44" fill="currentColor">
-          <ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" />
-        </svg>
+        <PawPrint className="w-20 h-20 text-white -rotate-20" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 text-white/70 mb-4">
-            <svg className="w-4 h-4 text-secondary" viewBox="0 0 40 44" fill="currentColor">
-              <ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" />
-            </svg>
+            <PawPrint className="w-4 h-4 text-secondary" />
             <span className="text-xs font-bold uppercase tracking-[0.2em]">What We Do</span>
-            <svg className="w-4 h-4 text-secondary" viewBox="0 0 40 44" fill="currentColor">
-              <ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" />
-            </svg>
+            <PawPrint className="w-4 h-4 text-secondary" />
           </div>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
             Making a real <span className="text-secondary">difference</span>
@@ -115,16 +108,14 @@ export function ImpactStats() {
               >
                 {/* Background paw watermark */}
                 <div className="absolute -bottom-4 -right-4 opacity-10">
-                  <svg className="w-24 h-24 text-white rotate-12" viewBox="0 0 40 44" fill="currentColor">
-                    <ellipse cx="20" cy="30" rx="10" ry="9" /><circle cx="8" cy="16" r="4.5" /><circle cx="17" cy="10" r="4" /><circle cx="27" cy="10" r="4" /><circle cx="35" cy="16" r="4.5" />
-                  </svg>
+                  <PawPrint className="w-24 h-24 text-white rotate-12" />
                 </div>
 
                 {/* Big stat */}
                 <div className="font-display text-6xl sm:text-7xl font-black text-white/90 mb-1">
                   {item.stat}
                 </div>
-                <div className="text-white/60 text-xs font-bold uppercase tracking-widest mb-4">
+                <div className="text-white/75 text-xs font-bold uppercase tracking-widest mb-4">
                   {item.statLabel}
                 </div>
 
@@ -143,9 +134,7 @@ export function ImpactStats() {
                   size="sm"
                 >
                   {item.linkText}
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                  </svg>
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </MagneticButton>
               </W>
             );

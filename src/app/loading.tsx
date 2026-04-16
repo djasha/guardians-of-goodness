@@ -11,7 +11,7 @@ export default function Loading() {
             <circle cx="35" cy="16" r="4.5" />
           </svg>
         </div>
-        <p className="text-sm text-dark/50 font-medium">Loading...</p>
+        <p className="text-sm text-dark/60 font-medium">Loading...</p>
         <style>{`
           @keyframes pawBounce {
             0%, 100% { transform: translateY(0) scale(1); opacity: 1; }

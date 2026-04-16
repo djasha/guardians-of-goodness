@@ -1,7 +1,11 @@
 import { groq } from "next-sanity";
 
+// Capped at 60 to keep initial catalogue payload bounded as the dataset grows
+// past the current ~9 cats. Pagination is handled by Pagination.tsx on the client
+// for now; once the total crosses ~100 the page should switch to a paginated
+// query (see `src/sanity/queries.ts` TODO: ALL_CATS_PAGED_QUERY).
 export const ALL_CATS_QUERY = groq`
-  *[_type == "cat" && visible != false] | order(featured desc, dateAdded desc) {
+  *[_type == "cat" && visible != false] | order(featured desc, dateAdded desc) [0...60] {
     _id,
     name,
     "slug": slug.current,
@@ -36,8 +40,8 @@ export const ALL_CATS_QUERY = groq`
 export const CATALOGUE_STATS_QUERY = groq`{
   "available": count(*[_type == "cat" && visible != false && adoptionStatus == "available"]),
   "pending": count(*[_type == "cat" && visible != false && adoptionStatus == "pending"]),
-  "adopted": count(*[_type == "cat" && adoptionStatus == "adopted"]),
-  "total": count(*[_type == "cat"])
+  "adopted": count(*[_type == "cat" && visible != false && adoptionStatus == "adopted"]),
+  "total": count(*[_type == "cat" && visible != false])
 }`;
 
 export const CAT_BY_SLUG_QUERY = groq`
@@ -46,6 +50,7 @@ export const CAT_BY_SLUG_QUERY = groq`
     name,
     "slug": slug.current,
     photos[] {
+      _key,
       asset-> {
         _id,
         url,
@@ -53,7 +58,8 @@ export const CAT_BY_SLUG_QUERY = groq`
           dimensions,
           lqip
         }
-      }
+      },
+      alt
     },
     age,
     ageCategory,
@@ -81,7 +87,9 @@ export const CAT_BY_SLUG_QUERY = groq`
         "slug": slug.current
       }
     },
-    dateAdded
+    dateAdded,
+    seoTitle,
+    seoDescription
   }
 `;
 
@@ -170,7 +178,7 @@ export const SITE_SETTINGS_QUERY = groq`
 `;
 
 export const ARTICLES_QUERY = groq`
-  *[_type == "article"] | order(publishedAt desc) {
+  *[_type == "article" && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) {
     _id,
     title,
     "slug": slug.current,
@@ -188,8 +196,12 @@ export const ARTICLES_QUERY = groq`
   }
 `;
 
+export const ARTICLE_SLUGS_QUERY = groq`
+  *[_type == "article" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] { "slug": slug.current }
+`;
+
 export const ARTICLE_BY_SLUG_QUERY = groq`
-  *[_type == "article" && slug.current == $slug][0] {
+  *[_type == "article" && slug.current == $slug && defined(publishedAt) && publishedAt <= now()][0] {
     _id,
     title,
     "slug": slug.current,
@@ -204,10 +216,128 @@ export const ARTICLE_BY_SLUG_QUERY = groq`
         }
       },
       hotspot,
-      crop
+      crop,
+      alt
     },
     body,
     publishedAt,
-    tags
+    tags,
+    seoTitle,
+    seoDescription
+  }
+`;
+
+// ── Page singleton queries ────────────────────────────
+
+export const HOME_PAGE_QUERY = groq`
+  *[_type == "homePage" && _id == "homePage"][0] {
+    heroHeading,
+    heroHighlight,
+    heroSubtext,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    ctaPrimary,
+    ctaPrimaryLink,
+    ctaSecondary,
+    ctaSecondaryLink,
+    heroStats[] { _key, value, label },
+    quoteText,
+    quoteAuthor
+  }
+`;
+
+export const ABOUT_PAGE_QUERY = groq`
+  *[_type == "aboutPage" && _id == "aboutPage"][0] {
+    heroTitle,
+    heroSubtext,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    missionTitle,
+    missionText,
+    visionTitle,
+    visionText,
+    timelineEvents[] {
+      _key,
+      year,
+      title,
+      text,
+      image {
+        asset-> { _id, url, metadata { dimensions, lqip } },
+        alt
+      }
+    },
+    quoteText,
+    quoteAuthor
+  }
+`;
+
+export const PROJECT_PAGE_QUERY = groq`
+  *[_type == "projectPage" && _id == $id][0] {
+    heroTitle,
+    heroSubtext,
+    heroBadge,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    contentBadge,
+    contentTitle,
+    contentBody,
+    contentImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    facts[] { _key, value, description },
+    ctaText,
+    ctaLink
+  }
+`;
+
+export const SUPPORT_PAGE_QUERY = groq`
+  *[_type == "supportPage" && _id == "supportPage"][0] {
+    heroTitle,
+    heroSubtext,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    contentTitle,
+    contentSubtext,
+    helpMethods[] { _key, title, description, icon },
+    ctaTitle,
+    ctaText,
+    ctaButtonText,
+    ctaButtonLink
+  }
+`;
+
+export const CONSULTATION_PAGE_QUERY = groq`
+  *[_type == "consultationPage" && _id == "consultationPage"][0] {
+    heroTitle,
+    heroSubtext,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    formTitle,
+    formSubtext,
+    trustPoints[] { _key, text }
+  }
+`;
+
+export const CONTACT_PAGE_QUERY = groq`
+  *[_type == "contactPage" && _id == "contactPage"][0] {
+    heroTitle,
+    heroSubtext,
+    heroImage {
+      asset-> { _id, url, metadata { dimensions, lqip } },
+      alt
+    },
+    emailOverride,
+    addressOverride
   }
 `;
