@@ -17,7 +17,7 @@ export default function NotFound() {
         <h1 className="font-display text-4xl sm:text-5xl font-bold text-dark mb-4">
           Oops! Page Not Found
         </h1>
-        <p className="text-lg leading-relaxed text-dark/50 mb-10">
+        <p className="text-lg leading-relaxed text-dark/60 mb-10">
           Looks like a cat knocked this page off the table. It might have
           existed at some point, but it seems to have wandered off.
         </p>

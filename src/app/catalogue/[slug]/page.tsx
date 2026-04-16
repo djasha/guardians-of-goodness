@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Check, X, Plane, Heart, MapPin, ExternalLink, Share2 } from "lucide-react";
+import { ArrowLeft, Check, Plane, Heart, MapPin, ExternalLink, Share2 } from "lucide-react";
 import { client } from "@/sanity/client";
 import {
   CAT_BY_SLUG_QUERY,
@@ -10,7 +10,7 @@ import {
 } from "@/sanity/queries";
 import type { Cat, CatDetail } from "@/sanity/types";
 import { SITE } from "@/lib/constants";
-import { breadcrumbJsonLd } from "@/lib/jsonLd";
+import { breadcrumbJsonLd, safeJsonLd } from "@/lib/jsonLd";
 import { PhotoGallery } from "@/components/catalogue/PhotoGallery";
 import { AdoptionInquiryForm } from "@/components/forms/AdoptionInquiryForm";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
@@ -98,7 +98,7 @@ export default async function CatProfilePage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd([
+          __html: safeJsonLd(breadcrumbJsonLd([
             { name: "Home", url: SITE.url },
             { name: "CATalogue", url: `${SITE.url}/catalogue` },
             { name: cat.name, url: `${SITE.url}/catalogue/${cat.slug}` },
@@ -209,9 +209,9 @@ export default async function CatProfilePage({ params }: Props) {
 
               {/* Special needs callout */}
               {cat.specialNeeds && cat.specialNeeds.toLowerCase() !== "none" && (
-                <div className="bg-yellow-50 border-2 border-yellow-400/40 rounded-xl p-4">
-                  <p className="text-sm font-bold text-yellow-800 mb-1">Special Needs</p>
-                  <p className="text-sm leading-relaxed text-yellow-700">{cat.specialNeeds}</p>
+                <div className="neo-border-sm bg-amber-50 dark:bg-amber-900/20 border-l-4 border-l-amber-500 p-4">
+                  <p className="text-sm font-bold text-amber-800 dark:text-amber-300 mb-1">Special Needs</p>
+                  <p className="text-sm leading-relaxed text-amber-700 dark:text-amber-200/80">{cat.specialNeeds}</p>
                 </div>
               )}
 

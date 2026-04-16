@@ -25,6 +25,7 @@ export function AdoptionInquiryForm({ catName }: AdoptionInquiryFormProps) {
     petExperience: "",
     message: "",
   });
+  const [honeypot, setHoneypot] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success">(
     "idle"
@@ -65,11 +66,35 @@ export function AdoptionInquiryForm({ catName }: AdoptionInquiryFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           formType: "adoption-inquiry",
+          website: honeypot,
           ...result.data,
         }),
       });
 
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) {
+        if (res.status === 400) {
+          const payload = await res.json().catch(() => null);
+          const fieldErrors = payload?.error;
+          if (fieldErrors && typeof fieldErrors === "object") {
+            const next: Record<string, string> = {};
+            for (const [key, msgs] of Object.entries(fieldErrors)) {
+              if (Array.isArray(msgs) && msgs[0]) next[key] = String(msgs[0]);
+            }
+            if (Object.keys(next).length > 0) {
+              setErrors(next);
+              setStatus("idle");
+              return;
+            }
+          }
+        } else if (res.status === 429) {
+          setErrors({
+            form: "Too many submissions. Please try again in a little while.",
+          });
+          setStatus("idle");
+          return;
+        }
+        throw new Error("Failed");
+      }
       setStatus("success");
     } catch {
       setErrors({ form: "Something went wrong. Please try again." });
@@ -87,6 +112,19 @@ export function AdoptionInquiryForm({ catName }: AdoptionInquiryFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Honeypot — hidden from humans and assistive tech */}
+      <div aria-hidden="true" className="absolute -left-[9999px] top-0 h-0 w-0 overflow-hidden">
+        <label htmlFor="website-url-adopt">Website (leave blank)</label>
+        <input
+          id="website-url-adopt"
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+      </div>
       {catName && (
         <div className="rounded-xl bg-secondary/5 border border-secondary/20 p-4">
           <p className="text-sm text-secondary-dark font-semibold">
@@ -99,6 +137,8 @@ export function AdoptionInquiryForm({ catName }: AdoptionInquiryFormProps) {
         <FormField label="Your Name" name="name" error={errors.name}>
           <Input
             id="name"
+            name="name"
+            autoComplete="name"
             placeholder="Your name"
             value={formData.name}
             onChange={(e) => handleChange("name", e.target.value)}
@@ -108,7 +148,10 @@ export function AdoptionInquiryForm({ catName }: AdoptionInquiryFormProps) {
         <FormField label="Email" name="email" error={errors.email}>
           <Input
             id="email"
+            name="email"
             type="email"
+            autoComplete="email"
+            spellCheck={false}
             placeholder="your@email.com"
             value={formData.email}
             onChange={(e) => handleChange("email", e.target.value)}
@@ -120,6 +163,10 @@ export function AdoptionInquiryForm({ catName }: AdoptionInquiryFormProps) {
       <FormField label="Phone" name="phone" error={errors.phone}>
         <Input
           id="phone"
+          name="phone"
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
           placeholder="Your phone number"
           value={formData.phone}
           onChange={(e) => handleChange("phone", e.target.value)}
@@ -134,7 +181,8 @@ export function AdoptionInquiryForm({ catName }: AdoptionInquiryFormProps) {
       >
         <Textarea
           id="livingSituation"
-          placeholder="Describe your home (apartment/house, other pets, family members...)"
+          name="livingSituation"
+          placeholder="Describe your home (apartment/house, other pets, family members)…"
           value={formData.livingSituation}
           onChange={(e) => handleChange("livingSituation", e.target.value)}
           hasError={!!errors.livingSituation}
@@ -159,7 +207,8 @@ export function AdoptionInquiryForm({ catName }: AdoptionInquiryFormProps) {
       <FormField label="Message" name="message" error={errors.message}>
         <Textarea
           id="message"
-          placeholder="Tell us about yourself and why you'd like to adopt..."
+          name="message"
+          placeholder="Tell us about yourself and why you'd like to adopt…"
           value={formData.message}
           onChange={(e) => handleChange("message", e.target.value)}
           hasError={!!errors.message}
@@ -167,15 +216,15 @@ export function AdoptionInquiryForm({ catName }: AdoptionInquiryFormProps) {
       </FormField>
 
       {errors.form && (
-        <p className="text-red-500 text-sm text-center">{errors.form}</p>
+        <p className="text-red-500 text-sm text-center" role="alert">{errors.form}</p>
       )}
 
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full neo-border-sm neo-shadow-teal bg-secondary text-white font-bold py-3.5 px-6 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_var(--color-secondary)]"
+        className="w-full neo-border-sm neo-shadow-teal bg-secondary text-white font-bold py-3.5 px-6 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_var(--color-dark)]"
       >
-        {status === "submitting" ? "Sending..." : "Submit Adoption Inquiry"}
+        {status === "submitting" ? "Sending…" : "Submit Adoption Inquiry"}
       </button>
     </form>
   );

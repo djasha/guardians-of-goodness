@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/constants";
+import { PawPrint } from "@/components/ui/PawPrint";
 
 export const metadata: Metadata = {
   title: "Privacy & Cookies Policy",
@@ -15,17 +16,11 @@ export default function PrivacyPage() {
           <h1 className="font-display text-4xl sm:text-5xl font-bold text-dark !mb-0">
             Privacy &amp; Cookies Policy
           </h1>
-          <svg className="w-5 h-5 text-primary/20 flex-shrink-0 mt-2" viewBox="0 0 40 44" fill="currentColor">
-            <ellipse cx="20" cy="30" rx="10" ry="9" />
-            <circle cx="8" cy="16" r="4.5" />
-            <circle cx="17" cy="10" r="4" />
-            <circle cx="27" cy="10" r="4" />
-            <circle cx="35" cy="16" r="4.5" />
-          </svg>
+          <PawPrint className="w-5 h-5 text-primary/20 flex-shrink-0 mt-2" />
         </div>
 
-        <p className="text-sm text-dark/50 mb-8">
-          Last updated: January 2024
+        <p className="text-sm text-dark/60 mb-8">
+          Last updated: April 2026
         </p>
 
         <h2>1. Introduction</h2>

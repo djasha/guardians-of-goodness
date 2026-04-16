@@ -1,16 +1,5 @@
 import type { StructureResolver } from "sanity/structure";
 
-// Page singleton types — excluded from generic document lists
-const PAGE_SINGLETONS = [
-  "homePage",
-  "aboutPage",
-  "projectPage",
-  "supportPage",
-  "consultationPage",
-  "contactPage",
-  "siteSettings",
-];
-
 export const structure: StructureResolver = (S) =>
   S.list()
     .title("Guardians of Goodness")

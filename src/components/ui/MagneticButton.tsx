@@ -68,7 +68,7 @@ export function MagneticButton({
 
   const style = {
     transform: `translate(${transform.x}px, ${transform.y}px) ${isHovered ? "translate(-2px, -2px)" : ""}`,
-    boxShadow: isHovered ? "6px 6px 0 var(--shadow-color, #1a1a2e)" : undefined,
+    boxShadow: isHovered ? "6px 6px 0 var(--color-dark)" : undefined,
     transition: "transform 0.2s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.2s ease",
   };
 

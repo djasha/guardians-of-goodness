@@ -74,7 +74,7 @@ export default async function TNRPage() {
               <h2 className="font-display text-3xl sm:text-4xl font-black text-dark mb-6">
                 {pageData?.contentTitle || "What is TNR?"}
               </h2>
-              <p className="leading-relaxed text-dark/50 mb-6">
+              <p className="leading-relaxed text-dark/60 mb-6">
                 Neutering stray animals is the most humane and efficient way to
                 avoid overpopulation and improve the quality of lives of the
                 animals at the same time. Each intact cat or dog roaming in the
@@ -90,18 +90,18 @@ export default async function TNRPage() {
                   pageData.facts.map((fact: { _key: string; value: string; description: string }, index: number) => (
                     <div key={fact._key} className="neo-border-sm bg-cream p-4">
                       <p className={`font-display font-black ${index === 0 ? "text-dark" : "text-secondary"} text-2xl mb-1`}>{fact.value}</p>
-                      <p className="text-dark/50 text-sm">{fact.description}</p>
+                      <p className="text-dark/60 text-sm">{fact.description}</p>
                     </div>
                   ))
                 ) : (
                   <>
                     <div className="neo-border-sm bg-cream p-4">
                       <p className="font-display font-black text-dark text-2xl mb-1">1-1.5</p>
-                      <p className="text-dark/50 text-sm">years — average lifespan of an unhelped stray cat</p>
+                      <p className="text-dark/60 text-sm">years — average lifespan of an unhelped stray cat</p>
                     </div>
                     <div className="neo-border-sm bg-cream p-4">
                       <p className="font-display font-black text-secondary text-2xl mb-1">+3-5</p>
-                      <p className="text-dark/50 text-sm">extra years TNR can add to a stray cat&apos;s life</p>
+                      <p className="text-dark/60 text-sm">extra years TNR can add to a stray cat&apos;s life</p>
                     </div>
                   </>
                 )}
@@ -109,14 +109,14 @@ export default async function TNRPage() {
             </ScrollReveal>
 
             <ScrollReveal>
-              <p className="leading-relaxed text-dark/50 mb-6">
+              <p className="leading-relaxed text-dark/60 mb-6">
                 Besides, the duration and quality of their lives are extremely
                 low. An average stray cat lives from several months to 1-1.5
                 years if not helped by humans. TNR can significantly improve
                 quality of life and add at least a few more years to the
                 lifespan.
               </p>
-              <p className="leading-relaxed text-dark/50 mb-8">
+              <p className="leading-relaxed text-dark/60 mb-8">
                 We encourage you to join our initiative and participate in
                 neutering stray cats and dogs in your neighborhood. We can
                 support you with knowledge and tools needed for this activity.

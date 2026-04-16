@@ -19,7 +19,7 @@ export function PartnersCarousel() {
   const doubled = [...partners, ...partners];
 
   return (
-    <section className="relative bg-cream py-16 sm:py-20 section-fade-in section-to-dark">
+    <section className="relative bg-cream py-10 sm:py-14 section-fade-in section-to-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 flex items-center justify-between">
         <button
           onClick={() => setShowAll(true)}
@@ -32,7 +32,7 @@ export function PartnersCarousel() {
             </svg>
           </span>
         </button>
-        <p className="text-dark/30 text-xs hidden sm:block">Click to see all partners</p>
+        <p className="text-dark/60 text-xs hidden sm:block">Click to see all partners</p>
       </div>
 
       {/* Marquee */}
@@ -82,13 +82,13 @@ export function PartnersCarousel() {
                   <h2 className="font-display text-2xl sm:text-3xl font-black text-dark">
                     Our Partners
                   </h2>
-                  <p className="text-dark/50 text-sm mt-1">
+                  <p className="text-dark/60 text-sm mt-1">
                     Veterinary clinics and organizations we work with
                   </p>
                 </div>
                 <button
                   onClick={() => setShowAll(false)}
-                  className="neo-border-sm neo-hover w-10 h-10 flex items-center justify-center bg-white text-dark/50 hover:text-dark flex-shrink-0"
+                  className="neo-border-sm neo-hover w-10 h-10 flex items-center justify-center bg-white text-dark/60 hover:text-dark flex-shrink-0"
                   aria-label="Close"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">

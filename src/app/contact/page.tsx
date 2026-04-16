@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { Mail, MapPin } from "lucide-react";
 import { InstagramIcon, FacebookIcon, LinkedInIcon } from "@/components/ui/SocialIcons";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
@@ -110,7 +109,7 @@ export default async function ContactPage() {
                   <h3 className="font-display text-xl font-black text-dark mb-1">
                     {link.name}
                   </h3>
-                  <p className="text-dark/50 text-sm">{link.handle}</p>
+                  <p className="text-dark/60 text-sm">{link.handle}</p>
                 </a>
               ))}
             </div>
@@ -155,7 +154,7 @@ export default async function ContactPage() {
                 <h3 className="font-display text-xl font-black text-dark mb-2">
                   Address
                 </h3>
-                <p className="text-dark/50">
+                <p className="text-dark/60">
                   {address}
                 </p>
               </div>

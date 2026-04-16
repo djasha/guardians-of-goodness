@@ -88,7 +88,7 @@ export default async function ConsultationPage() {
                 <h2 className="font-display text-2xl font-bold text-dark mb-1">
                   {formTitle}
                 </h2>
-                <p className="text-dark/40 text-sm mb-6">
+                <p className="text-dark/60 text-sm mb-6">
                   {formSubtext}
                 </p>
                 <ConsultationForm />

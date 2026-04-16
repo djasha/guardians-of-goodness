@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { DollarSign, Users, Share2, ArrowRight } from "lucide-react";
+import { DollarSign, Users, Share2, ArrowRight, Mail, HandHeart, type LucideIcon } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { PawPrint } from "@/components/ui/PawPrint";
@@ -25,6 +25,32 @@ const defaultHelpMethods = [
   {
     title: "Spread the Word",
     description: "Share our mission with friends and family to raise awareness.",
+  },
+];
+
+const helpMethodStyles: {
+  Icon: LucideIcon;
+  cornerClassName: string;
+  iconWrapClassName: string;
+  iconClassName: string;
+}[] = [
+  {
+    Icon: DollarSign,
+    cornerClassName: "bg-primary",
+    iconWrapClassName: "bg-primary/10",
+    iconClassName: "text-primary",
+  },
+  {
+    Icon: Users,
+    cornerClassName: "bg-secondary",
+    iconWrapClassName: "bg-secondary/10",
+    iconClassName: "text-secondary",
+  },
+  {
+    Icon: Share2,
+    cornerClassName: "bg-accent",
+    iconWrapClassName: "bg-accent/10",
+    iconClassName: "text-accent",
   },
 ];
 
@@ -77,7 +103,7 @@ export default async function SupportPage() {
               <h2 className="font-display text-3xl sm:text-4xl font-black text-dark mb-6">
                 {contentTitle}
               </h2>
-              <p className="text-lg leading-relaxed text-dark/50 max-w-2xl mx-auto">
+              <p className="text-lg leading-relaxed text-dark/60 max-w-2xl mx-auto">
                 {contentSubtext}
               </p>
             </div>
@@ -86,25 +112,68 @@ export default async function SupportPage() {
           <ScrollReveal>
             <div className="grid sm:grid-cols-3 gap-8 mb-16">
               {helpMethods.map((method: { title: string; description: string }, index: number) => {
-                const icons = [DollarSign, Users, Share2];
-                const colors = ["primary", "secondary", "accent"];
-                const Icon = icons[index % icons.length];
-                const color = colors[index % colors.length];
+                const style = helpMethodStyles[index % helpMethodStyles.length];
+                const Icon = style.Icon;
                 return (
                   <div key={method.title} className="relative bg-white neo-border neo-shadow neo-hover p-8 text-center overflow-hidden">
-                    <div className={`absolute top-0 left-0 w-12 h-12 bg-${color}`} style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
-                    <div className={`inline-flex items-center justify-center w-16 h-16 neo-border-sm bg-${color}/10 mb-4`}>
-                      <Icon className={`w-8 h-8 text-${color}`} strokeWidth={2} aria-hidden="true" />
+                    <div className={`absolute top-0 left-0 w-12 h-12 ${style.cornerClassName}`} style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
+                    <div className={`inline-flex items-center justify-center w-16 h-16 neo-border-sm ${style.iconWrapClassName} mb-4`}>
+                      <Icon className={`w-8 h-8 ${style.iconClassName}`} strokeWidth={2} aria-hidden="true" />
                     </div>
                     <h3 className="font-display text-xl font-black text-dark mb-2">
                       {method.title}
                     </h3>
-                    <p className="text-dark/50 text-sm">
+                    <p className="text-dark/60 text-sm">
                       {method.description}
                     </p>
                   </div>
                 );
               })}
+            </div>
+          </ScrollReveal>
+
+          {/* Donate Section */}
+          <ScrollReveal>
+            <div className="mb-16">
+              <h3 className="font-display text-2xl sm:text-3xl font-black text-dark mb-8 text-center">
+                Ways to Donate
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="neo-border neo-shadow bg-white p-8">
+                  <div className="inline-flex items-center justify-center w-12 h-12 neo-border-sm bg-secondary/10 mb-4">
+                    <Mail className="w-6 h-6 text-secondary" strokeWidth={2} aria-hidden="true" />
+                  </div>
+                  <h4 className="font-display text-lg font-bold text-dark mb-2">
+                    Bank Transfer
+                  </h4>
+                  <p className="text-dark/60 text-sm mb-4">
+                    Contact us for bank transfer details. We accept transfers in JOD, USD, and EUR.
+                  </p>
+                  <a
+                    href="mailto:office@guardiansofgoodness.org?subject=Donation%20Inquiry"
+                    className="text-secondary font-semibold text-sm hover:underline inline-flex items-center gap-1"
+                  >
+                    Request Details <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                  </a>
+                </div>
+                <div className="neo-border neo-shadow bg-white p-8">
+                  <div className="inline-flex items-center justify-center w-12 h-12 neo-border-sm bg-primary/10 mb-4">
+                    <HandHeart className="w-6 h-6 text-primary" strokeWidth={2} aria-hidden="true" />
+                  </div>
+                  <h4 className="font-display text-lg font-bold text-dark mb-2">
+                    In-Kind Donations
+                  </h4>
+                  <p className="text-dark/60 text-sm mb-4">
+                    We accept cat food, medical supplies, carriers, and shelter materials. Drop-off at our Amman location.
+                  </p>
+                  <a
+                    href="mailto:office@guardiansofgoodness.org?subject=In-Kind%20Donation"
+                    className="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1"
+                  >
+                    Coordinate Drop-off <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                  </a>
+                </div>
+              </div>
             </div>
           </ScrollReveal>
 
@@ -121,7 +190,7 @@ export default async function SupportPage() {
               <h3 className="font-display text-2xl sm:text-3xl font-black text-dark mb-4">
                 {ctaTitle}
               </h3>
-              <p className="text-dark/50 mb-8 max-w-lg mx-auto">
+              <p className="text-dark/60 mb-8 max-w-lg mx-auto">
                 {ctaText}
               </p>
               <MagneticButton href={ctaButtonLink} variant="primary" size="lg" external>

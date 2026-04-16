@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Zap, Eye, ArrowRight } from "lucide-react";
+import { Zap, Eye } from "lucide-react";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { PawPrint } from "@/components/ui/PawPrint";
 import { client } from "@/sanity/client";
@@ -91,12 +91,12 @@ export default async function AboutPage() {
             <div className="relative bg-white neo-border neo-shadow p-8 sm:p-10 h-full overflow-hidden">
               <div className="absolute top-0 left-0 w-16 h-16 bg-primary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
               <div className="inline-flex items-center justify-center w-14 h-14 neo-border-sm bg-primary/10 mb-6">
-                <Zap className="w-8 h-8 text-white" aria-hidden="true" />
+                <Zap className="w-8 h-8 text-primary" aria-hidden="true" />
               </div>
               <h2 className="font-display text-2xl sm:text-3xl font-black text-dark mb-4">
                 {missionTitle}
               </h2>
-              <p className="leading-relaxed text-dark/50">
+              <p className="leading-relaxed text-dark/60">
                 {missionText}
               </p>
             </div>
@@ -106,12 +106,12 @@ export default async function AboutPage() {
             <div className="relative bg-white neo-border neo-shadow p-8 sm:p-10 h-full overflow-hidden">
               <div className="absolute top-0 left-0 w-16 h-16 bg-secondary" style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }} />
               <div className="inline-flex items-center justify-center w-14 h-14 neo-border-sm bg-secondary/10 mb-6">
-                <Eye className="w-8 h-8 text-white" aria-hidden="true" />
+                <Eye className="w-8 h-8 text-secondary" aria-hidden="true" />
               </div>
               <h2 className="font-display text-2xl sm:text-3xl font-black text-dark mb-4">
                 {visionTitle}
               </h2>
-              <p className="leading-relaxed text-dark/50">
+              <p className="leading-relaxed text-dark/60">
                 {visionText}
               </p>
             </div>
@@ -158,7 +158,7 @@ export default async function AboutPage() {
                         <h3 className="font-display text-2xl sm:text-3xl font-black text-dark mb-4">
                           {event.title}
                         </h3>
-                        <p className="leading-relaxed text-dark/50">
+                        <p className="leading-relaxed text-dark/60">
                           {event.text}
                         </p>
                       </div>
@@ -193,7 +193,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Paw-themed Quote Card */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
         <ScrollReveal>
           <div className="max-w-3xl mx-auto relative bg-white neo-border neo-shadow p-10 sm:p-14 text-center">
             <div className="absolute top-4 left-4 opacity-30">
@@ -208,7 +208,7 @@ export default async function AboutPage() {
             <blockquote className="font-display text-2xl sm:text-3xl font-black text-dark mb-4 leading-snug">
               &ldquo;{quoteText}&rdquo;
             </blockquote>
-            <p className="text-dark/50 text-lg">
+            <p className="text-dark/60 text-lg">
               &mdash; {quoteAuthor}
             </p>
           </div>

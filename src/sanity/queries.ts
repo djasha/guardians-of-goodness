@@ -1,7 +1,11 @@
 import { groq } from "next-sanity";
 
+// Capped at 60 to keep initial catalogue payload bounded as the dataset grows
+// past the current ~9 cats. Pagination is handled by Pagination.tsx on the client
+// for now; once the total crosses ~100 the page should switch to a paginated
+// query (see `src/sanity/queries.ts` TODO: ALL_CATS_PAGED_QUERY).
 export const ALL_CATS_QUERY = groq`
-  *[_type == "cat" && visible != false] | order(featured desc, dateAdded desc) {
+  *[_type == "cat" && visible != false] | order(featured desc, dateAdded desc) [0...60] {
     _id,
     name,
     "slug": slug.current,

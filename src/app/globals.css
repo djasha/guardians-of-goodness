@@ -13,6 +13,11 @@
   --color-warm-gray: #f0ebe4;
   --color-accent: #ff8c42;
   --color-pink: #ff6b9d;
+  /* Intentionally theme-invariant: stays white on dark backgrounds regardless
+     of theme. Used where the .bg-white → mystical override would be wrong. */
+  --color-pure-white: #ffffff;
+  /* Muted adopted-card shadow — same value in both themes */
+  --color-shadow-muted: #999999;
   --font-display: var(--font-fraunces);
   --font-body: var(--font-dm-sans);
 }

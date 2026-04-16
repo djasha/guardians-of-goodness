@@ -7,7 +7,9 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { NAV_ITEMS } from "@/lib/constants";
 import { MobileNav } from "@/components/layout/MobileNav";
+import { ChevronDown } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import { cn } from "@/lib/utils";
 
@@ -34,6 +36,16 @@ export function Header() {
 
   const handleDropdownLeave = () => {
     timeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
+  };
+
+  const closeDropdown = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpenDropdown(null);
+  };
+
+  const toggleDropdown = (label: string) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpenDropdown((current) => (current === label ? null : label));
   };
 
   const isActive = (href: string) => {
@@ -63,7 +75,7 @@ export function Header() {
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           scrolled
             ? isMystical
-              ? "bg-[#0d1017]/95 backdrop-blur-sm shadow-[0_1px_0_0_rgba(156,39,176,0.15)]"
+              ? "bg-dark/95 backdrop-blur-sm shadow-[0_1px_0_0_rgba(156,39,176,0.15)]"
               : "bg-cream/95 backdrop-blur-sm shadow-[0_4px_0_0_rgba(26,26,46,0.06)]"
             : "bg-transparent",
         )}
@@ -90,49 +102,76 @@ export function Header() {
             <nav className="hidden lg:flex items-center gap-1">
               {NAV_ITEMS.map((item) => {
                 const hasChildren = "children" in item && item.children;
+                const dropdownId = `desktop-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
+                const linkClassName = cn(
+                  "px-3.5 py-2 text-sm font-semibold rounded-lg transition-all duration-200",
+                  isActive(item.href)
+                    ? onDark ? "text-secondary" : "text-primary bg-primary/10"
+                    : onDark
+                      ? "text-white/90 hover:text-white"
+                      : "text-dark/70 hover:text-dark hover:bg-dark/5",
+                );
+
                 return (
                   <div
                     key={item.label}
                     className="relative"
                     onMouseEnter={() => hasChildren && handleDropdownEnter(item.label)}
                     onMouseLeave={handleDropdownLeave}
+                    onBlur={(event) => {
+                      if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                        closeDropdown();
+                      }
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape") {
+                        closeDropdown();
+                      }
+                    }}
                   >
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "px-3.5 py-2 text-sm font-semibold rounded-lg transition-all duration-200",
-                        isActive(item.href)
-                          ? onDark ? "text-secondary" : "text-primary bg-primary/10"
-                          : onDark
-                            ? "text-white/90 hover:text-white"
-                            : "text-dark/70 hover:text-dark hover:bg-dark/5",
-                      )}
-                    >
-                      {item.label}
-                      {hasChildren && (
-                        <svg
-                          className="inline-block ml-1 w-3 h-3 opacity-40"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2.5}
+                    {hasChildren ? (
+                      <div className={cn(linkClassName, "flex items-center gap-1 px-0 py-0 overflow-hidden")}>
+                        <Link
+                          href={item.href}
+                          className="py-2 pl-3.5 pr-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
                         >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                      )}
-                    </Link>
+                          {item.label}
+                        </Link>
+                        <button
+                          type="button"
+                          aria-label={`Toggle ${item.label} submenu`}
+                          aria-expanded={openDropdown === item.label}
+                          aria-controls={dropdownId}
+                          className="py-2 pl-1 pr-3.5 rounded-r-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+                          onClick={() => toggleDropdown(item.label)}
+                        >
+                          <ChevronDown
+                            className={cn(
+                              "w-3 h-3 opacity-50 transition-transform duration-200",
+                              openDropdown === item.label && "rotate-180",
+                            )}
+                            aria-hidden="true"
+                          />
+                        </button>
+                      </div>
+                    ) : (
+                      <Link href={item.href} className={linkClassName}>
+                        {item.label}
+                      </Link>
+                    )}
 
                     {hasChildren && (
                       <AnimatePresence>
                         {openDropdown === item.label && (
                           <motion.div
+                            id={dropdownId}
                             initial={{ opacity: 0, y: -4 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -4 }}
                             transition={{ duration: 0.15 }}
                             className={cn(
                               "absolute top-full left-0 mt-2 min-w-[180px] neo-border neo-shadow z-50 overflow-hidden",
-                              isMystical ? "bg-[#1e2435] border-[#2d3548]" : "bg-white"
+                              isMystical ? "bg-dark" : "bg-white",
                             )}
                             onMouseEnter={() => handleDropdownEnter(item.label)}
                             onMouseLeave={handleDropdownLeave}
@@ -142,7 +181,7 @@ export function Header() {
                                 key={child.href}
                                 href={child.href}
                                 className={cn(
-                                  "block px-4 py-3 text-sm font-semibold transition-colors",
+                                  "block px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-inset",
                                   isActive(child.href)
                                     ? "text-primary bg-primary/5"
                                     : isMystical
@@ -164,6 +203,9 @@ export function Header() {
 
             {/* Right */}
             <div className="flex items-center gap-3">
+              {/* Theme toggle — desktop only; mobile uses the one inside MobileNav */}
+              <ThemeToggle className="hidden lg:inline-flex" />
+
               <div className="hidden sm:block">
                 <MagneticButton
                   href="/support"
@@ -181,17 +223,17 @@ export function Header() {
               >
                 <span className={cn(
                   "block w-6 h-[2.5px] rounded-full transition-all duration-300 origin-center",
-                  onDark ? "bg-[#ffffff]" : "bg-dark",
+                  onDark ? "bg-pure-white" : "bg-dark",
                   mobileOpen && "rotate-45 translate-y-[5.5px]"
                 )} />
                 <span className={cn(
                   "block w-4 h-[2.5px] rounded-full self-end transition-all duration-300",
-                  onDark ? "bg-[#ffffff]" : "bg-dark",
+                  onDark ? "bg-pure-white" : "bg-dark",
                   mobileOpen && "opacity-0 scale-0"
                 )} />
                 <span className={cn(
                   "block w-6 h-[2.5px] rounded-full transition-all duration-300 origin-center",
-                  onDark ? "bg-[#ffffff]" : "bg-dark",
+                  onDark ? "bg-pure-white" : "bg-dark",
                   mobileOpen && "-rotate-45 -translate-y-[5.5px]"
                 )} />
               </button>

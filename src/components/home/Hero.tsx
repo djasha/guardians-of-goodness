@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { PawPrint } from "@/components/ui/PawPrint";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const quickLinks = [
@@ -152,7 +151,7 @@ export function Hero({ data }: { data?: HeroData | null }) {
               {stats.map((stat) => (
                 <div key={stat._key || stat.label}>
                   <div className="font-display text-xl sm:text-2xl font-black text-white">{stat.value}</div>
-                  <div className="text-white/60 text-[11px] font-semibold uppercase tracking-wider">{stat.label}</div>
+                  <div className="text-white/75 text-[11px] font-semibold uppercase tracking-wider">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -164,7 +163,7 @@ export function Hero({ data }: { data?: HeroData | null }) {
                   &ldquo;{d.quoteText}&rdquo;
                 </p>
                 {d.quoteAuthor && (
-                  <p className="text-white/25 text-[10px] mt-1 font-bold">
+                  <p className="text-white/50 text-[10px] mt-1 font-bold">
                     {d.quoteAuthor}
                   </p>
                 )}

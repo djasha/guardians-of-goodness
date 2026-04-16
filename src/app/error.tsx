@@ -35,7 +35,7 @@ export default function Error({
         <h1 className="font-display text-4xl sm:text-5xl font-bold text-dark mb-4">
           Something Went Wrong
         </h1>
-        <p className="text-lg leading-relaxed text-dark/50 mb-8">
+        <p className="text-lg leading-relaxed text-dark/60 mb-8">
           An unexpected error occurred. Please try again, and if the problem
           persists, let us know.
         </p>

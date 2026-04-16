@@ -18,13 +18,12 @@ const RECIPIENT = process.env.NOTIFICATION_EMAIL || "office@guardiansofgoodness.
 // Until then, onboarding@resend.dev can only send to the Resend account owner's email.
 const FROM = process.env.RESEND_FROM_EMAIL || "Guardians of Goodness <onboarding@resend.dev>";
 
-type FormType = "join-us" | "consultation" | "adoption-inquiry" | "contact";
+type FormType = "join-us" | "consultation" | "adoption-inquiry";
 
 const subjectMap: Record<FormType, string> = {
   "join-us": "New Join Us Submission",
   consultation: "New Consultation Request",
   "adoption-inquiry": "New Adoption Inquiry",
-  contact: "New Contact Form Submission",
 };
 
 /** Escape HTML to prevent injection in email templates */

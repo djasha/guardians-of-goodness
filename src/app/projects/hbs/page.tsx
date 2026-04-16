@@ -73,7 +73,7 @@ export default async function HBSPage() {
               <h2 className="font-display text-3xl sm:text-4xl font-black text-dark mb-6">
                 {pageData?.contentTitle || "What is HBS?"}
               </h2>
-              <p className="leading-relaxed text-dark/50 mb-6">
+              <p className="leading-relaxed text-dark/60 mb-6">
                 We promote the understanding that stray animals are an integral
                 part of the environment. Taking into account all the challenges
                 that the modern world brings to their lives (including
@@ -89,18 +89,18 @@ export default async function HBSPage() {
                   pageData.facts.map((fact: { _key: string; value: string; description: string }) => (
                     <div key={fact._key} className="neo-border-sm bg-cream p-4">
                       <p className="font-display font-black text-accent text-lg mb-1">{fact.value}</p>
-                      <p className="text-dark/50 text-sm">{fact.description}</p>
+                      <p className="text-dark/60 text-sm">{fact.description}</p>
                     </div>
                   ))
                 ) : (
                   <>
                     <div className="neo-border-sm bg-cream p-4">
                       <p className="font-display font-black text-accent text-lg mb-1">Safe Space</p>
-                      <p className="text-dark/50 text-sm">Shelter from extreme heat, cold, rain, and danger</p>
+                      <p className="text-dark/60 text-sm">Shelter from extreme heat, cold, rain, and danger</p>
                     </div>
                     <div className="neo-border-sm bg-cream p-4">
                       <p className="font-display font-black text-accent text-lg mb-1">Community</p>
-                      <p className="text-dark/50 text-sm">Turn gardens and yards into havens for cats</p>
+                      <p className="text-dark/60 text-sm">Turn gardens and yards into havens for cats</p>
                     </div>
                   </>
                 )}
@@ -108,7 +108,7 @@ export default async function HBSPage() {
             </ScrollReveal>
 
             <ScrollReveal>
-              <p className="leading-relaxed text-dark/50 mb-6">
+              <p className="leading-relaxed text-dark/60 mb-6">
                 Based on this belief, we launched an initiative to help people
                 create a safe space in their neighborhood for community cats. As
                 long as the cats are vaccinated and neutered, the main challenge
@@ -116,7 +116,7 @@ export default async function HBSPage() {
                 and cold and rains in winter, as well as find food and hide from
                 danger.
               </p>
-              <p className="leading-relaxed text-dark/50 mb-8">
+              <p className="leading-relaxed text-dark/60 mb-8">
                 We encourage people to turn their gardens and yards into such a
                 safe space, and we are happy to guide and support everyone on
                 this path.

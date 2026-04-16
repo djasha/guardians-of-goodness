@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PhotoGalleryProps {
@@ -15,6 +16,18 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const currentPhoto = photos[selectedIndex];
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!lightboxOpen) return;
+    if (e.key === "Escape") setLightboxOpen(false);
+    if (e.key === "ArrowLeft") setSelectedIndex((prev) => (prev - 1 + photos.length) % photos.length);
+    if (e.key === "ArrowRight") setSelectedIndex((prev) => (prev + 1) % photos.length);
+  }, [lightboxOpen, photos.length]);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
 
   return (
     <>
@@ -80,10 +93,9 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
             <button
               onClick={() => setLightboxOpen(false)}
               className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+              aria-label="Close lightbox"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
 
             {/* Navigation */}
@@ -95,10 +107,9 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
                     setSelectedIndex((prev) => (prev - 1 + photos.length) % photos.length);
                   }}
                   className="absolute left-4 z-10 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                  aria-label="Previous photo"
                 >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                  </svg>
+                  <ChevronLeft className="w-6 h-6" aria-hidden="true" />
                 </button>
                 <button
                   onClick={(e) => {
@@ -106,10 +117,9 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
                     setSelectedIndex((prev) => (prev + 1) % photos.length);
                   }}
                   className="absolute right-4 z-10 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                  aria-label="Next photo"
                 >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                  </svg>
+                  <ChevronRight className="w-6 h-6" aria-hidden="true" />
                 </button>
               </>
             )}
@@ -132,7 +142,7 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
             </motion.div>
 
             {/* Counter */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/50 text-sm">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-sm">
               {selectedIndex + 1} / {photos.length}
             </div>
           </motion.div>

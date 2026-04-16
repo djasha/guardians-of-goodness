@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import Image from "next/image";
 import Link from "next/link";
 import { Plane, Star, Heart, Check, Cat } from "lucide-react";
@@ -25,7 +26,7 @@ const statusStyles = {
   },
   adopted: {
     badge: "bg-gray-500 text-white",
-    shadow: "shadow-[4px_4px_0_0_#999]",
+    shadow: "shadow-[4px_4px_0_0_var(--color-shadow-muted)]",
     label: "Found a Home!",
   },
 };
@@ -54,7 +55,7 @@ export function CatCard({ cat, compact }: CatCardProps) {
         )}
       >
         {/* Image */}
-        <div className="relative aspect-[4/5] overflow-hidden">
+        <div className={cn("relative overflow-hidden", compact ? "aspect-[3/4]" : "aspect-[4/5]")}>
           {cat.photo ? (
             <Image
               src={cat.photo}
@@ -64,7 +65,9 @@ export function CatCard({ cat, compact }: CatCardProps) {
                 "object-cover transition-transform duration-700 group-hover:scale-105",
                 isAdopted && "grayscale-[40%]"
               )}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              sizes={compact
+                ? "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"}
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center" role="img" aria-label={`No photo available for ${cat.name}`}>
@@ -76,7 +79,8 @@ export function CatCard({ cat, compact }: CatCardProps) {
           <div className="absolute top-3 left-3">
             <span
               className={cn(
-                "inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wide border-2 border-dark",
+                "inline-flex items-center rounded-lg font-black uppercase border-2 border-dark",
+                compact ? "px-2 py-0.5 text-[10px] tracking-wider" : "px-3 py-1.5 text-xs tracking-wide",
                 status.badge
               )}
             >
@@ -87,14 +91,17 @@ export function CatCard({ cat, compact }: CatCardProps) {
           {/* Travel badge */}
           {cat.readyToTravelAbroad && (
             <div className="absolute top-3 right-3">
-              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-black bg-white border-2 border-dark text-dark" title="Ready to travel to EU">
-                <Plane className="w-3.5 h-3.5" strokeWidth={2.5} aria-hidden="true" /> EU
+              <span className={cn(
+                "inline-flex items-center rounded-lg font-black bg-white border-2 border-dark text-dark",
+                compact ? "gap-0.5 px-1.5 py-0.5 text-[10px]" : "gap-1 px-2.5 py-1.5 text-xs"
+              )} title="Ready to travel to EU">
+                <Plane className={cn(compact ? "w-2.5 h-2.5" : "w-3.5 h-3.5")} strokeWidth={2.5} aria-hidden="true" /> EU
               </span>
             </div>
           )}
 
           {/* Featured star */}
-          {cat.featured && (
+          {cat.featured && !compact && (
             <div className="absolute bottom-3 right-3">
               <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary border-2 border-dark text-white" title="Featured cat" aria-label="Featured">
                 <Star className="w-4 h-4 fill-current" strokeWidth={0} aria-hidden="true" />
@@ -105,14 +112,17 @@ export function CatCard({ cat, compact }: CatCardProps) {
           {/* Adopted ribbon */}
           {isAdopted && (
             <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
-              <div className="bg-dark/80 text-white px-6 py-2 rounded-lg border-2 border-white font-black text-sm uppercase tracking-wider -rotate-12">
+              <div className={cn(
+                "bg-dark/80 text-white rounded-lg border-2 border-white font-black uppercase -rotate-12",
+                compact ? "px-3 py-1 text-[10px] tracking-wide" : "px-6 py-2 text-sm tracking-wider"
+              )}>
                 Found a Home!
               </div>
             </div>
           )}
 
           {/* Hover overlay */}
-          {!isAdopted && (
+          {!isAdopted && !compact && (
             <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
               <span className="text-white font-display font-bold text-lg">
                 Meet {cat.name} &rarr;
@@ -188,8 +198,8 @@ export function CatCard({ cat, compact }: CatCardProps) {
 
           {/* Bond info */}
           {cat.bond?.bondedCat && (
-            <div className="mt-3 pt-3 border-t-2 border-dashed border-primary/20">
-              <span className="text-xs text-primary font-bold inline-flex items-center gap-1">
+            <div className={cn(compact ? "mt-1.5 pt-1.5" : "mt-3 pt-3", "border-t-2 border-dashed border-primary/20")}>
+              <span className={cn("text-primary font-bold inline-flex items-center gap-1", compact ? "text-[10px]" : "text-xs")}>
                 <Heart className="w-3 h-3 fill-current" strokeWidth={0} aria-hidden="true" />
                 Bonded with {cat.bond.bondedCat.name}
               </span>

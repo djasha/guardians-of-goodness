@@ -9,7 +9,7 @@ import { PortableText } from "@portabletext/react";
 import type { Article } from "@/sanity/types";
 import { formatDate } from "@/lib/utils";
 import { SITE } from "@/lib/constants";
-import { articleJsonLd, breadcrumbJsonLd } from "@/lib/jsonLd";
+import { articleJsonLd, breadcrumbJsonLd, safeJsonLd } from "@/lib/jsonLd";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
 type Props = {
@@ -74,7 +74,7 @@ export default async function ArticlePage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(articleJsonLd({
+          __html: safeJsonLd(articleJsonLd({
             title: article.title,
             slug: article.slug,
             excerpt: article.excerpt,
@@ -86,7 +86,7 @@ export default async function ArticlePage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd([
+          __html: safeJsonLd(breadcrumbJsonLd([
             { name: "Home", url: SITE.url },
             { name: "Education", url: `${SITE.url}/education` },
             { name: article.title, url: `${SITE.url}/education/${article.slug}` },

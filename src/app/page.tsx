@@ -6,7 +6,7 @@ import { ImpactStats } from "@/components/home/ImpactStats";
 import { JoinCTA } from "@/components/home/JoinCTA";
 import { InstagramFeed } from "@/components/home/InstagramFeed";
 import { getInstagramPosts } from "@/lib/instagram";
-import { organizationJsonLd } from "@/lib/jsonLd";
+import { organizationJsonLd, safeJsonLd } from "@/lib/jsonLd";
 import { client } from "@/sanity/client";
 import { HOME_PAGE_QUERY } from "@/sanity/queries";
 
@@ -28,7 +28,7 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(organizationJsonLd()),
+          __html: safeJsonLd(organizationJsonLd()),
         }}
       />
       <Hero data={pageData} />

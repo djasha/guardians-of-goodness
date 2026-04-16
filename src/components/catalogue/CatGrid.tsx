@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { AnimatePresence } from "motion/react";
-import { Search } from "lucide-react";
+import { Search, LayoutGrid, LayoutList } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { CatCard } from "./CatCard";
 import { CatFilters, defaultFilters, type CatFilterState } from "./CatFilters";
 import { Pagination } from "./Pagination";
@@ -18,9 +19,11 @@ interface CatGridProps {
 export function CatGrid({ cats, stats }: CatGridProps) {
   const [filters, setFilters] = useState<CatFilterState>(defaultFilters);
   const [currentPage, setCurrentPage] = useState(1);
+  const [viewMode, setViewMode] = useState<"default" | "compact">("default");
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(() => {
-    let result = cats.filter((cat) => {
+    const result = cats.filter((cat) => {
       if (filters.status !== "all" && cat.adoptionStatus !== filters.status) return false;
       if (filters.gender !== "all" && cat.gender !== filters.gender) return false;
       if (filters.ageCategory !== "all" && cat.ageCategory !== filters.ageCategory) return false;
@@ -66,7 +69,7 @@ export function CatGrid({ cats, stats }: CatGridProps) {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
@@ -99,18 +102,60 @@ export function CatGrid({ cats, stats }: CatGridProps) {
           </button>
         </div>
       ) : (
-        <>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 list-none p-0" role="list" aria-label="Cat listings">
+        <div ref={gridRef} className="scroll-mt-24">
+          {/* View mode toggle */}
+          <div className="flex items-center justify-end gap-1.5 mb-4">
+            <span className="text-xs font-bold text-gray-400 mr-1 hidden sm:inline">View</span>
+            <button
+              type="button"
+              onClick={() => setViewMode("default")}
+              aria-label="Card view"
+              aria-pressed={viewMode === "default"}
+              className={cn(
+                "inline-flex items-center justify-center w-9 h-9 rounded-lg border-2 transition-all",
+                viewMode === "default"
+                  ? "bg-primary text-white border-dark shadow-[2px_2px_0_0_var(--color-dark)]"
+                  : "bg-white text-dark/50 border-gray-200 hover:border-primary hover:text-primary"
+              )}
+            >
+              <LayoutList className="w-4 h-4" strokeWidth={2.5} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("compact")}
+              aria-label="Compact grid view"
+              aria-pressed={viewMode === "compact"}
+              className={cn(
+                "inline-flex items-center justify-center w-9 h-9 rounded-lg border-2 transition-all",
+                viewMode === "compact"
+                  ? "bg-primary text-white border-dark shadow-[2px_2px_0_0_var(--color-dark)]"
+                  : "bg-white text-dark/50 border-gray-200 hover:border-primary hover:text-primary"
+              )}
+            >
+              <LayoutGrid className="w-4 h-4" strokeWidth={2.5} aria-hidden="true" />
+            </button>
+          </div>
+
+          <ul
+            className={cn(
+              "grid list-none p-0",
+              viewMode === "compact"
+                ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4"
+                : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            )}
+            role="list"
+            aria-label="Cat listings"
+          >
             <AnimatePresence mode="popLayout">
               {paged.map((cat) => (
                 <li key={cat._id}>
-                  <CatCard cat={cat} />
+                  <CatCard cat={cat} compact={viewMode === "compact"} />
                 </li>
               ))}
             </AnimatePresence>
           </ul>
           <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-        </>
+        </div>
       )}
     </div>
   );
