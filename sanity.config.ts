@@ -1,11 +1,17 @@
 import { defineConfig, buildLegacyTheme } from "sanity";
 import { structureTool } from "sanity/structure";
+import { presentationTool } from "sanity/presentation";
 import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "@/sanity/schemas";
 import { structure } from "@/sanity/structure";
 import { dashboardPlugin } from "@/sanity/plugins/dashboard";
 import { statusBoardPlugin } from "@/sanity/plugins/statusBoard";
 import { bulkAddPlugin } from "@/sanity/plugins/bulkAdd";
+import { resolve } from "@/sanity/presentation/resolve";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 const theme = buildLegacyTheme({
   "--black": "#1a1a2e",
@@ -52,6 +58,15 @@ export default defineConfig({
     dashboardPlugin(),
     statusBoardPlugin(),
     bulkAddPlugin(),
+    presentationTool({
+      resolve,
+      previewUrl: {
+        origin: SITE_URL,
+        previewMode: {
+          enable: "/api/draft-mode/enable",
+        },
+      },
+    }),
     structureTool({ structure }),
     visionTool(),
   ],

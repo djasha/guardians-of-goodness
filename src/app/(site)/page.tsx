@@ -7,7 +7,7 @@ import { JoinCTA } from "@/components/home/JoinCTA";
 import { InstagramFeed } from "@/components/home/InstagramFeed";
 import { getInstagramPosts } from "@/lib/instagram";
 import { organizationJsonLd, safeJsonLd } from "@/lib/jsonLd";
-import { client } from "@/sanity/client";
+import { sanityFetch } from "@/sanity/lib/live";
 import { HOME_PAGE_QUERY } from "@/sanity/queries";
 
 export const metadata: Metadata = {
@@ -18,10 +18,11 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [instagramPosts, pageData] = await Promise.all([
+  const [instagramPosts, pageResult] = await Promise.all([
     getInstagramPosts(),
-    client.fetch(HOME_PAGE_QUERY, {}, { next: { tags: ["homePage"] } }).catch(() => null),
+    sanityFetch({ query: HOME_PAGE_QUERY, tags: ["homePage"] }).catch(() => ({ data: null })),
   ]);
+  const pageData = pageResult.data;
 
   return (
     <>
