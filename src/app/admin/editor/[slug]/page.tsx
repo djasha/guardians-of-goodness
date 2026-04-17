@@ -25,7 +25,6 @@ export default async function EditorPage({
     <EditorClient
       slug={doc.slug}
       title={doc.title}
-      description={doc.description ?? ""}
       initialData={initialData}
     />
   );

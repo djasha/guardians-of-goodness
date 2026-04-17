@@ -8,11 +8,10 @@ import { puckConfig, emptyPuckData, type PuckData } from "@/puck/config";
 type Props = {
   slug: string;
   title: string;
-  description: string;
   initialData: PuckData | null;
 };
 
-export function EditorClient({ slug, title, description, initialData }: Props) {
+export function EditorClient({ slug, title, initialData }: Props) {
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +23,7 @@ export function EditorClient({ slug, title, description, initialData }: Props) {
       const res = await fetch(`/api/puck/${slug}`, {
         method: "PUT",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ puckData: data, title, description }),
+        body: JSON.stringify({ puckData: data }),
       });
       if (!res.ok) {
         const msg = await res.text();

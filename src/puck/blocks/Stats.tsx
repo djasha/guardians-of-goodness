@@ -12,8 +12,7 @@ const toneClasses: Record<StatsProps["tone"], string> = {
 
 export function Stats({ heading, items, tone }: StatsProps) {
   const hasItems = Array.isArray(items) && items.length > 0;
-  const colClass =
-    items.length === 3 ? "md:grid-cols-3" : "md:grid-cols-4";
+  const colClass = items?.length === 3 ? "md:grid-cols-3" : "md:grid-cols-4";
 
   return (
     <section className={`${toneClasses[tone]} px-6 py-16 border-y-4 border-dark`}>

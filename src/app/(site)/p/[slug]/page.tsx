@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Render } from "@puckeditor/core";
@@ -10,17 +11,22 @@ const LANDING_PAGE_QUERY = `*[_type == "landingPage" && slug.current == $slug][0
   puckData
 }`;
 
+const getLandingPage = cache(async (slug: string) => {
+  const { data } = await sanityFetch({
+    query: LANDING_PAGE_QUERY,
+    params: { slug },
+    tags: [`landingPage:${slug}`],
+  });
+  return data;
+});
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const { data } = await sanityFetch({
-    query: LANDING_PAGE_QUERY,
-    params: { slug },
-    tags: [`landingPage:${slug}`],
-  });
+  const data = await getLandingPage(slug);
   if (!data) return {};
   return {
     title: data.title,
@@ -34,11 +40,7 @@ export default async function LandingPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { data } = await sanityFetch({
-    query: LANDING_PAGE_QUERY,
-    params: { slug },
-    tags: [`landingPage:${slug}`],
-  });
+  const data = await getLandingPage(slug);
 
   if (!data) notFound();
 

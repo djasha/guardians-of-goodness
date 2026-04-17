@@ -10,6 +10,7 @@ const ALLOWED_TYPES = [
   "image/gif",
   "image/avif",
 ];
+const ALLOWED_EXTENSIONS = /\.(jpe?g|png|webp|gif|avif)$/i;
 
 export async function POST(req: NextRequest) {
   let form: FormData;
@@ -24,7 +25,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing file" }, { status: 400 });
   }
 
-  if (!ALLOWED_TYPES.includes(file.type)) {
+  if (!ALLOWED_TYPES.includes(file.type) || !ALLOWED_EXTENSIONS.test(file.name)) {
     return NextResponse.json(
       { error: `Unsupported file type: ${file.type || "unknown"}` },
       { status: 415 }

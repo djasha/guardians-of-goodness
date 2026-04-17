@@ -57,8 +57,10 @@ Visual drag-and-drop editor for marketing/campaign pages. Lives on top of the Sa
 - **API:** `GET/PUT /api/puck/[slug]` — PUT caps body at 1MB, calls `revalidateTag(\`landingPage:\${slug}\`, "max")` so saves appear immediately (no webhook latency).
 - **Auth:** `/admin/*` and `/api/puck/*` gated by `proxy.ts` Basic auth (env: `ADMIN_PASSWORD`). No-op when unset (local dev).
 - **Storage:** `puckData` field on landingPage is a JSON string (read-only in Studio). Saved as `JSON.stringify(data)` on PUT, parsed on read. Keeps Sanity the source of truth without needing a parallel object schema.
-- **Blocks** (`src/puck/blocks/`): Hero, FeatureGrid (lucide icons), CTABand. Themed via CSS variables so they inherit whatever page theme is active — no hardcoded hex.
+- **Blocks** (`src/puck/blocks/`): Hero, FeatureGrid (lucide icons), CTABand, Image, RichText, Stats, Quote. Themed via CSS variables.
+- **Image uploads:** custom Puck field `ImagePickerField` posts to `/api/puck/upload` which uploads to Sanity via `writeClient.assets.upload`. Caps 5MB, validates both `Content-Type` and filename extension (JPEG/PNG/WebP/GIF/AVIF).
 - **Seed:** one published landingPage exists — slug `test` (doc id `7c0b9048-4c00-44a5-8edf-4e423ffd2a79`).
+- **Full guide:** see [docs/page-builder.md](docs/page-builder.md) for how-to-add-a-block, how-to-add-a-landing-page, and the full route/file map.
 
 ### Adding a new Puck block
 1. Create `src/puck/blocks/MyBlock.tsx` exporting `MyBlock` + `MyBlockProps`.
@@ -66,10 +68,11 @@ Visual drag-and-drop editor for marketing/campaign pages. Lives on top of the Sa
 3. Block renders on both the editor canvas (client) and the public page (server) — no `"use client"` unless you need client-only APIs. Prefer server-compatible components.
 
 ### Known follow-ups
-- No image field in any block — Hero/FeatureGrid are text-only. Add a Sanity image picker or next/image URL field.
-- No Studio button pointing to `/admin/editor/[slug]` from the document view (Presentation's resolve link covers this, but a dedicated action button would be tidier).
+- No Sanity asset reuse in the Image picker — every upload creates a new asset. Could list recent assets for re-selection.
 - No draft/publish split for Puck data — every save goes to the published doc. Future: save to a draft landingPage, publish button promotes to published.
-- `ADMIN_PASSWORD` must be set in Vercel env vars for prod protection.
+- No "duplicate landing page" flow — useful for reusing a template.
+- No slot-based column block — everything is top-level sections.
+- `FeatureGrid` has no block-level image field (only icons).
 
 ## Environment Variables
 

@@ -5,6 +5,7 @@ import { CTABand, type CTABandProps } from "./blocks/CTABand";
 import { Image, type ImageProps } from "./blocks/Image";
 import { RichText, type RichTextProps } from "./blocks/RichText";
 import { Stats, type StatsProps } from "./blocks/Stats";
+import { Quote, type QuoteProps } from "./blocks/Quote";
 import { ImagePickerField } from "./fields/ImagePickerField";
 
 export type Props = {
@@ -14,6 +15,7 @@ export type Props = {
   Image: ImageProps;
   RichText: RichTextProps;
   Stats: StatsProps;
+  Quote: QuoteProps;
 };
 
 export const puckConfig: Config<Props> = {
@@ -252,6 +254,31 @@ export const puckConfig: Config<Props> = {
         tone: "cream",
       },
       render: Stats,
+    },
+
+    Quote: {
+      label: "Quote",
+      fields: {
+        body: { type: "textarea", label: "Quote body" },
+        attribution: { type: "text", label: "Attribution (name)" },
+        role: { type: "text", label: "Role or organisation (optional)" },
+        tone: {
+          type: "select",
+          label: "Background tone",
+          options: [
+            { label: "Cream", value: "cream" },
+            { label: "Dark", value: "dark" },
+            { label: "Primary", value: "primary" },
+          ],
+        },
+      },
+      defaultProps: {
+        body: "Adopting changed my life — and saved a cat's.",
+        attribution: "A volunteer",
+        role: "Guardians of Goodness",
+        tone: "cream",
+      },
+      render: Quote,
     },
   },
 };
