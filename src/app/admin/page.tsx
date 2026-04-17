@@ -5,6 +5,9 @@ const LANDING_PAGES_QUERY = `*[_type == "landingPage"] | order(_updatedAt desc){
   _id,
   title,
   "slug": slug.current,
+  "parentSlug": parent->slug.current,
+  "grandparentSlug": parent->parent->slug.current,
+  isHomepage,
   description,
   _updatedAt,
   "hasContent": defined(puckData)
@@ -14,10 +17,21 @@ type LandingPageSummary = {
   _id: string;
   title: string;
   slug: string;
+  parentSlug?: string | null;
+  grandparentSlug?: string | null;
+  isHomepage?: boolean;
   description?: string;
   _updatedAt: string;
   hasContent: boolean;
 };
+
+function publicPath(page: LandingPageSummary): string {
+  if (page.isHomepage) return "/";
+  const segments = [page.grandparentSlug, page.parentSlug, page.slug].filter(
+    (s): s is string => typeof s === "string" && s.length > 0
+  );
+  return "/" + segments.join("/");
+}
 
 export default async function AdminIndex() {
   const pages: LandingPageSummary[] = await client.fetch(LANDING_PAGES_QUERY);
@@ -62,7 +76,7 @@ export default async function AdminIndex() {
                     {page.title || "Untitled"}
                   </h2>
                   <p className="text-sm opacity-70 truncate">
-                    /p/{page.slug} {page.hasContent ? "" : "• empty"}
+                    {publicPath(page)} {page.hasContent ? "" : "• empty"}
                   </p>
                 </div>
                 <span className="ml-4 text-sm opacity-60 whitespace-nowrap">

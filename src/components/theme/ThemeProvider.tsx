@@ -8,7 +8,7 @@ const ThemeContext = createContext<{
   theme: Theme;
   setTheme: (theme: Theme) => void;
 }>({
-  theme: "default",
+  theme: "mystical",
   setTheme: () => {},
 });
 
@@ -49,7 +49,7 @@ function getClientThemeSnapshot(): Theme {
 }
 
 function getServerThemeSnapshot(): Theme {
-  return "default";
+  return "mystical";
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {

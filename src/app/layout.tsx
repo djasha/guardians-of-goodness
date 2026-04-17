@@ -36,7 +36,9 @@ export const metadata: Metadata = {
   },
 };
 
-const themeInitScript = `(function(){try{var t=localStorage.getItem('gog-theme');if(t==='mystical')document.documentElement.classList.add('theme-mystical');}catch(e){}})();`;
+// Mystical (dark) is the default. The class is applied unless the user has
+// explicitly opted into the light ("default") theme.
+const themeInitScript = `(function(){try{var t=localStorage.getItem('gog-theme');if(t!=='default')document.documentElement.classList.add('theme-mystical');}catch(e){document.documentElement.classList.add('theme-mystical');}})();`;
 
 export default async function RootLayout({
   children,

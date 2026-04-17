@@ -10,7 +10,11 @@ import { PageHero, type PageHeroProps } from "./blocks/PageHero";
 import { Columns, type ColumnsProps } from "./blocks/Columns";
 import { SocialLinks, type SocialLinksProps } from "./blocks/SocialLinks";
 import { ContactInfo, type ContactInfoProps } from "./blocks/ContactInfo";
+import { ArticleGrid, type ArticleGridProps } from "./blocks/ArticleGrid";
+import { PartnersStrip, type PartnersStripProps } from "./blocks/PartnersStrip";
+import { ImpactStats, type ImpactStatsProps } from "./blocks/ImpactStats";
 import { ImagePickerField } from "./fields/ImagePickerField";
+import { client } from "@/sanity/client";
 
 export type Props = {
   PageHero: PageHeroProps;
@@ -24,7 +28,26 @@ export type Props = {
   Columns: ColumnsProps;
   SocialLinks: SocialLinksProps;
   ContactInfo: ContactInfoProps;
+  ArticleGrid: ArticleGridProps;
+  PartnersStrip: PartnersStripProps;
+  ImpactStats: ImpactStatsProps;
 };
+
+const ARTICLES_FOR_GRID_QUERY = `*[_type == "article" && defined(publishedAt)] | order(publishedAt desc)[0...$limit]{
+  _id,
+  title,
+  "slug": slug.current,
+  excerpt,
+  publishedAt,
+  "coverImage": { "url": coverImage.asset->url, "alt": coverImage.alt }
+}`;
+
+const PARTNERS_FOR_STRIP_QUERY = `*[_type == "partner"] | order(order asc, name asc){
+  _id,
+  name,
+  website,
+  "logo": { "url": logo.asset->url, "alt": logo.alt }
+}`;
 
 export const puckConfig: Config<Props> = {
   components: {
@@ -441,6 +464,151 @@ export const puckConfig: Config<Props> = {
         tone: "cream",
       },
       render: SocialLinks,
+    },
+
+    ArticleGrid: {
+      label: "Article Grid",
+      fields: {
+        heading: { type: "text", label: "Heading" },
+        limit: {
+          type: "number",
+          label: "How many articles?",
+          min: 1,
+          max: 12,
+        },
+        emptyHeading: { type: "text", label: "Empty-state heading" },
+        emptyBody: { type: "textarea", label: "Empty-state body" },
+        tone: {
+          type: "select",
+          label: "Background tone",
+          options: [
+            { label: "Cream", value: "cream" },
+            { label: "Dark", value: "dark" },
+          ],
+        },
+      },
+      defaultProps: {
+        heading: "From the blog",
+        limit: 6,
+        emptyHeading: "No articles yet",
+        emptyBody: "Check back soon for stories from the shelter.",
+        tone: "cream",
+      },
+      resolveData: async ({ props }) => {
+        const limit = Math.min(Math.max(Number(props.limit) || 6, 1), 12);
+        try {
+          const articles = await client.fetch(ARTICLES_FOR_GRID_QUERY, { limit });
+          return {
+            props: {
+              ...props,
+              _articles: Array.isArray(articles) ? articles : [],
+            },
+          };
+        } catch {
+          return { props: { ...props, _articles: [] } };
+        }
+      },
+      render: ArticleGrid,
+    },
+
+    PartnersStrip: {
+      label: "Partners Strip",
+      fields: {
+        heading: { type: "text", label: "Heading (optional)" },
+        subtext: { type: "textarea", label: "Sub-text (optional)" },
+        tone: {
+          type: "select",
+          label: "Background tone",
+          options: [
+            { label: "Cream", value: "cream" },
+            { label: "Dark", value: "dark" },
+          ],
+        },
+      },
+      defaultProps: {
+        heading: "Our partners",
+        subtext: "Clinics and organisations that help us rescue and care for cats.",
+        tone: "cream",
+      },
+      resolveData: async ({ props }) => {
+        try {
+          const partners = await client.fetch(PARTNERS_FOR_STRIP_QUERY);
+          return {
+            props: {
+              ...props,
+              _partners: Array.isArray(partners) ? partners : [],
+            },
+          };
+        } catch {
+          return { props: { ...props, _partners: [] } };
+        }
+      },
+      render: PartnersStrip,
+    },
+
+    ImpactStats: {
+      label: "Impact Stats",
+      fields: {
+        heading: { type: "text", label: "Heading (optional)" },
+        subtext: { type: "textarea", label: "Sub-text (optional)" },
+        items: {
+          type: "array",
+          label: "Stats",
+          getItemSummary: (item) => `${item.value || "—"} · ${item.label || ""}`.trim(),
+          arrayFields: {
+            value: { type: "text", label: "Value (e.g. 120+)" },
+            label: { type: "text", label: "Label (e.g. Cats rescued)" },
+            description: { type: "textarea", label: "Short description" },
+            icon: {
+              type: "select",
+              label: "Icon",
+              options: [
+                { label: "Heart", value: "Heart" },
+                { label: "Users", value: "Users" },
+                { label: "Home", value: "Home" },
+                { label: "Sparkles", value: "Sparkles" },
+                { label: "Shield", value: "Shield" },
+                { label: "Paw Print", value: "PawPrint" },
+              ],
+            },
+          },
+        },
+        tone: {
+          type: "select",
+          label: "Background tone",
+          options: [
+            { label: "Cream", value: "cream" },
+            { label: "Dark", value: "dark" },
+            { label: "Primary", value: "primary" },
+          ],
+        },
+      },
+      defaultProps: {
+        heading: "Our impact",
+        subtext: "Six years of rescuing, rehabilitating, and rehoming cats across Jordan.",
+        items: [
+          {
+            value: "120+",
+            label: "Cats rescued",
+            description: "Pulled from streets, emergencies, and abandoned homes.",
+            icon: "Heart",
+          },
+          {
+            value: "80",
+            label: "Forever homes",
+            description: "Matched with guardian families across Jordan and abroad.",
+            icon: "Home",
+          },
+          {
+            value: "15",
+            label: "Vet partners",
+            description: "Clinics that provide medical care and surgeries.",
+            icon: "Sparkles",
+          },
+        ],
+        tone: "dark",
+      },
+      render: ImpactStats,
     },
 
     ContactInfo: {

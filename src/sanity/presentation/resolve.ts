@@ -67,15 +67,34 @@ export const resolve: PresentationPluginOptions["resolve"] = {
       locations: [{ title: "Home", href: "/" }],
     }),
     landingPage: defineLocations({
-      select: { title: "title", slug: "slug.current" },
-      resolve: (doc) => ({
-        locations: doc?.slug
-          ? [
-              { title: doc?.title || "Landing Page", href: `/p/${doc.slug}` },
+      select: {
+        title: "title",
+        slug: "slug.current",
+        parentSlug: "parent.slug.current",
+        grandparentSlug: "parent.parent.slug.current",
+        isHomepage: "isHomepage",
+      },
+      resolve: (doc) => {
+        if (!doc?.slug) return { locations: [] };
+        if (doc.isHomepage) {
+          return {
+            locations: [
+              { title: doc?.title || "Home", href: "/" },
               { title: "Open in Page Builder", href: `/admin/editor/${doc.slug}` },
-            ]
-          : [],
-      }),
+            ],
+          };
+        }
+        const segments = [doc.grandparentSlug, doc.parentSlug, doc.slug].filter(
+          (s): s is string => typeof s === "string" && s.length > 0
+        );
+        const href = "/" + segments.join("/");
+        return {
+          locations: [
+            { title: doc?.title || "Page", href },
+            { title: "Open in Page Builder", href: `/admin/editor/${doc.slug}` },
+          ],
+        };
+      },
     }),
   },
 };

@@ -19,9 +19,10 @@ const PAGE_TREE_QUERY = `*[_type == "landingPage" && defined(slug.current)]{
   "slug": slug.current,
   "parentId": parent._ref,
   isHomepage,
-  noIndex,
-  puckData
+  noIndex
 }`;
+
+const PAGE_PUCK_DATA_QUERY = `*[_type == "landingPage" && _id == $id][0].puckData`;
 
 export function pathForPage(
   page: PageTreeRow,
@@ -57,3 +58,20 @@ export const getLandingPageByPath = cache(async (path: string) => {
   }
   return null;
 });
+
+export const getPageContent = cache(
+  async (id: string, slug?: string): Promise<string | null> => {
+    const tags = ["landingPage:tree"];
+    if (slug) tags.push(`landingPage:${slug}`);
+    try {
+      const result = await client.fetch<string | null>(
+        PAGE_PUCK_DATA_QUERY,
+        { id },
+        { next: { tags, revalidate: 60 } }
+      );
+      return typeof result === "string" ? result : null;
+    } catch {
+      return null;
+    }
+  }
+);

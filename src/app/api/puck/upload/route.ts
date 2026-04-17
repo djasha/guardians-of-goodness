@@ -41,15 +41,21 @@ export async function POST(req: NextRequest) {
 
   const buffer = Buffer.from(await file.arrayBuffer());
 
-  const asset = await writeClient.assets.upload("image", buffer, {
-    contentType: file.type,
-    filename: file.name,
-  });
-
-  return NextResponse.json({
-    url: asset.url,
-    width: asset.metadata?.dimensions?.width,
-    height: asset.metadata?.dimensions?.height,
-    assetId: asset._id,
-  });
+  try {
+    const asset = await writeClient.assets.upload("image", buffer, {
+      contentType: file.type,
+      filename: file.name,
+    });
+    return NextResponse.json({
+      url: asset.url,
+      width: asset.metadata?.dimensions?.width,
+      height: asset.metadata?.dimensions?.height,
+      assetId: asset._id,
+    });
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error ? e.message : "Upload to Sanity failed" },
+      { status: 500 }
+    );
+  }
 }

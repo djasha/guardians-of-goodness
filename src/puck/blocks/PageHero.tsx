@@ -42,9 +42,7 @@ export function PageHero({
             className="w-full h-full object-cover"
           />
           {overlay ? (
-            <div
-              className={`absolute inset-0 ${isDarkText ? "bg-dark/60" : "bg-cream/60"}`}
-            />
+            <div className="absolute inset-0 bg-dark/60" />
           ) : null}
         </div>
       ) : null}
