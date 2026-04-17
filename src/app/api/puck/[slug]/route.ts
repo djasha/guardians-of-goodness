@@ -1,9 +1,12 @@
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { client } from "@/sanity/client";
 import { writeClient } from "@/sanity/writeClient";
 
 type Params = { slug: string };
+
+const MAX_PUCK_DATA_BYTES = 1_000_000;
 
 const LANDING_PAGE_QUERY = `*[_type == "landingPage" && slug.current == $slug][0]{
   _id,
@@ -48,18 +51,26 @@ export async function PUT(
     return NextResponse.json({ error: "Invalid puckData" }, { status: 400 });
   }
 
+  const serialized = JSON.stringify(puckData);
+  if (serialized.length > MAX_PUCK_DATA_BYTES) {
+    return NextResponse.json(
+      { error: "Page content is too large" },
+      { status: 413 }
+    );
+  }
+
   const existing = await client.fetch(LANDING_PAGE_QUERY, { slug });
   if (!existing) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const patch: Record<string, unknown> = {
-    puckData: JSON.stringify(puckData),
-  };
+  const patch: Record<string, unknown> = { puckData: serialized };
   if (typeof title === "string") patch.title = title;
   if (typeof description === "string") patch.description = description;
 
   const result = await writeClient.patch(existing._id).set(patch).commit();
+
+  revalidateTag(`landingPage:${slug}`, "max");
 
   return NextResponse.json({ success: true, _rev: result._rev });
 }

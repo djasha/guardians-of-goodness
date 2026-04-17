@@ -44,6 +44,32 @@ Custom plugins at `/studio`:
 - **Status Board** — click to cycle cat status (available → pending → adopted)
 - **Bulk Add** — upload multiple photos, batch create cats (auto-generates slugs)
 - **Content** — standard Sanity desk with filtered cat lists + message inbox
+- **Presentation** — live preview + click-to-edit for every page singleton, cat, article, and landingPage. Landing pages show a "Open in Page Builder" deep link to `/admin/editor/[slug]`.
+
+## Page Builder (Puck)
+
+Visual drag-and-drop editor for marketing/campaign pages. Lives on top of the Sanity `landingPage` document.
+
+- **Package:** `@puckeditor/core` (NOT the deprecated `@measured/puck`).
+- **Admin dashboard:** `/admin` — lists all landingPages, click-through to editor.
+- **Editor:** `/admin/editor/[slug]` — full-screen Puck editor, Publish saves via PUT.
+- **Public render:** `/(site)/p/[slug]` — SSR with `sanityFetch`, tagged `landingPage:[slug]`, has empty-state fallback.
+- **API:** `GET/PUT /api/puck/[slug]` — PUT caps body at 1MB, calls `revalidateTag(\`landingPage:\${slug}\`, "max")` so saves appear immediately (no webhook latency).
+- **Auth:** `/admin/*` and `/api/puck/*` gated by `proxy.ts` Basic auth (env: `ADMIN_PASSWORD`). No-op when unset (local dev).
+- **Storage:** `puckData` field on landingPage is a JSON string (read-only in Studio). Saved as `JSON.stringify(data)` on PUT, parsed on read. Keeps Sanity the source of truth without needing a parallel object schema.
+- **Blocks** (`src/puck/blocks/`): Hero, FeatureGrid (lucide icons), CTABand. Themed via CSS variables so they inherit whatever page theme is active — no hardcoded hex.
+- **Seed:** one published landingPage exists — slug `test` (doc id `7c0b9048-4c00-44a5-8edf-4e423ffd2a79`).
+
+### Adding a new Puck block
+1. Create `src/puck/blocks/MyBlock.tsx` exporting `MyBlock` + `MyBlockProps`.
+2. Add to `Props` union + `components` map in `src/puck/config.tsx` (fields, defaultProps, render).
+3. Block renders on both the editor canvas (client) and the public page (server) — no `"use client"` unless you need client-only APIs. Prefer server-compatible components.
+
+### Known follow-ups
+- No image field in any block — Hero/FeatureGrid are text-only. Add a Sanity image picker or next/image URL field.
+- No Studio button pointing to `/admin/editor/[slug]` from the document view (Presentation's resolve link covers this, but a dedicated action button would be tidier).
+- No draft/publish split for Puck data — every save goes to the published doc. Future: save to a draft landingPage, publish button promotes to published.
+- `ADMIN_PASSWORD` must be set in Vercel env vars for prod protection.
 
 ## Environment Variables
 
