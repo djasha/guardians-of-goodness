@@ -5,6 +5,7 @@ import { CTABand, type CTABandProps } from "./blocks/CTABand";
 import { Image, type ImageProps } from "./blocks/Image";
 import { RichText, type RichTextProps } from "./blocks/RichText";
 import { Stats, type StatsProps } from "./blocks/Stats";
+import { ImagePickerField } from "./fields/ImagePickerField";
 
 export type Props = {
   Hero: HeroProps;
@@ -35,8 +36,15 @@ export const puckConfig: Config<Props> = {
           ],
         },
         image: {
-          type: "text",
-          label: "Image URL (optional) — paste a Sanity CDN URL",
+          type: "custom",
+          label: "Image (optional)",
+          render: ({ value, onChange, id }) => (
+            <ImagePickerField
+              id={id}
+              value={(value as string) ?? ""}
+              onChange={(next) => onChange(next)}
+            />
+          ),
         },
         imageAlt: { type: "text", label: "Image alt text" },
       },
@@ -128,8 +136,15 @@ export const puckConfig: Config<Props> = {
       label: "Image",
       fields: {
         src: {
-          type: "text",
-          label: "Image URL (paste a Sanity CDN URL)",
+          type: "custom",
+          label: "Image",
+          render: ({ value, onChange, id }) => (
+            <ImagePickerField
+              id={id}
+              value={(value as string) ?? ""}
+              onChange={(next) => onChange(next)}
+            />
+          ),
         },
         alt: { type: "text", label: "Alt text (describe the image)" },
         width: {
