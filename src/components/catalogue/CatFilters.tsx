@@ -83,7 +83,7 @@ function TagChip({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "px-3 py-2 rounded-full text-xs font-bold transition-all border-2 min-h-[40px] sm:min-h-[36px] touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+        "px-3 py-2 rounded-full text-xs font-bold transition-all border-2 min-h-[40px] lg:min-h-[36px] touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
         active
           ? "bg-secondary text-white border-dark"
           : "bg-warm-gray text-gray-600 border-transparent hover:border-secondary/40"

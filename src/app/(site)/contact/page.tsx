@@ -141,7 +141,7 @@ export default async function ContactPage() {
                 </h3>
                 <a
                   href={`mailto:${email}`}
-                  className="text-primary hover:underline"
+                  className="text-primary hover:underline inline-flex items-center min-h-11 touch-manipulation break-all -ml-1 px-1 rounded"
                 >
                   {email}
                 </a>

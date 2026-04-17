@@ -24,6 +24,7 @@ Cat rescue nonprofit website — Next.js 16 + Sanity CMS + Tailwind 4, deployed 
 7. **Design system:** Dark mystical cat sanctuary theme + neo-brutalist. Purple (#9b4dca) primary, teal (#4ecdc4) secondary, dark (#1a1a2e). Two themes: default (cream bg) and mystical (dark bg). CSS variables throughout — no hardcoded hex in components.
 8. **No purple hero blocks.** Catalogue pages blend with the page background. Stats use subtle inline text with dots, not flashy colored pills.
 9. **Sanity webhook** configured at `/api/revalidate` — content changes auto-revalidate the site. Secret: `REVALIDATION_SECRET` env var.
+10. **Touch targets ≥ 44 px on mobile + tablet**, compact at `lg` (1024+). Button-shaped CTAs use `min-h-11 lg:min-h-0`; icon buttons use `w-11 h-11 lg:w-9 lg:h-9`. Full rules + the `inline-flex` wrapper gotcha in [docs/mobile-standards.md](docs/mobile-standards.md).
 
 ## Database
 

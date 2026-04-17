@@ -136,7 +136,7 @@ export function RadioGroup({
         <label
           key={opt.value}
           className={cn(
-            "flex items-center gap-2 neo-border-sm px-4 py-2.5 cursor-pointer",
+            "flex items-center gap-2 neo-border-sm px-4 py-3 min-h-11 cursor-pointer touch-manipulation",
             "transition-all duration-200 text-sm focus-within:ring-2 focus-within:ring-primary/40 focus-within:ring-offset-2 focus-within:ring-offset-white",
             value === opt.value
               ? "bg-primary/5 text-primary font-bold neo-shadow-sm"

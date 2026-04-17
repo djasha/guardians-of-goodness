@@ -31,7 +31,7 @@ export function ThemeToggle({ className, size = "sm", iconClassName }: ThemeTogg
       aria-label={label}
       title={label}
       className={cn(
-        "inline-flex items-center justify-center rounded-full neo-border-sm transition-all",
+        "inline-flex items-center justify-center rounded-full neo-border-sm transition-all touch-manipulation",
         "bg-white text-dark hover:bg-primary hover:text-white hover:-translate-y-0.5",
         size === "sm" ? "w-9 h-9" : "w-11 h-11",
         className

@@ -26,9 +26,9 @@ const variants = {
 };
 
 const sizes = {
-  sm: "px-4 py-2 text-xs",
-  md: "px-6 py-3 text-sm",
-  lg: "px-8 py-4 text-base",
+  sm: "px-4 py-2.5 text-xs min-h-11 lg:min-h-0 lg:py-2",
+  md: "px-6 py-3 text-sm min-h-11",
+  lg: "px-8 py-4 text-base min-h-11",
 };
 
 export function MagneticButton({
@@ -73,7 +73,7 @@ export function MagneticButton({
   };
 
   const classes = cn(
-    "inline-flex items-center gap-2 font-bold cursor-pointer select-none",
+    "inline-flex items-center gap-2 font-bold cursor-pointer select-none touch-manipulation",
     variants[variant],
     sizes[size],
     disabled && "opacity-50 cursor-not-allowed",
@@ -96,16 +96,16 @@ export function MagneticButton({
   if (href && !disabled) {
     if (external) {
       return (
-        <a href={href} target="_blank" rel="noopener noreferrer">
+        <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex">
           {inner}
         </a>
       );
     }
-    return <Link href={href}>{inner}</Link>;
+    return <Link href={href} className="inline-flex">{inner}</Link>;
   }
 
   return (
-    <button type={type} onClick={onClick} disabled={disabled} className="appearance-none">
+    <button type={type} onClick={onClick} disabled={disabled} className="appearance-none inline-flex">
       {inner}
     </button>
   );

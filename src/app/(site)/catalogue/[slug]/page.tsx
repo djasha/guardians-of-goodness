@@ -110,7 +110,7 @@ export default async function CatProfilePage({ params }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
           <Link
             href="/catalogue"
-            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-primary transition-colors text-sm font-medium mb-3 sm:mb-5 -ml-2 px-2 py-2 min-h-11 sm:min-h-0 sm:py-0 touch-manipulation rounded-lg"
+            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-primary transition-colors text-sm font-medium mb-3 sm:mb-5 -ml-2 px-2 py-2 min-h-11 lg:min-h-0 lg:py-0 touch-manipulation rounded-lg"
           >
             <ArrowLeft className="w-4 h-4" aria-hidden="true" />
             CATalogue

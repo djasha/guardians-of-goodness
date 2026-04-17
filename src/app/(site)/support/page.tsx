@@ -151,7 +151,7 @@ export default async function SupportPage() {
                   </p>
                   <a
                     href="mailto:office@guardiansofgoodness.org?subject=Donation%20Inquiry"
-                    className="text-secondary font-semibold text-sm hover:underline inline-flex items-center gap-1"
+                    className="text-secondary font-semibold text-sm hover:underline inline-flex items-center gap-1 min-h-11 touch-manipulation -ml-1 px-1 rounded"
                   >
                     Request Details <ArrowRight className="w-3 h-3" aria-hidden="true" />
                   </a>
@@ -168,7 +168,7 @@ export default async function SupportPage() {
                   </p>
                   <a
                     href="mailto:office@guardiansofgoodness.org?subject=In-Kind%20Donation"
-                    className="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1"
+                    className="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1 min-h-11 touch-manipulation -ml-1 px-1 rounded"
                   >
                     Coordinate Drop-off <ArrowRight className="w-3 h-3" aria-hidden="true" />
                   </a>

@@ -92,7 +92,7 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
             {/* Close button */}
             <button
               onClick={() => setLightboxOpen(false)}
-              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+              className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors touch-manipulation"
               aria-label="Close lightbox"
             >
               <X className="w-5 h-5" aria-hidden="true" />
