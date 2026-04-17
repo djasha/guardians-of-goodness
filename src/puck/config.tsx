@@ -2,11 +2,17 @@ import type { Config, Data } from "@puckeditor/core";
 import { Hero, type HeroProps } from "./blocks/Hero";
 import { FeatureGrid, type FeatureGridProps } from "./blocks/FeatureGrid";
 import { CTABand, type CTABandProps } from "./blocks/CTABand";
+import { Image, type ImageProps } from "./blocks/Image";
+import { RichText, type RichTextProps } from "./blocks/RichText";
+import { Stats, type StatsProps } from "./blocks/Stats";
 
 export type Props = {
   Hero: HeroProps;
   FeatureGrid: FeatureGridProps;
   CTABand: CTABandProps;
+  Image: ImageProps;
+  RichText: RichTextProps;
+  Stats: StatsProps;
 };
 
 export const puckConfig: Config<Props> = {
@@ -28,6 +34,11 @@ export const puckConfig: Config<Props> = {
             { label: "Primary", value: "primary" },
           ],
         },
+        image: {
+          type: "text",
+          label: "Image URL (optional) — paste a Sanity CDN URL",
+        },
+        imageAlt: { type: "text", label: "Image alt text" },
       },
       defaultProps: {
         eyebrow: "Guardians of Goodness",
@@ -37,6 +48,8 @@ export const puckConfig: Config<Props> = {
         ctaLabel: "Support our work",
         ctaHref: "/support",
         tone: "cream",
+        image: "",
+        imageAlt: "",
       },
       render: Hero,
     },
@@ -109,6 +122,121 @@ export const puckConfig: Config<Props> = {
         secondaryHref: "/catalogue",
       },
       render: CTABand,
+    },
+
+    Image: {
+      label: "Image",
+      fields: {
+        src: {
+          type: "text",
+          label: "Image URL (paste a Sanity CDN URL)",
+        },
+        alt: { type: "text", label: "Alt text (describe the image)" },
+        width: {
+          type: "select",
+          label: "Width",
+          options: [
+            { label: "Contained", value: "contained" },
+            { label: "Full bleed", value: "full" },
+          ],
+        },
+        ratio: {
+          type: "select",
+          label: "Aspect ratio",
+          options: [
+            { label: "16:9", value: "16:9" },
+            { label: "4:3", value: "4:3" },
+            { label: "1:1", value: "1:1" },
+            { label: "3:4", value: "3:4" },
+          ],
+        },
+        tone: {
+          type: "select",
+          label: "Background tone",
+          options: [
+            { label: "Cream", value: "cream" },
+            { label: "Dark", value: "dark" },
+          ],
+        },
+      },
+      defaultProps: {
+        src: "",
+        alt: "",
+        width: "contained",
+        ratio: "16:9",
+        tone: "cream",
+      },
+      render: Image,
+    },
+
+    RichText: {
+      label: "Rich Text",
+      fields: {
+        heading: { type: "text", label: "Heading (optional)" },
+        body: {
+          type: "textarea",
+          label: "Body (use blank lines to separate paragraphs)",
+        },
+        align: {
+          type: "select",
+          label: "Alignment",
+          options: [
+            { label: "Left", value: "left" },
+            { label: "Center", value: "center" },
+          ],
+        },
+        tone: {
+          type: "select",
+          label: "Background tone",
+          options: [
+            { label: "Cream", value: "cream" },
+            { label: "Dark", value: "dark" },
+          ],
+        },
+      },
+      defaultProps: {
+        heading: "",
+        body: "Write your story here.\n\nLeave a blank line between paragraphs to create spacing.",
+        align: "left",
+        tone: "cream",
+      },
+      render: RichText,
+    },
+
+    Stats: {
+      label: "Stats",
+      fields: {
+        heading: { type: "text", label: "Heading (optional)" },
+        items: {
+          type: "array",
+          label: "Stats",
+          getItemSummary: (item) => `${item.value || "—"} ${item.label || ""}`.trim(),
+          arrayFields: {
+            value: { type: "text", label: "Value (e.g. 120+)" },
+            label: { type: "text", label: "Label (e.g. cats rescued)" },
+          },
+        },
+        tone: {
+          type: "select",
+          label: "Background tone",
+          options: [
+            { label: "Cream", value: "cream" },
+            { label: "Dark", value: "dark" },
+            { label: "Primary", value: "primary" },
+          ],
+        },
+      },
+      defaultProps: {
+        heading: "Our impact",
+        items: [
+          { value: "120+", label: "Cats rescued" },
+          { value: "80", label: "Forever homes" },
+          { value: "15", label: "Vet partners" },
+          { value: "6", label: "Years running" },
+        ],
+        tone: "cream",
+      },
+      render: Stats,
     },
   },
 };

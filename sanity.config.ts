@@ -8,6 +8,7 @@ import { dashboardPlugin } from "@/sanity/plugins/dashboard";
 import { statusBoardPlugin } from "@/sanity/plugins/statusBoard";
 import { bulkAddPlugin } from "@/sanity/plugins/bulkAdd";
 import { resolve } from "@/sanity/presentation/resolve";
+import { editInPageBuilderAction } from "@/sanity/actions/editInPageBuilder";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
@@ -79,5 +80,14 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
+  },
+
+  document: {
+    actions: (prev, context) => {
+      if (context.schemaType === "landingPage") {
+        return [...prev, editInPageBuilderAction];
+      }
+      return prev;
+    },
   },
 });

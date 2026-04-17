@@ -7,6 +7,8 @@ export type HeroProps = {
   ctaLabel: string;
   ctaHref: string;
   tone: "cream" | "dark" | "primary";
+  image?: string;
+  imageAlt?: string;
 };
 
 const toneStyles: Record<HeroProps["tone"], string> = {
@@ -22,12 +24,24 @@ export function Hero({
   ctaLabel,
   ctaHref,
   tone,
+  image,
+  imageAlt,
 }: HeroProps) {
   return (
     <section
       className={`${toneStyles[tone]} px-6 py-20 md:py-28 border-b-4 border-dark`}
     >
       <div className="max-w-4xl mx-auto">
+        {image ? (
+          <div className="aspect-video relative overflow-hidden border-2 border-dark bg-cream mb-10 shadow-[6px_6px_0_0_#1a1a2e]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={image}
+              alt={imageAlt || ""}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+        ) : null}
         {eyebrow ? (
           <p className="uppercase tracking-widest text-sm font-semibold opacity-70 mb-4">
             {eyebrow}
