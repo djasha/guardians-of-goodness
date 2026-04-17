@@ -8,6 +8,8 @@ import { Stats, type StatsProps } from "./blocks/Stats";
 import { Quote, type QuoteProps } from "./blocks/Quote";
 import { PageHero, type PageHeroProps } from "./blocks/PageHero";
 import { Columns, type ColumnsProps } from "./blocks/Columns";
+import { SocialLinks, type SocialLinksProps } from "./blocks/SocialLinks";
+import { ContactInfo, type ContactInfoProps } from "./blocks/ContactInfo";
 import { ImagePickerField } from "./fields/ImagePickerField";
 
 export type Props = {
@@ -20,6 +22,8 @@ export type Props = {
   Stats: StatsProps;
   Quote: QuoteProps;
   Columns: ColumnsProps;
+  SocialLinks: SocialLinksProps;
+  ContactInfo: ContactInfoProps;
 };
 
 export const puckConfig: Config<Props> = {
@@ -393,6 +397,107 @@ export const puckConfig: Config<Props> = {
         right: [],
       },
       render: Columns,
+    },
+
+    SocialLinks: {
+      label: "Social Links",
+      fields: {
+        heading: { type: "text", label: "Heading (optional)" },
+        items: {
+          type: "array",
+          label: "Links",
+          getItemSummary: (item) => item.label || "Link",
+          arrayFields: {
+            label: { type: "text", label: "Platform name" },
+            handle: { type: "text", label: "Handle (optional)" },
+            href: { type: "text", label: "URL" },
+            icon: {
+              type: "select",
+              label: "Icon",
+              options: [
+                { label: "Facebook", value: "Facebook" },
+                { label: "Instagram", value: "Instagram" },
+                { label: "LinkedIn", value: "LinkedIn" },
+              ],
+            },
+          },
+        },
+        tone: {
+          type: "select",
+          label: "Background tone",
+          options: [
+            { label: "Cream", value: "cream" },
+            { label: "Dark", value: "dark" },
+          ],
+        },
+      },
+      defaultProps: {
+        heading: "Follow us",
+        items: [
+          { label: "Facebook", handle: "@guardiansofgoodness", href: "https://www.facebook.com/guardiansofgoodness/", icon: "Facebook" },
+          { label: "Instagram", handle: "@guardians_of_goodness", href: "https://www.instagram.com/guardians_of_goodness/", icon: "Instagram" },
+          { label: "LinkedIn", handle: "Guardians of Goodness", href: "https://www.linkedin.com/company/guardians-of-goodness/", icon: "LinkedIn" },
+        ],
+        tone: "cream",
+      },
+      render: SocialLinks,
+    },
+
+    ContactInfo: {
+      label: "Contact Info",
+      fields: {
+        heading: { type: "text", label: "Heading (optional)" },
+        items: {
+          type: "array",
+          label: "Contact cards",
+          getItemSummary: (item) => item.title || "Card",
+          arrayFields: {
+            icon: {
+              type: "select",
+              label: "Icon",
+              options: [
+                { label: "Email", value: "Mail" },
+                { label: "Address", value: "MapPin" },
+                { label: "Phone", value: "Phone" },
+                { label: "Hours", value: "Clock" },
+              ],
+            },
+            title: { type: "text", label: "Title (e.g. Email us)" },
+            primary: { type: "text", label: "Primary line" },
+            secondary: { type: "text", label: "Secondary line (optional)" },
+            href: { type: "text", label: "Link (optional, e.g. mailto: or tel:)" },
+          },
+        },
+        tone: {
+          type: "select",
+          label: "Background tone",
+          options: [
+            { label: "Cream", value: "cream" },
+            { label: "Dark", value: "dark" },
+          ],
+        },
+      },
+      defaultProps: {
+        heading: "Get in touch",
+        items: [
+          {
+            icon: "Mail",
+            title: "Email us",
+            primary: "office@guardiansofgoodness.org",
+            secondary: "We reply within 2 business days.",
+            href: "mailto:office@guardiansofgoodness.org",
+          },
+          {
+            icon: "MapPin",
+            title: "Find us",
+            primary: "Amman, Jordan",
+            secondary: "Jabal Amman, 1st Circle",
+            href: "",
+          },
+        ],
+        tone: "cream",
+      },
+      render: ContactInfo,
     },
   },
 };
