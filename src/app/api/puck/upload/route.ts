@@ -1,5 +1,7 @@
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdminAuth } from "@/lib/adminAuth";
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 import { writeClient } from "@/sanity/writeClient";
 
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
@@ -13,6 +15,23 @@ const ALLOWED_TYPES = [
 const ALLOWED_EXTENSIONS = /\.(jpe?g|png|webp|gif|avif)$/i;
 
 export async function POST(req: NextRequest) {
+  const authFailure = requireAdminAuth(req);
+  if (authFailure) return authFailure;
+
+  const ip = getClientIp(req.headers);
+  const limit = checkRateLimit(`puck-upload:${ip}`);
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { error: "Too many uploads. Please try again later." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(limit.retryAfterSeconds ?? 3600),
+        },
+      }
+    );
+  }
+
   let form: FormData;
   try {
     form = await req.formData();
@@ -25,9 +44,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing file" }, { status: 400 });
   }
 
-  if (!ALLOWED_TYPES.includes(file.type) || !ALLOWED_EXTENSIONS.test(file.name)) {
+  if (!ALLOWED_EXTENSIONS.test(file.name)) {
     return NextResponse.json(
-      { error: `Unsupported file type: ${file.type || "unknown"}` },
+      { error: "Unsupported file extension" },
       { status: 415 }
     );
   }
@@ -40,10 +59,17 @@ export async function POST(req: NextRequest) {
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
+  const detectedType = detectImageMime(buffer);
+  if (!detectedType || !ALLOWED_TYPES.includes(detectedType)) {
+    return NextResponse.json(
+      { error: "Unsupported or invalid image file" },
+      { status: 415 }
+    );
+  }
 
   try {
     const asset = await writeClient.assets.upload("image", buffer, {
-      contentType: file.type,
+      contentType: detectedType,
       filename: file.name,
     });
     return NextResponse.json({
@@ -58,4 +84,67 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function detectImageMime(buffer: Buffer): string | null {
+  if (
+    buffer.length >= 3 &&
+    buffer[0] === 0xff &&
+    buffer[1] === 0xd8 &&
+    buffer[2] === 0xff
+  ) {
+    return "image/jpeg";
+  }
+
+  if (
+    buffer.length >= 8 &&
+    buffer[0] === 0x89 &&
+    buffer[1] === 0x50 &&
+    buffer[2] === 0x4e &&
+    buffer[3] === 0x47 &&
+    buffer[4] === 0x0d &&
+    buffer[5] === 0x0a &&
+    buffer[6] === 0x1a &&
+    buffer[7] === 0x0a
+  ) {
+    return "image/png";
+  }
+
+  if (
+    buffer.length >= 6 &&
+    (buffer.subarray(0, 6).toString("ascii") === "GIF87a" ||
+      buffer.subarray(0, 6).toString("ascii") === "GIF89a")
+  ) {
+    return "image/gif";
+  }
+
+  if (
+    buffer.length >= 12 &&
+    buffer.subarray(0, 4).toString("ascii") === "RIFF" &&
+    buffer.subarray(8, 12).toString("ascii") === "WEBP"
+  ) {
+    return "image/webp";
+  }
+
+  if (isAvif(buffer)) {
+    return "image/avif";
+  }
+
+  return null;
+}
+
+function isAvif(buffer: Buffer): boolean {
+  if (buffer.length < 12 || buffer.subarray(4, 8).toString("ascii") !== "ftyp") {
+    return false;
+  }
+
+  const boxSize = buffer.readUInt32BE(0);
+  const brandBytes = Math.min(buffer.length, boxSize > 0 ? boxSize : 32, 64);
+  const brands: string[] = [];
+
+  for (let offset = 8; offset + 4 <= brandBytes; offset += 4) {
+    brands.push(buffer.subarray(offset, offset + 4).toString("ascii"));
+  }
+
+  return brands.some((brand) => brand === "avif" || brand === "avis");
 }

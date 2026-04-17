@@ -1,6 +1,7 @@
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
+import { requireAdminAuth } from "@/lib/adminAuth";
 import { client } from "@/sanity/client";
 import { writeClient } from "@/sanity/writeClient";
 
@@ -48,6 +49,9 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<Params> }
 ) {
+  const authFailure = requireAdminAuth(req);
+  if (authFailure) return authFailure;
+
   const { slug } = await params;
   const url = new URL(req.url);
   const isDraft = url.searchParams.get("draft") === "1";

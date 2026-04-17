@@ -90,9 +90,9 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                 onClick={onClose}
                 aria-label="Close menu"
                 title="Close menu"
-                className="inline-flex items-center justify-center w-9 h-9 rounded-full neo-border-sm bg-white text-dark hover:bg-primary hover:text-white hover:-translate-y-0.5 transition-all"
+                className="inline-flex items-center justify-center w-11 h-11 rounded-full neo-border-sm bg-white text-dark hover:bg-primary hover:text-white hover:-translate-y-0.5 transition-all touch-manipulation"
               >
-                <X className="w-4 h-4" strokeWidth={2.5} aria-hidden="true" />
+                <X className="w-5 h-5" strokeWidth={2.5} aria-hidden="true" />
               </button>
             </div>
 
@@ -118,7 +118,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                               <Link
                                 href={child.href}
                                 onClick={onClose}
-                                className="flex items-center gap-2.5 py-2.5 px-4 text-sm font-semibold text-dark/60 hover:text-primary transition-colors"
+                                className="flex items-center gap-2.5 py-3 px-4 text-sm font-semibold text-dark/60 hover:text-primary transition-colors min-h-11 touch-manipulation"
                               >
                                 <Icon
                                   className="w-4 h-4 text-secondary"
@@ -156,7 +156,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook (opens in new tab)"
-                  className="neo-border-sm neo-hover bg-white w-10 h-10 flex items-center justify-center text-dark/60 hover:text-primary transition-all"
+                  className="neo-border-sm neo-hover bg-white w-11 h-11 flex items-center justify-center text-dark/60 hover:text-primary transition-all touch-manipulation"
                 >
                   <FacebookIcon className="w-5 h-5" />
                 </a>
@@ -165,7 +165,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram (opens in new tab)"
-                  className="neo-border-sm neo-hover bg-white w-10 h-10 flex items-center justify-center text-dark/60 hover:text-primary transition-all"
+                  className="neo-border-sm neo-hover bg-white w-11 h-11 flex items-center justify-center text-dark/60 hover:text-primary transition-all touch-manipulation"
                 >
                   <InstagramIcon className="w-5 h-5" />
                 </a>
@@ -174,7 +174,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn (opens in new tab)"
-                  className="neo-border-sm neo-hover bg-white w-10 h-10 flex items-center justify-center text-dark/60 hover:text-primary transition-all"
+                  className="neo-border-sm neo-hover bg-white w-11 h-11 flex items-center justify-center text-dark/60 hover:text-primary transition-all touch-manipulation"
                 >
                   <LinkedInIcon className="w-5 h-5" />
                 </a>

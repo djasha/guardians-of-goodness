@@ -128,16 +128,19 @@ export function Hero({ data }: { data?: HeroData | null }) {
 
           {/* Quick links */}
           <M {...(!reduced && { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.4, delay: 0.4 } })}>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-8">
+            <div className="flex flex-wrap items-center gap-x-1 sm:gap-x-4 gap-y-1 mb-8 -mx-2">
               {quickLinks.map((link, i) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-white/70 hover:text-secondary text-sm font-semibold transition-colors inline-flex items-center gap-1"
-                >
-                  {i > 0 && <span className="text-white/15 mr-2">|</span>}
-                  {link.label}
-                </Link>
+                <div key={link.href} className="inline-flex items-center">
+                  {i > 0 && (
+                    <span className="text-white/15 mx-1 sm:mx-0 sm:mr-2 hidden sm:inline" aria-hidden="true">|</span>
+                  )}
+                  <Link
+                    href={link.href}
+                    className="text-white/70 hover:text-secondary active:text-secondary text-sm font-semibold transition-colors inline-flex items-center px-2 py-2.5 sm:py-1 min-h-11 sm:min-h-0 touch-manipulation"
+                  >
+                    {link.label}
+                  </Link>
+                </div>
               ))}
             </div>
           </M>

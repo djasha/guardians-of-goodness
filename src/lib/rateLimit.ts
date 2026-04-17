@@ -1,10 +1,10 @@
 /**
- * Best-effort, in-memory rate limiter for form endpoints.
+ * Best-effort, in-memory rate limiter for lightweight server endpoints.
  *
  * NOTE on serverless: On Vercel, multiple Lambda instances may each hold
  * their own copy of `buckets`, so an attacker hitting different instances
  * can exceed the nominal limit. This is still useful as a first line of
- * defense — combined with the honeypot and Sanity-based duplicate check,
+ * defense — combined with endpoint-specific validation,
  * it stops trivial bots and accidental double-submits.
  *
  * For production-grade rate limiting, add `@upstash/ratelimit` with an

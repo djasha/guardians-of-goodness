@@ -83,7 +83,7 @@ function TagChip({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "px-3 py-1.5 rounded-full text-xs font-bold transition-all border-2 min-h-[36px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+        "px-3 py-2 rounded-full text-xs font-bold transition-all border-2 min-h-[40px] sm:min-h-[36px] touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
         active
           ? "bg-secondary text-white border-dark"
           : "bg-warm-gray text-gray-600 border-transparent hover:border-secondary/40"
@@ -310,13 +310,13 @@ export function CatFilters({
           {filters.search && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-primary/10 text-primary text-xs font-bold border border-primary/20">
               &quot;{filters.search}&quot;
-              <button onClick={() => update({ search: "" })} aria-label={`Remove search filter: ${filters.search}`} className="hover:text-primary-dark min-w-[24px] min-h-[24px] flex items-center justify-center focus-visible:outline-2 focus-visible:outline-primary">&times;</button>
+              <button onClick={() => update({ search: "" })} aria-label={`Remove search filter: ${filters.search}`} className="hover:text-primary-dark min-w-[32px] min-h-[32px] -mr-1.5 flex items-center justify-center text-base leading-none touch-manipulation focus-visible:outline-2 focus-visible:outline-primary">&times;</button>
             </span>
           )}
           {filters.tags.map((tag) => (
             <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-secondary/10 text-secondary-dark text-xs font-bold border border-secondary/20">
               {tag}
-              <button onClick={() => toggleTag(tag)} aria-label={`Remove ${tag} filter`} className="hover:text-secondary min-w-[24px] min-h-[24px] flex items-center justify-center focus-visible:outline-2 focus-visible:outline-primary">&times;</button>
+              <button onClick={() => toggleTag(tag)} aria-label={`Remove ${tag} filter`} className="hover:text-secondary min-w-[32px] min-h-[32px] -mr-1.5 flex items-center justify-center text-base leading-none touch-manipulation focus-visible:outline-2 focus-visible:outline-primary">&times;</button>
             </span>
           ))}
         </div>

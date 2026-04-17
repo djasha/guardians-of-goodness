@@ -1,4 +1,5 @@
 import { FacebookIcon, InstagramIcon, LinkedInIcon } from "@/components/ui/SocialIcons";
+import { SafePuckLink } from "@/puck/components/SafePuckLink";
 
 type IconName = "Facebook" | "Instagram" | "LinkedIn";
 
@@ -39,11 +40,9 @@ export function SocialLinks({ heading, items, tone }: SocialLinksProps) {
             {items.map((item, i) => {
               const Icon = iconMap[item.icon] ?? InstagramIcon;
               return (
-                <a
+                <SafePuckLink
                   key={i}
                   href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="block border-2 border-dark p-6 shadow-[6px_6px_0_0_#1a1a2e] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#1a1a2e] transition-transform bg-white text-dark"
                 >
                   <Icon className="w-8 h-8 mb-4 text-primary" />
@@ -53,7 +52,7 @@ export function SocialLinks({ heading, items, tone }: SocialLinksProps) {
                   {item.handle ? (
                     <p className="text-sm opacity-70">{item.handle}</p>
                   ) : null}
-                </a>
+                </SafePuckLink>
               );
             })}
           </div>

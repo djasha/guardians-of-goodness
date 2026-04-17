@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { SafePuckLink } from "@/puck/components/SafePuckLink";
 
 export type HeroProps = {
   eyebrow: string;
@@ -56,12 +56,12 @@ export function Hero({
           </p>
         ) : null}
         {ctaLabel && ctaHref ? (
-          <Link
+          <SafePuckLink
             href={ctaHref}
             className="inline-block bg-secondary text-dark font-semibold px-8 py-4 border-2 border-dark shadow-[4px_4px_0_0_#1a1a2e] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#1a1a2e] transition-transform"
           >
             {ctaLabel}
-          </Link>
+          </SafePuckLink>
         ) : null}
       </div>
     </section>

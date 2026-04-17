@@ -110,7 +110,7 @@ export default async function CatProfilePage({ params }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
           <Link
             href="/catalogue"
-            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-primary transition-colors text-sm font-medium mb-5"
+            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-primary transition-colors text-sm font-medium mb-3 sm:mb-5 -ml-2 px-2 py-2 min-h-11 sm:min-h-0 sm:py-0 touch-manipulation rounded-lg"
           >
             <ArrowLeft className="w-4 h-4" aria-hidden="true" />
             CATalogue
@@ -247,7 +247,7 @@ export default async function CatProfilePage({ params }: Props) {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`See ${cat.name} on Instagram`}
-                      className="inline-flex items-center justify-center w-10 h-10 rounded-lg border-2 border-current/20 text-primary hover:bg-primary/10 transition-colors"
+                      className="inline-flex items-center justify-center w-11 h-11 rounded-lg border-2 border-current/20 text-primary hover:bg-primary/10 transition-colors touch-manipulation"
                     >
                       <ExternalLink className="w-5 h-5" strokeWidth={2} />
                     </a>
@@ -257,7 +257,7 @@ export default async function CatProfilePage({ params }: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Share ${cat.name} on WhatsApp`}
-                    className="inline-flex items-center justify-center w-10 h-10 rounded-lg border-2 border-[#25D366]/30 text-[#25D366] hover:bg-[#25D366]/10 transition-colors"
+                    className="inline-flex items-center justify-center w-11 h-11 rounded-lg border-2 border-[#25D366]/30 text-[#25D366] hover:bg-[#25D366]/10 transition-colors touch-manipulation"
                   >
                     <Share2 className="w-5 h-5" strokeWidth={2} />
                   </a>

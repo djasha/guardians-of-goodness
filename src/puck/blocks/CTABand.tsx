@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { SafePuckLink } from "@/puck/components/SafePuckLink";
 
 export type CTABandProps = {
   heading: string;
@@ -26,20 +26,20 @@ export function CTABand({
         {body ? <p className="text-lg md:text-xl opacity-90 mb-8">{body}</p> : null}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           {primaryLabel && primaryHref ? (
-            <Link
+            <SafePuckLink
               href={primaryHref}
               className="inline-block bg-secondary text-dark font-semibold px-8 py-4 border-2 border-dark shadow-[4px_4px_0_0_#1a1a2e] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#1a1a2e] transition-transform"
             >
               {primaryLabel}
-            </Link>
+            </SafePuckLink>
           ) : null}
           {secondaryLabel && secondaryHref ? (
-            <Link
+            <SafePuckLink
               href={secondaryHref}
               className="inline-block bg-cream text-dark font-semibold px-8 py-4 border-2 border-dark shadow-[4px_4px_0_0_#1a1a2e] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#1a1a2e] transition-transform"
             >
               {secondaryLabel}
-            </Link>
+            </SafePuckLink>
           ) : null}
         </div>
       </div>

@@ -1,3 +1,6 @@
+import { resolveSafeHref } from "@/lib/safeHref";
+import { ResolvedSafePuckLink } from "@/puck/components/SafePuckLink";
+
 export type Partner = {
   _id: string;
   name: string;
@@ -45,6 +48,7 @@ export function PartnersStrip({
         {partners.length > 0 ? (
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
             {partners.map((partner) => {
+              const safeWebsite = resolveSafeHref(partner.website);
               const inner = partner.logo?.url ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
@@ -57,17 +61,15 @@ export function PartnersStrip({
                   {partner.name}
                 </span>
               );
-              return partner.website ? (
-                <a
+              return safeWebsite ? (
+                <ResolvedSafePuckLink
                   key={partner._id}
-                  href={partner.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={partner.name}
+                  safeHref={safeWebsite}
+                  ariaLabel={partner.name}
                   className="flex items-center"
                 >
                   {inner}
-                </a>
+                </ResolvedSafePuckLink>
               ) : (
                 <span key={partner._id} className="flex items-center">
                   {inner}

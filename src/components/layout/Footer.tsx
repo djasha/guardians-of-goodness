@@ -93,16 +93,16 @@ export function Footer({
               />
             </Link>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
             <Link
               href="/consultation"
-              className={`neo-border-sm neo-shadow-teal bg-secondary text-dark font-bold px-5 py-2.5 text-sm transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_var(--color-secondary)] border-secondary ${focusRing}`}
+              className={`neo-border-sm neo-shadow-teal bg-secondary text-dark font-bold px-5 py-3 text-sm transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_var(--color-secondary)] border-secondary flex-1 sm:flex-none text-center min-h-11 inline-flex items-center justify-center touch-manipulation ${focusRing}`}
             >
               Get Involved
             </Link>
             <Link
               href="/catalogue"
-              className={`neo-border-sm bg-white/10 text-white font-bold px-5 py-2.5 text-sm hover:bg-white/15 transition-all border-white/20 ${focusRing}`}
+              className={`neo-border-sm bg-white/10 text-white font-bold px-5 py-3 text-sm hover:bg-white/15 transition-all border-white/20 flex-1 sm:flex-none text-center min-h-11 inline-flex items-center justify-center touch-manipulation ${focusRing}`}
             >
               Adopt a Cat
             </Link>
@@ -119,14 +119,14 @@ export function Footer({
 
             <a
               href={`mailto:${SITE.email}`}
-              className={`inline-flex items-center gap-3 group ${focusRing}`}
+              className={`inline-flex items-center gap-3 group min-h-11 py-1 touch-manipulation break-all ${focusRing}`}
             >
               <span className="neo-border-sm bg-primary/20 border-primary/30 w-10 h-10 flex items-center justify-center text-white/80 group-hover:bg-secondary/20 group-hover:border-secondary/30 transition-colors">
                 <svg aria-hidden="true" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
               </span>
-              <span className="text-sm font-semibold text-white/80 group-hover:text-secondary transition-colors">
+              <span className="text-xs sm:text-sm font-semibold text-white/80 group-hover:text-secondary transition-colors break-all">
                 {SITE.email}
               </span>
             </a>
@@ -134,15 +134,15 @@ export function Footer({
 
           {/* Quick Links */}
           <nav aria-label="Footer navigation" className="md:col-span-3">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-secondary mb-5">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-secondary mb-4 md:mb-5">
               Quick Links
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-0.5 md:space-y-2">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`text-sm text-white/80 hover:text-white font-medium transition-all inline-flex items-center gap-2 group ${focusRing}`}
+                    className={`text-sm text-white/80 hover:text-white active:text-white font-medium transition-all inline-flex items-center gap-2 group py-2.5 md:py-1 min-h-11 md:min-h-0 touch-manipulation ${focusRing}`}
                   >
                     <PawPrint className="w-2.5 h-2.5 text-primary/60 group-hover:text-secondary transition-colors" />
                     {link.label}

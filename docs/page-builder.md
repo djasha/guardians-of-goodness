@@ -167,7 +167,7 @@ If the singleton is missing or a field is empty, the chrome falls back to hardco
 
 ## Operational notes
 
-- **Auth.** `/admin` and `/api/puck/*` require the `ADMIN_PASSWORD` env var on Vercel. Without it, these routes are public.
+- **Auth.** `/admin` and `/api/puck/*` require the `ADMIN_PASSWORD` env var on Vercel. Without it, production fails closed; only local development bypasses the password.
 - **Save size.** PUTs to `/api/puck/[slug]` cap puckData at 1MB, images at 5MB, JPEG/PNG/WebP/GIF/AVIF only.
 - **Revalidation.** Publish calls `revalidateTag("landingPage:<slug>", "max")` + `revalidateTag("landingPage:tree", "max")` — the public page updates on the next request.
 - **Renames.** Rename the page title and slug in Sanity Studio. The editor never writes title/description/slug.

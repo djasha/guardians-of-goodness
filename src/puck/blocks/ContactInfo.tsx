@@ -1,4 +1,6 @@
 import { Mail, MapPin, Phone, Clock } from "lucide-react";
+import { resolveSafeHref } from "@/lib/safeHref";
+import { ResolvedSafePuckLink } from "@/puck/components/SafePuckLink";
 
 const iconMap = {
   Mail,
@@ -38,6 +40,7 @@ export function ContactInfo({ heading, items, tone }: ContactInfoProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {items.map((item, i) => {
               const Icon = iconMap[item.icon] ?? Mail;
+              const safeHref = resolveSafeHref(item.href);
               const content = (
                 <>
                   <Icon className="w-7 h-7 mb-4 text-primary" strokeWidth={1.8} />
@@ -52,14 +55,14 @@ export function ContactInfo({ heading, items, tone }: ContactInfoProps) {
                   ) : null}
                 </>
               );
-              return item.href ? (
-                <a
+              return safeHref ? (
+                <ResolvedSafePuckLink
                   key={i}
-                  href={item.href}
+                  safeHref={safeHref}
                   className="block border-2 border-dark p-6 shadow-[6px_6px_0_0_#1a1a2e] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#1a1a2e] transition-transform bg-white text-dark"
                 >
                   {content}
-                </a>
+                </ResolvedSafePuckLink>
               ) : (
                 <div
                   key={i}

@@ -112,7 +112,7 @@ export function CatGrid({ cats, stats }: CatGridProps) {
               aria-label="Card view"
               aria-pressed={viewMode === "default"}
               className={cn(
-                "inline-flex items-center justify-center w-9 h-9 rounded-lg border-2 transition-all",
+                "inline-flex items-center justify-center w-11 h-11 sm:w-9 sm:h-9 rounded-lg border-2 transition-all touch-manipulation",
                 viewMode === "default"
                   ? "bg-primary text-white border-dark shadow-[2px_2px_0_0_var(--color-dark)]"
                   : "bg-white text-dark/50 border-gray-200 hover:border-primary hover:text-primary"
@@ -126,7 +126,7 @@ export function CatGrid({ cats, stats }: CatGridProps) {
               aria-label="Compact grid view"
               aria-pressed={viewMode === "compact"}
               className={cn(
-                "inline-flex items-center justify-center w-9 h-9 rounded-lg border-2 transition-all",
+                "inline-flex items-center justify-center w-11 h-11 sm:w-9 sm:h-9 rounded-lg border-2 transition-all touch-manipulation",
                 viewMode === "compact"
                   ? "bg-primary text-white border-dark shadow-[2px_2px_0_0_var(--color-dark)]"
                   : "bg-white text-dark/50 border-gray-200 hover:border-primary hover:text-primary"

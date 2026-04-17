@@ -229,7 +229,7 @@ export function Header({ navItems, ctaLabel, ctaHref }: HeaderProps = {}) {
 
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 cursor-pointer text-dark"
+                className="lg:hidden flex flex-col justify-center items-center w-11 h-11 gap-1.5 cursor-pointer text-dark touch-manipulation"
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
               >
                 <span className={cn(
