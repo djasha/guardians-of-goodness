@@ -61,5 +61,16 @@ export const resolve: PresentationPluginOptions["resolve"] = {
       tone: "caution",
       locations: [{ title: "Home", href: "/" }],
     }),
+    landingPage: defineLocations({
+      select: { title: "title", slug: "slug.current" },
+      resolve: (doc) => ({
+        locations: doc?.slug
+          ? [
+              { title: doc?.title || "Landing Page", href: `/p/${doc.slug}` },
+              { title: "Open in Page Builder", href: `/admin/editor/${doc.slug}` },
+            ]
+          : [],
+      }),
+    }),
   },
 };

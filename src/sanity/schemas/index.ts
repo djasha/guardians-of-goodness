@@ -12,6 +12,7 @@ import projectPage from "./pages/projectPage";
 import supportPage from "./pages/supportPage";
 import consultationPage from "./pages/consultationPage";
 import contactPage from "./pages/contactPage";
+import landingPage from "./pages/landingPage";
 
 export const schemaTypes = [
   // Content
@@ -33,4 +34,5 @@ export const schemaTypes = [
   supportPage,
   consultationPage,
   contactPage,
+  landingPage,
 ];

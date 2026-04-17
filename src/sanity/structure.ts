@@ -82,6 +82,18 @@ export const structure: StructureResolver = (S) =>
 
       S.divider(),
 
+      // --- Landing Pages (visual Puck editor) ---
+      S.listItem()
+        .title("Landing Pages")
+        .icon(() => "✨")
+        .child(
+          S.documentTypeList("landingPage")
+            .title("Landing Pages")
+            .filter('_type == "landingPage"')
+        ),
+
+      S.divider(),
+
       // --- Cats ---
       S.listItem()
         .title("Cats")
