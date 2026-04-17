@@ -2,12 +2,27 @@
 
 How the site's pages are structured, and how to add a new one fast.
 
+See also: [`docs/architecture-v2.md`](architecture-v2.md) for the full-site Puck migration plan and [`docs/page-audit-v2.md`](page-audit-v2.md) for the section inventory.
+
 ## Two kinds of pages
 
 | Kind | Route | Editor | Use for |
 |---|---|---|---|
 | **Template pages** | `/`, `/about`, `/catalogue`, `/support`, `/contact`, `/consultation`, `/education`, `/projects/tnr`, `/projects/hbs`, `/privacy` | Sanity Studio — each has a singleton doc (`homePage`, `aboutPage`, etc.) | Core site sections with custom layouts (forms, cat grids, custom heroes). Hand-coded templates bound to Sanity fields. |
-| **Landing pages** | `/p/[slug]` | Puck visual editor at `/admin/editor/[slug]` | Campaigns, one-off marketing pages, anything non-technical admins should build themselves. |
+| **Puck pages** | `/<any-path>` (catch-all) and `/p/[slug]` (legacy) | Puck visual editor at `/admin/editor/[slug]` | Campaigns, new marketing pages, nested sub-pages. Any path that **doesn't** have a fixed hand-coded route. |
+
+### How routing works now
+
+Next.js route precedence: static > dynamic > catch-all. The site has:
+- Fixed hand-coded routes: `/about`, `/support`, `/catalogue`, `/consultation`, `/contact`, `/education`, `/privacy`, `/projects/tnr`, `/projects/hbs`
+- Legacy Puck route: `/p/[slug]` (still works)
+- **New catch-all:** `/[...path]` — resolves any other path against the `landingPage` tree in Sanity
+
+So `/about` hits the hand-coded page. `/spring-drive` hits the catch-all and looks up a `landingPage` whose computed path is `/spring-drive`. A nested page `/campaigns/spring-drive` resolves by walking the `parent` reference up to root.
+
+### Page tree
+
+`landingPage` documents now have an optional `parent` reference. The public URL is computed by joining a page's slug with its ancestors' slugs. A page with `isHomepage: true` renders at `/` (but the hand-coded home currently wins — migrate later).
 
 ## Template pages — when content changes
 
@@ -28,17 +43,25 @@ To add a **new template page** (e.g. `/volunteer`):
 
 ## Landing pages — the Puck flow
 
-Admin opens `/admin`, picks a landing page (or creates one in Studio), drags blocks into the canvas at `/admin/editor/[slug]`, clicks Publish. Saved block data is stored as a JSON string on the `landingPage.puckData` field. The public route `/p/[slug]` reads that field and hands it to Puck's `Render` component.
+Admin opens `/admin`, picks a page (or creates one in Studio → Pages), drags blocks into the canvas at `/admin/editor/[slug]`, clicks Publish. Saved block data is stored as a JSON string on the `landingPage.puckData` field. The public catch-all route `/[...path]` reads that field and hands it to Puck's `Render` component.
 
-### Create a new landing page in 3 steps
+### Create a new page in 3 steps
 
-1. **Studio** → **Landing Pages** → **Create new** → set title + slug.
-2. Save the doc. The slug controls the public URL.
-3. Click the **Open in Page Builder** action (top-right of the doc), or go to `/admin` and click the card.
+1. **Studio** → **Pages** → **Create new** → set title + URL slug.
+2. (Optional) Pick a parent page to nest this under (`/campaigns` → `/campaigns/spring-drive`).
+3. Save the doc. Click the **Open in Page Builder** action, or go to `/admin` and click the card.
 4. Drop blocks from the sidebar, fill in fields, upload images with the picker.
-5. Click **Publish** (top-right of the editor).
+5. Click **Publish** (top-right of the editor) when ready.
 
-Revalidation is automatic — `/p/<slug>` shows the new content on next request.
+Revalidation is automatic — the new content shows on the next request.
+
+### Draft / Publish
+
+Every keystroke auto-saves to a **draft** copy of the page (Sanity `drafts.<id>`). The public site keeps serving the last published version until you click **Publish**.
+
+- **Auto-save** (debounced ~1.2s) writes to `drafts.<id>` — visitors don't see it.
+- **Publish** commits the draft to the published document and deletes the draft.
+- The editor header shows `Draft saved` while editing, `Unpublished draft` if you closed and returned, and `Published <time>` once you publish.
 
 ## Available blocks
 
@@ -46,15 +69,21 @@ All blocks live in `src/puck/blocks/` and are registered in `src/puck/config.tsx
 
 | Block | What it is | Key fields |
 |---|---|---|
-| `Hero` | Headline + subheading + CTA + optional image banner | eyebrow, heading, subheading, cta, tone, image |
+| `PageHero` | Full-viewport hero with optional background image + overlay (replaces the 6 duplicated page heroes) | badge, heading, subtext, image, overlay, bgTone, align |
+| `Hero` | Compact hero with headline + CTA + optional image banner | eyebrow, heading, subheading, cta, tone, image |
 | `FeatureGrid` | 3-column icon + title + body cards | heading, items[] (title, body, icon) |
 | `Image` | Standalone bordered image (4 ratios, contained/full) | src (picker), alt, width, ratio, tone |
 | `RichText` | Heading + paragraphs (blank lines between) | heading, body, align, tone |
 | `Stats` | Value/label grid (3 or 4 cols) | heading, items[] (value, label), tone |
 | `Quote` | Large pull-quote with attribution | body, attribution, role, tone |
 | `CTABand` | Full-width banner with 1–2 CTAs | heading, body, primary/secondary button + link |
+| `Columns` | 2- or 3-column layout with drop-zone slots for any blocks | layout, gap, tone, left/middle/right (slots) |
 
 All blocks accept a `tone` prop that maps to site CSS variables (cream / dark / primary) — they automatically inherit the site theme.
+
+### Columns = slots
+
+`Columns` is different — its `left`, `middle`, and `right` fields are **drop zones** that accept any other blocks. Drag a Hero into the left slot and a Quote into the right slot to build a split section.
 
 ## Adding a new block — 5 steps
 
@@ -111,21 +140,35 @@ Reference: `src/puck/fields/ImagePickerField.tsx` — uploads to `/api/puck/uplo
 | Block renderer components | `src/puck/blocks/*.tsx` |
 | Puck config (block registry) | `src/puck/config.tsx` |
 | Custom Puck fields | `src/puck/fields/*.tsx` |
-| Public rendered page | `src/app/(site)/p/[slug]/page.tsx` |
-| Editor UI | `src/app/admin/editor/[slug]/EditorClient.tsx` |
+| Catch-all public route | `src/app/(site)/[...path]/page.tsx` |
+| Legacy public route | `src/app/(site)/p/[slug]/page.tsx` |
+| Editor UI (draft + publish) | `src/app/admin/editor/[slug]/EditorClient.tsx` |
 | Editor server loader | `src/app/admin/editor/[slug]/page.tsx` |
 | Admin dashboard | `src/app/admin/page.tsx` |
-| Save endpoint | `src/app/api/puck/[slug]/route.ts` (GET + PUT) |
+| Save endpoint | `src/app/api/puck/[slug]/route.ts` (GET + PUT; `?draft=1` flag) |
 | Image upload endpoint | `src/app/api/puck/upload/route.ts` |
 | Basic auth gate | `src/proxy.ts` (matchers: `/admin/:path*`, `/api/puck/:path*`) |
-| Sanity schema | `src/sanity/schemas/pages/landingPage.ts` |
+| Sanity page schema | `src/sanity/schemas/pages/landingPage.ts` |
+| Sanity chrome schema | `src/sanity/schemas/siteChrome.ts` |
+| Nav item schema | `src/sanity/schemas/navItem.ts` |
+| Site chrome loader | `src/sanity/lib/siteChrome.ts` |
+| Page tree resolver | `src/sanity/lib/pageTree.ts` |
 | Studio action | `src/sanity/actions/editInPageBuilder.tsx` |
-| Presentation deep link | `src/sanity/presentation/resolve.ts` (`landingPage`) |
+| Presentation deep link | `src/sanity/presentation/resolve.ts` (`landingPage`, `siteChrome`) |
+
+## Site chrome (header + footer)
+
+Both are editable from Studio → **Site Chrome (Header & Footer)**. Edit:
+- Header nav items (label + href, or link to a `landingPage`). Dropdown children supported.
+- Header CTA button label + link.
+- Footer description paragraph, address lines, nav links, legal tagline.
+
+If the singleton is missing or a field is empty, the chrome falls back to hardcoded defaults (`src/sanity/lib/siteChrome.ts`). You can never break the site by deleting the chrome doc.
 
 ## Operational notes
 
 - **Auth.** `/admin` and `/api/puck/*` require the `ADMIN_PASSWORD` env var on Vercel. Without it, these routes are public.
 - **Save size.** PUTs to `/api/puck/[slug]` cap puckData at 1MB, images at 5MB, JPEG/PNG/WebP/GIF/AVIF only.
-- **Revalidation.** PUT calls `revalidateTag("landingPage:<slug>", "max")` — the public page updates on the next request.
-- **Renames.** Rename the page title in Sanity Studio, not the editor. The editor never writes title/description, to avoid clobbering Studio edits made mid-session.
-- **Every save publishes.** There is no draft/publish split yet. If you want to experiment, duplicate the doc first.
+- **Revalidation.** Publish calls `revalidateTag("landingPage:<slug>", "max")` + `revalidateTag("landingPage:tree", "max")` — the public page updates on the next request.
+- **Renames.** Rename the page title and slug in Sanity Studio. The editor never writes title/description/slug.
+- **Drafts.** Editing in Puck does NOT affect the public site. The public shows the last published version until you explicitly click Publish.

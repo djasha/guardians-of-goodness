@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { NAV_ITEMS } from "@/lib/constants";
+import type { NavItem } from "@/sanity/lib/siteChrome";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { ChevronDown } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
@@ -13,7 +14,17 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import { cn } from "@/lib/utils";
 
-export function Header() {
+type HeaderProps = {
+  navItems?: NavItem[];
+  ctaLabel?: string;
+  ctaHref?: string;
+};
+
+export function Header({ navItems, ctaLabel, ctaHref }: HeaderProps = {}) {
+  const resolvedNav: ReadonlyArray<NavItem | (typeof NAV_ITEMS)[number]> =
+    navItems && navItems.length > 0 ? navItems : NAV_ITEMS;
+  const resolvedCtaLabel = ctaLabel || "Support Us";
+  const resolvedCtaHref = ctaHref || "/support";
   const pathname = usePathname();
   const { theme } = useTheme();
   const isMystical = theme === "mystical";
@@ -100,8 +111,8 @@ export function Header() {
 
             {/* Desktop Nav */}
             <nav className="hidden lg:flex items-center gap-1">
-              {NAV_ITEMS.map((item) => {
-                const hasChildren = "children" in item && item.children;
+              {resolvedNav.map((item) => {
+                const hasChildren = "children" in item && item.children && item.children.length > 0;
                 const dropdownId = `desktop-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
                 const linkClassName = cn(
                   "px-3.5 py-2 text-sm font-semibold rounded-lg transition-all duration-200",
@@ -160,7 +171,7 @@ export function Header() {
                       </Link>
                     )}
 
-                    {hasChildren && (
+                    {hasChildren && "children" in item && item.children && (
                       <AnimatePresence>
                         {openDropdown === item.label && (
                           <motion.div
@@ -176,7 +187,7 @@ export function Header() {
                             onMouseEnter={() => handleDropdownEnter(item.label)}
                             onMouseLeave={handleDropdownLeave}
                           >
-                            {item.children!.map((child) => (
+                            {item.children.map((child) => (
                               <Link
                                 key={child.href}
                                 href={child.href}
@@ -208,11 +219,11 @@ export function Header() {
 
               <div className="hidden sm:block">
                 <MagneticButton
-                  href="/support"
+                  href={resolvedCtaHref}
                   variant={onDark ? "secondary" : "primary"}
                   size="sm"
                 >
-                  Support Us
+                  {resolvedCtaLabel}
                 </MagneticButton>
               </div>
 

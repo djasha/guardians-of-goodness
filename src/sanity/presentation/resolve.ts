@@ -61,6 +61,11 @@ export const resolve: PresentationPluginOptions["resolve"] = {
       tone: "caution",
       locations: [{ title: "Home", href: "/" }],
     }),
+    siteChrome: defineLocations({
+      message: "Header and footer appear on every page.",
+      tone: "caution",
+      locations: [{ title: "Home", href: "/" }],
+    }),
     landingPage: defineLocations({
       select: { title: "title", slug: "slug.current" },
       resolve: (doc) => ({

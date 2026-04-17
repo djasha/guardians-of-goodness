@@ -6,9 +6,12 @@ import { Image, type ImageProps } from "./blocks/Image";
 import { RichText, type RichTextProps } from "./blocks/RichText";
 import { Stats, type StatsProps } from "./blocks/Stats";
 import { Quote, type QuoteProps } from "./blocks/Quote";
+import { PageHero, type PageHeroProps } from "./blocks/PageHero";
+import { Columns, type ColumnsProps } from "./blocks/Columns";
 import { ImagePickerField } from "./fields/ImagePickerField";
 
 export type Props = {
+  PageHero: PageHeroProps;
   Hero: HeroProps;
   FeatureGrid: FeatureGridProps;
   CTABand: CTABandProps;
@@ -16,10 +19,76 @@ export type Props = {
   RichText: RichTextProps;
   Stats: StatsProps;
   Quote: QuoteProps;
+  Columns: ColumnsProps;
 };
 
 export const puckConfig: Config<Props> = {
   components: {
+    PageHero: {
+      label: "Page Hero",
+      fields: {
+        badge: { type: "text", label: "Small label above heading" },
+        heading: { type: "text", label: "Heading" },
+        subtext: { type: "textarea", label: "Sub-text" },
+        image: {
+          type: "custom",
+          label: "Background image (optional)",
+          render: ({ value, onChange, id }) => (
+            <ImagePickerField
+              id={id}
+              value={(value as string) ?? ""}
+              onChange={(next) => onChange(next)}
+            />
+          ),
+        },
+        imageAlt: { type: "text", label: "Image alt text" },
+        overlay: {
+          type: "select",
+          label: "Darken image?",
+          options: [
+            { label: "Yes", value: "true" },
+            { label: "No", value: "false" },
+          ],
+        },
+        bgTone: {
+          type: "select",
+          label: "Background tone",
+          options: [
+            { label: "Dark", value: "dark" },
+            { label: "Primary", value: "primary" },
+            { label: "Secondary", value: "secondary" },
+            { label: "Cream", value: "cream" },
+          ],
+        },
+        align: {
+          type: "select",
+          label: "Alignment",
+          options: [
+            { label: "Left", value: "left" },
+            { label: "Center", value: "center" },
+          ],
+        },
+      },
+      defaultProps: {
+        badge: "",
+        heading: "Your page heading",
+        subtext: "A short description that sits under the heading.",
+        image: "",
+        imageAlt: "",
+        overlay: true,
+        bgTone: "dark",
+        align: "left",
+      },
+      resolveData: ({ props }) => ({
+        props: {
+          ...props,
+          overlay:
+            typeof props.overlay === "string" ? props.overlay === "true" : props.overlay,
+        },
+      }),
+      render: PageHero,
+    },
+
     Hero: {
       label: "Hero",
       fields: {
@@ -279,6 +348,51 @@ export const puckConfig: Config<Props> = {
         tone: "cream",
       },
       render: Quote,
+    },
+
+    Columns: {
+      label: "Columns",
+      fields: {
+        layout: {
+          type: "select",
+          label: "Layout",
+          options: [
+            { label: "2 columns", value: "two" },
+            { label: "3 columns", value: "three" },
+            { label: "Sidebar left", value: "sidebar-left" },
+            { label: "Sidebar right", value: "sidebar-right" },
+          ],
+        },
+        gap: {
+          type: "select",
+          label: "Gap",
+          options: [
+            { label: "Small", value: "small" },
+            { label: "Medium", value: "medium" },
+            { label: "Large", value: "large" },
+          ],
+        },
+        tone: {
+          type: "select",
+          label: "Background tone",
+          options: [
+            { label: "Cream", value: "cream" },
+            { label: "Dark", value: "dark" },
+          ],
+        },
+        left: { type: "slot" },
+        middle: { type: "slot" },
+        right: { type: "slot" },
+      },
+      defaultProps: {
+        layout: "two",
+        gap: "medium",
+        tone: "cream",
+        left: [],
+        middle: [],
+        right: [],
+      },
+      render: Columns,
     },
   },
 };

@@ -259,4 +259,11 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.document().schemaType("siteSettings").documentId("siteSettings")
         ),
+      S.listItem()
+        .title("Site Chrome (Header & Footer)")
+        .icon(() => "🧱")
+        .id("siteChrome")
+        .child(
+          S.document().schemaType("siteChrome").documentId("siteChrome")
+        ),
     ]);

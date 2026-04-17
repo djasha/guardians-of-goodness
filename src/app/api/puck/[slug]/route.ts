@@ -13,24 +13,34 @@ const LANDING_PAGE_QUERY = `*[_type == "landingPage" && slug.current == $slug][0
   title,
   "slug": slug.current,
   description,
-  puckData
+  puckData,
+  "draft": *[_id == "drafts." + ^._id][0]{ puckData, _rev }
 }`;
 
+function draftId(publishedId: string): string {
+  return publishedId.startsWith("drafts.") ? publishedId : `drafts.${publishedId}`;
+}
+
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<Params> }
 ) {
   const { slug } = await params;
+  const url = new URL(req.url);
+  const useDraft = url.searchParams.get("draft") === "1";
   const doc = await client.fetch(LANDING_PAGE_QUERY, { slug });
   if (!doc) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
+  const activePuckData =
+    useDraft && doc.draft?.puckData ? doc.draft.puckData : doc.puckData;
   return NextResponse.json({
     _id: doc._id,
     title: doc.title,
     slug: doc.slug,
     description: doc.description ?? "",
-    puckData: doc.puckData ? safeParse(doc.puckData) : null,
+    puckData: activePuckData ? safeParse(activePuckData) : null,
+    hasDraft: Boolean(doc.draft?.puckData),
   });
 }
 
@@ -39,13 +49,11 @@ export async function PUT(
   { params }: { params: Promise<Params> }
 ) {
   const { slug } = await params;
+  const url = new URL(req.url);
+  const isDraft = url.searchParams.get("draft") === "1";
   const body = await req.json();
 
-  const { puckData, title, description } = body as {
-    puckData?: unknown;
-    title?: string;
-    description?: string;
-  };
+  const { puckData } = body as { puckData?: unknown };
 
   if (!puckData || typeof puckData !== "object") {
     return NextResponse.json({ error: "Invalid puckData" }, { status: 400 });
@@ -64,15 +72,55 @@ export async function PUT(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const patch: Record<string, unknown> = { puckData: serialized };
-  if (typeof title === "string") patch.title = title;
-  if (typeof description === "string") patch.description = description;
+  const publishedId = existing._id;
 
-  const result = await writeClient.patch(existing._id).set(patch).commit();
+  if (isDraft) {
+    const did = draftId(publishedId);
+    const published = (await client.getDocument(publishedId)) ?? null;
+    const {
+      _id: _ignoredId,
+      _rev: _ignoredRev,
+      _createdAt: _ignoredCreatedAt,
+      _updatedAt: _ignoredUpdatedAt,
+      ...rest
+    } = (published ?? {}) as Record<string, unknown>;
+    void _ignoredId;
+    void _ignoredRev;
+    void _ignoredCreatedAt;
+    void _ignoredUpdatedAt;
+    const draftDoc: { _id: string; _type: string; puckData: string } & Record<string, unknown> = {
+      ...rest,
+      _id: did,
+      _type: "landingPage",
+      puckData: serialized,
+    };
+    const result = await writeClient.createOrReplace(draftDoc);
+    return NextResponse.json({
+      success: true,
+      _rev: result._rev,
+      mode: "draft",
+    });
+  }
+
+  const result = await writeClient
+    .patch(publishedId)
+    .set({ puckData: serialized })
+    .commit();
+
+  try {
+    await writeClient.delete(draftId(publishedId));
+  } catch {
+    // no draft to delete
+  }
 
   revalidateTag(`landingPage:${slug}`, "max");
+  revalidateTag("landingPage:tree", "max");
 
-  return NextResponse.json({ success: true, _rev: result._rev });
+  return NextResponse.json({
+    success: true,
+    _rev: result._rev,
+    mode: "published",
+  });
 }
 
 function safeParse(text: string) {

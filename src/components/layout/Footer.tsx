@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SITE, SOCIAL } from "@/lib/constants";
+import type { NavItem } from "@/sanity/lib/siteChrome";
 import { FacebookIcon, InstagramIcon, LinkedInIcon } from "@/components/ui/SocialIcons";
 import { PawPrint } from "@/components/ui/PawPrint";
 
-const navLinks = [
+const DEFAULT_NAV_LINKS: NavItem[] = [
   { label: "About Us", href: "/about" },
   { label: "CATalogue", href: "/catalogue" },
   { label: "TNR Project", href: "/projects/tnr" },
@@ -39,7 +40,28 @@ const socials = [
 const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary rounded-lg";
 
-export function Footer() {
+type FooterProps = {
+  navItems?: NavItem[];
+  description?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  legal?: string;
+};
+
+export function Footer({
+  navItems,
+  description,
+  addressLine1,
+  addressLine2,
+  legal,
+}: FooterProps = {}) {
+  const navLinks = navItems && navItems.length > 0 ? navItems : DEFAULT_NAV_LINKS;
+  const footerDescription =
+    description ||
+    "A non-profit organization dedicated to creating a friendly environment for cats and dogs in Jordan through rescue, veterinary care, and community education.";
+  const line1 = addressLine1 || "Amman, Jordan";
+  const line2 = addressLine2 || "Jabal Amman, 1st Circle";
+  const legalLine = legal || "Made with care for cats in Jordan";
   return (
     <footer className="bg-dark text-white relative overflow-hidden">
       {/* Decorative paw prints — hidden from assistive tech */}
@@ -92,9 +114,7 @@ export function Footer() {
           {/* Description + Email */}
           <div className="md:col-span-5">
             <p className="text-white/80 text-sm leading-relaxed max-w-sm mb-6">
-              A non-profit organization dedicated to creating a friendly
-              environment for cats and dogs in Jordan through rescue, veterinary
-              care, and community education.
+              {footerDescription}
             </p>
 
             <a
@@ -138,8 +158,8 @@ export function Footer() {
               Find Us
             </h3>
             <address className="neo-border-sm bg-white/5 border-white/10 p-4 mb-6 not-italic">
-              <p className="text-white/90 text-sm font-semibold">Amman, Jordan</p>
-              <p className="text-white/70 text-sm">Jabal Amman, 1st Circle</p>
+              <p className="text-white/90 text-sm font-semibold">{line1}</p>
+              {line2 ? <p className="text-white/70 text-sm">{line2}</p> : null}
             </address>
 
             <h3 className="text-xs font-bold uppercase tracking-widest text-secondary mb-4">
@@ -169,7 +189,7 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-2 text-white/70">
             <PawPrint className="w-3.5 h-3.5" />
-            <span className="text-xs">Made with care for cats in Jordan</span>
+            <span className="text-xs">{legalLine}</span>
           </div>
         </div>
       </div>

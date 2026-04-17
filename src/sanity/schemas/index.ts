@@ -2,6 +2,8 @@ import cat from "./cat";
 import partner from "./partner";
 import article from "./article";
 import siteSettings from "./siteSettings";
+import siteChrome from "./siteChrome";
+import navItem from "./navItem";
 import formSubmission from "./formSubmission";
 import instagramPost from "./instagramPost";
 
@@ -24,8 +26,12 @@ export const schemaTypes = [
   // Forms
   formSubmission,
 
+  // Reusable objects
+  navItem,
+
   // Settings
   siteSettings,
+  siteChrome,
 
   // Pages
   homePage,

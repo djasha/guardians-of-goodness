@@ -2,12 +2,13 @@ import { notFound } from "next/navigation";
 import { client } from "@/sanity/client";
 import { EditorClient } from "./EditorClient";
 
-const LANDING_PAGE_QUERY = `*[_type == "landingPage" && slug.current == $slug][0]{
+const EDITOR_QUERY = `*[_type == "landingPage" && slug.current == $slug][0]{
   _id,
   title,
   "slug": slug.current,
   description,
-  puckData
+  puckData,
+  "draft": *[_id == "drafts." + ^._id][0]{ puckData }
 }`;
 
 export default async function EditorPage({
@@ -16,16 +17,19 @@ export default async function EditorPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const doc = await client.fetch(LANDING_PAGE_QUERY, { slug });
+  const doc = await client.fetch(EDITOR_QUERY, { slug });
   if (!doc) notFound();
 
-  const initialData = doc.puckData ? safeParse(doc.puckData) : null;
+  const hasDraft = Boolean(doc.draft?.puckData);
+  const sourceText = hasDraft ? doc.draft.puckData : doc.puckData;
+  const initialData = sourceText ? safeParse(sourceText) : null;
 
   return (
     <EditorClient
       slug={doc.slug}
       title={doc.title}
       initialData={initialData}
+      initialHasDraft={hasDraft}
     />
   );
 }
