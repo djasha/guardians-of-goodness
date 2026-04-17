@@ -25,7 +25,9 @@ export function PartnersStrip({
 }: PartnersStripProps) {
   const partners = Array.isArray(_partners) ? _partners : [];
 
-  if (partners.length === 0 && !heading) return null;
+  if (partners.length === 0 && !heading) {
+    return <div aria-hidden="true" className="hidden" />;
+  }
 
   return (
     <section className={`${toneClasses[tone]} px-6 py-14`}>

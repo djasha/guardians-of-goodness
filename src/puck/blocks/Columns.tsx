@@ -1,4 +1,4 @@
-import type { Slot } from "@puckeditor/core";
+import type { Slot, SlotComponent } from "@puckeditor/core";
 
 export type ColumnsProps = {
   layout: "two" | "three" | "sidebar-left" | "sidebar-right";
@@ -7,6 +7,12 @@ export type ColumnsProps = {
   left: Slot;
   middle: Slot;
   right: Slot;
+};
+
+type ColumnsRenderProps = Omit<ColumnsProps, "left" | "middle" | "right"> & {
+  left: SlotComponent;
+  middle: SlotComponent;
+  right: SlotComponent;
 };
 
 const gapClasses: Record<ColumnsProps["gap"], string> = {
@@ -40,7 +46,7 @@ export function Columns({
   left: Left,
   middle: Middle,
   right: Right,
-}: ColumnsProps) {
+}: ColumnsRenderProps) {
   return (
     <section className={`${toneClasses[tone]} px-6 py-12`}>
       <div className={`max-w-6xl mx-auto grid grid-cols-1 ${gridClasses(layout)} ${gapClasses[gap]}`}>
