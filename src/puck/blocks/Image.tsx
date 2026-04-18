@@ -1,3 +1,5 @@
+import NextImage from "next/image";
+
 export type ImageProps = {
   src: string;
   alt: string;
@@ -5,6 +7,8 @@ export type ImageProps = {
   ratio: "16:9" | "4:3" | "1:1" | "3:4";
   tone: "cream" | "dark";
 };
+
+const SAFE_IMAGE_HOST_PATTERN = /^https:\/\/([a-z0-9-]+\.)?(sanity\.io|cdninstagram\.com|behold\.so)(:\d+)?\//i;
 
 const ratioClasses: Record<ImageProps["ratio"], string> = {
   "16:9": "aspect-video",
@@ -29,16 +33,27 @@ export function Image({ src, alt, width, ratio, tone }: ImageProps) {
     );
   }
 
+  const useNextImage = SAFE_IMAGE_HOST_PATTERN.test(src);
   const image = (
     <div
       className={`${ratioClasses[ratio]} relative overflow-hidden border-2 border-dark bg-cream`}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt={alt || ""}
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+      {useNextImage ? (
+        <NextImage
+          src={src}
+          alt={alt || ""}
+          fill
+          sizes={width === "full" ? "100vw" : "(min-width: 1024px) 1024px, 100vw"}
+          className="object-cover"
+        />
+      ) : (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={src}
+          alt={alt || ""}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
     </div>
   );
 

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Render, resolveAllData } from "@puckeditor/core";
-import { puckConfig, type PuckData } from "@/puck/config";
+import { puckServerConfig } from "@/puck/config.server";
+import type { PuckData } from "@/puck/types";
 import { getLandingPageByPath, getPageContent } from "@/sanity/lib/pageTree";
 
 type Params = { path: string[] };
@@ -52,12 +53,12 @@ export default async function CatchAllPage({
     );
   }
 
-  const resolved_ = (await resolveAllData(
+  const resolvedData = (await resolveAllData(
     puckData,
-    puckConfig
+    puckServerConfig
   )) as PuckData;
 
-  return <Render config={puckConfig} data={resolved_} />;
+  return <Render config={puckServerConfig} data={resolvedData} />;
 }
 
 function safeParse(text: string): PuckData | null {

@@ -1,15 +1,34 @@
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
+import { z } from "zod";
 import { requireAdminAuth } from "@/lib/adminAuth";
-import { client } from "@/sanity/client";
-import { writeClient } from "@/sanity/writeClient";
+import { requireSameOrigin } from "@/lib/sameOrigin";
+import { draftReadClient, writeClient } from "@/sanity/writeClient";
+
+export const dynamic = "force-dynamic";
 
 type Params = { slug: string };
 
 const MAX_PUCK_DATA_BYTES = 1_000_000;
+const encoder = new TextEncoder();
 
-const LANDING_PAGE_QUERY = `*[_type == "landingPage" && slug.current == $slug][0]{
+const puckComponentSchema = z.object({
+  type: z.string().min(1).max(64),
+  props: z.record(z.string(), z.unknown()),
+});
+
+const puckDataSchema = z.object({
+  content: z.array(puckComponentSchema),
+  root: z.object({ props: z.record(z.string(), z.unknown()) }),
+  zones: z.record(z.string(), z.array(puckComponentSchema)).optional(),
+});
+
+const LANDING_PAGE_QUERY = `*[
+  _type == "landingPage" &&
+  !(_id in path("drafts.**")) &&
+  (_id == $identifier || slug.current == $identifier)
+][0]{
   _id,
   title,
   "slug": slug.current,
@@ -22,14 +41,22 @@ function draftId(publishedId: string): string {
   return publishedId.startsWith("drafts.") ? publishedId : `drafts.${publishedId}`;
 }
 
+function normalizeIdentifier(identifier: string): string {
+  return identifier.replace(/^drafts\./, "");
+}
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<Params> }
 ) {
-  const { slug } = await params;
+  const authFailure = requireAdminAuth(req);
+  if (authFailure) return authFailure;
+
+  const { slug: rawIdentifier } = await params;
+  const identifier = normalizeIdentifier(rawIdentifier);
   const url = new URL(req.url);
   const useDraft = url.searchParams.get("draft") === "1";
-  const doc = await client.fetch(LANDING_PAGE_QUERY, { slug });
+  const doc = await draftReadClient.fetch(LANDING_PAGE_QUERY, { identifier });
   if (!doc) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
@@ -49,29 +76,36 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<Params> }
 ) {
+  const originFailure = requireSameOrigin(req);
+  if (originFailure) return originFailure;
+
   const authFailure = requireAdminAuth(req);
   if (authFailure) return authFailure;
 
-  const { slug } = await params;
+  const { slug: rawIdentifier } = await params;
+  const identifier = normalizeIdentifier(rawIdentifier);
   const url = new URL(req.url);
   const isDraft = url.searchParams.get("draft") === "1";
   const body = await req.json();
 
-  const { puckData } = body as { puckData?: unknown };
-
-  if (!puckData || typeof puckData !== "object") {
-    return NextResponse.json({ error: "Invalid puckData" }, { status: 400 });
+  const parsed = puckDataSchema.safeParse((body as { puckData?: unknown })?.puckData);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Invalid puckData", issues: parsed.error.issues.slice(0, 5) },
+      { status: 400 }
+    );
   }
+  const puckData = parsed.data;
 
   const serialized = JSON.stringify(puckData);
-  if (serialized.length > MAX_PUCK_DATA_BYTES) {
+  if (encoder.encode(serialized).byteLength > MAX_PUCK_DATA_BYTES) {
     return NextResponse.json(
       { error: "Page content is too large" },
       { status: 413 }
     );
   }
 
-  const existing = await client.fetch(LANDING_PAGE_QUERY, { slug });
+  const existing = await draftReadClient.fetch(LANDING_PAGE_QUERY, { identifier });
   if (!existing) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
@@ -80,7 +114,7 @@ export async function PUT(
 
   if (isDraft) {
     const did = draftId(publishedId);
-    const published = (await client.getDocument(publishedId)) ?? null;
+    const published = (await writeClient.getDocument(publishedId)) ?? null;
     const {
       _id: _ignoredId,
       _rev: _ignoredRev,
@@ -117,7 +151,7 @@ export async function PUT(
     // no draft to delete
   }
 
-  revalidateTag(`landingPage:${slug}`, "max");
+  revalidateTag(`landingPage:${existing.slug}`, "max");
   revalidateTag("landingPage:tree", "max");
 
   return NextResponse.json({

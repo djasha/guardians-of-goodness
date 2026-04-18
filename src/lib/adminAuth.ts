@@ -37,9 +37,20 @@ export function requireAdminAuth(req: Request): NextResponse | null {
   const idx = decoded.indexOf(":");
   const supplied = idx === -1 ? decoded : decoded.slice(idx + 1);
 
-  if (supplied !== password) {
+  if (!timingSafeEqual(supplied, password)) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
   return null;
+}
+
+function timingSafeEqual(a: string, b: string): boolean {
+  const len = Math.max(a.length, b.length);
+  let result = a.length ^ b.length;
+  for (let i = 0; i < len; i++) {
+    const ai = i < a.length ? a.charCodeAt(i) : 0;
+    const bi = i < b.length ? b.charCodeAt(i) : 0;
+    result |= ai ^ bi;
+  }
+  return result === 0;
 }

@@ -87,9 +87,10 @@ export function Footer({
               <Image
                 src="/images/logos/goglogo.png"
                 alt="Guardians of Goodness — Home"
-                width={160}
-                height={56}
+                width={787}
+                height={572}
                 className="h-12 sm:h-14 w-auto brightness-0 invert"
+                style={{ width: "auto" }}
               />
             </Link>
           </div>

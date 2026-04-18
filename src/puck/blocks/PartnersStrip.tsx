@@ -1,3 +1,4 @@
+import NextImage from "next/image";
 import { resolveSafeHref } from "@/lib/safeHref";
 import { ResolvedSafePuckLink } from "@/puck/components/SafePuckLink";
 
@@ -50,10 +51,12 @@ export function PartnersStrip({
             {partners.map((partner) => {
               const safeWebsite = resolveSafeHref(partner.website);
               const inner = partner.logo?.url ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
+                <NextImage
                   src={partner.logo.url}
                   alt={partner.logo.alt || partner.name}
+                  width={140}
+                  height={64}
+                  sizes="140px"
                   className="h-14 md:h-16 w-auto max-w-[140px] object-contain opacity-90 hover:opacity-100 transition-opacity"
                 />
               ) : (

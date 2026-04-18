@@ -68,6 +68,7 @@ export const resolve: PresentationPluginOptions["resolve"] = {
     }),
     landingPage: defineLocations({
       select: {
+        id: "_id",
         title: "title",
         slug: "slug.current",
         parentSlug: "parent.slug.current",
@@ -76,11 +77,14 @@ export const resolve: PresentationPluginOptions["resolve"] = {
       },
       resolve: (doc) => {
         if (!doc?.slug) return { locations: [] };
+        const pageBuilderHref = `/admin/editor/${encodeURIComponent(
+          doc.id.replace(/^drafts\./, "")
+        )}`;
         if (doc.isHomepage) {
           return {
             locations: [
               { title: doc?.title || "Home", href: "/" },
-              { title: "Open in Page Builder", href: `/admin/editor/${doc.slug}` },
+              { title: "Open in Page Builder", href: pageBuilderHref },
             ],
           };
         }
@@ -91,7 +95,7 @@ export const resolve: PresentationPluginOptions["resolve"] = {
         return {
           locations: [
             { title: doc?.title || "Page", href },
-            { title: "Open in Page Builder", href: `/admin/editor/${doc.slug}` },
+            { title: "Open in Page Builder", href: pageBuilderHref },
           ],
         };
       },

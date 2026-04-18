@@ -1,8 +1,13 @@
 import { notFound } from "next/navigation";
-import { client } from "@/sanity/client";
+import { draftReadClient } from "@/sanity/writeClient";
+import { getLandingPagePathById } from "@/sanity/lib/pageTree";
 import { EditorClient } from "./EditorClient";
 
-const EDITOR_QUERY = `*[_type == "landingPage" && slug.current == $slug][0]{
+const EDITOR_QUERY = `*[
+  _type == "landingPage" &&
+  !(_id in path("drafts.**")) &&
+  (_id == $identifier || slug.current == $identifier)
+][0]{
   _id,
   title,
   "slug": slug.current,
@@ -16,17 +21,20 @@ export default async function EditorPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
-  const doc = await client.fetch(EDITOR_QUERY, { slug });
+  const { slug: rawIdentifier } = await params;
+  const identifier = rawIdentifier.replace(/^drafts\./, "");
+  const doc = await draftReadClient.fetch(EDITOR_QUERY, { identifier });
   if (!doc) notFound();
 
   const hasDraft = Boolean(doc.draft?.puckData);
   const sourceText = hasDraft ? doc.draft.puckData : doc.puckData;
   const initialData = sourceText ? safeParse(sourceText) : null;
+  const publicPath = (await getLandingPagePathById(doc._id)) ?? `/${doc.slug}`;
 
   return (
     <EditorClient
-      slug={doc.slug}
+      pageId={doc._id}
+      publicPath={publicPath}
       title={doc.title}
       initialData={initialData}
       initialHasDraft={hasDraft}

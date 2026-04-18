@@ -1,11 +1,16 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Render } from "@puckeditor/core";
+import { Render, resolveAllData } from "@puckeditor/core";
 import { sanityFetch } from "@/sanity/lib/live";
-import { puckConfig, type PuckData } from "@/puck/config";
+import { puckServerConfig } from "@/puck/config.server";
+import type { PuckData } from "@/puck/types";
 
-const LANDING_PAGE_QUERY = `*[_type == "landingPage" && slug.current == $slug][0]{
+const LANDING_PAGE_QUERY = `*[
+  _type == "landingPage" &&
+  !(_id in path("drafts.**")) &&
+  slug.current == $slug
+][0]{
   title,
   description,
   puckData
@@ -60,7 +65,12 @@ export default async function LandingPage({
     );
   }
 
-  return <Render config={puckConfig} data={puckData} />;
+  const resolvedData = (await resolveAllData(
+    puckData,
+    puckServerConfig
+  )) as PuckData;
+
+  return <Render config={puckServerConfig} data={resolvedData} />;
 }
 
 function safeParse(text: string): PuckData | null {

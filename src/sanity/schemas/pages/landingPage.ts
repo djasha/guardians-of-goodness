@@ -1,5 +1,26 @@
 import { defineType, defineField } from "sanity";
 
+// Slugs that would collide with app routes or required filenames.
+// Keep in sync with src/app/ top-level segments + Next.js special names.
+const RESERVED_SLUGS = new Set([
+  "admin",
+  "api",
+  "studio",
+  "_next",
+  "favicon.ico",
+  "robots.txt",
+  "sitemap.xml",
+  "catalogue",
+  "consultation",
+  "contact",
+  "education",
+  "about",
+  "support",
+  "privacy",
+  "projects",
+  "p",
+]);
+
 export default defineType({
   name: "landingPage",
   title: "Page",
@@ -26,8 +47,23 @@ export default defineType({
       group: "content",
       description:
         "The URL segment for this page. 'spring-campaign' under a parent 'campaigns' will be at /campaigns/spring-campaign. A root page uses just this segment (e.g. 'about' → /about).",
-      options: { source: "title", maxLength: 80 },
-      validation: (rule) => rule.required(),
+      options: {
+        source: "title",
+        maxLength: 80,
+        isUnique: (slug, context) => context.defaultIsUnique(slug, context),
+      },
+      validation: (rule) =>
+        rule.required().custom((value) => {
+          const current = value?.current;
+          if (!current) return true;
+          if (RESERVED_SLUGS.has(current.toLowerCase())) {
+            return `"${current}" is a reserved route segment. Try a different slug.`;
+          }
+          if (!/^[a-z0-9][a-z0-9-]*$/i.test(current)) {
+            return "Use lowercase letters, numbers, and hyphens only (no spaces or symbols).";
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "parent",

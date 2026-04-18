@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NextImage from "next/image";
 
 export type ArticleGridArticle = {
   _id: string;
@@ -56,12 +57,13 @@ export function ArticleGrid({
                 className="group block border-2 border-dark bg-white text-dark shadow-[6px_6px_0_0_#1a1a2e] overflow-hidden hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#1a1a2e] transition-transform"
               >
                 {article.coverImage?.url ? (
-                  <div className="aspect-video border-b-2 border-dark bg-cream">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                  <div className="relative aspect-video border-b-2 border-dark bg-cream">
+                    <NextImage
                       src={article.coverImage.url}
                       alt={article.coverImage.alt || ""}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="(min-width: 768px) 33vw, 100vw"
+                      className="object-cover"
                     />
                   </div>
                 ) : null}

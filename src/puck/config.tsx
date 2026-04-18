@@ -1,37 +1,24 @@
-import type { Config, Data } from "@puckeditor/core";
-import { Hero, type HeroProps } from "./blocks/Hero";
-import { FeatureGrid, type FeatureGridProps } from "./blocks/FeatureGrid";
-import { CTABand, type CTABandProps } from "./blocks/CTABand";
-import { Image, type ImageProps } from "./blocks/Image";
-import { RichText, type RichTextProps } from "./blocks/RichText";
-import { Stats, type StatsProps } from "./blocks/Stats";
-import { Quote, type QuoteProps } from "./blocks/Quote";
-import { PageHero, type PageHeroProps } from "./blocks/PageHero";
-import { Columns, type ColumnsProps } from "./blocks/Columns";
-import { SocialLinks, type SocialLinksProps } from "./blocks/SocialLinks";
-import { ContactInfo, type ContactInfoProps } from "./blocks/ContactInfo";
-import { ArticleGrid, type ArticleGridProps } from "./blocks/ArticleGrid";
-import { PartnersStrip, type PartnersStripProps } from "./blocks/PartnersStrip";
-import { ImpactStats, type ImpactStatsProps } from "./blocks/ImpactStats";
+import type { Config } from "@puckeditor/core";
+import { Hero } from "./blocks/Hero";
+import { FeatureGrid } from "./blocks/FeatureGrid";
+import { CTABand } from "./blocks/CTABand";
+import { Image } from "./blocks/Image";
+import { RichText } from "./blocks/RichText";
+import { Stats } from "./blocks/Stats";
+import { Quote } from "./blocks/Quote";
+import { PageHero } from "./blocks/PageHero";
+import { Columns } from "./blocks/Columns";
+import { SocialLinks } from "./blocks/SocialLinks";
+import { ContactInfo } from "./blocks/ContactInfo";
+import { ArticleGrid } from "./blocks/ArticleGrid";
+import { PartnersStrip } from "./blocks/PartnersStrip";
+import { ImpactStats } from "./blocks/ImpactStats";
 import { ImagePickerField } from "./fields/ImagePickerField";
+import type { Props } from "./types";
 import { client } from "@/sanity/client";
 
-export type Props = {
-  PageHero: PageHeroProps;
-  Hero: HeroProps;
-  FeatureGrid: FeatureGridProps;
-  CTABand: CTABandProps;
-  Image: ImageProps;
-  RichText: RichTextProps;
-  Stats: StatsProps;
-  Quote: QuoteProps;
-  Columns: ColumnsProps;
-  SocialLinks: SocialLinksProps;
-  ContactInfo: ContactInfoProps;
-  ArticleGrid: ArticleGridProps;
-  PartnersStrip: PartnersStripProps;
-  ImpactStats: ImpactStatsProps;
-};
+export type { Props, PuckData } from "./types";
+export { emptyPuckData } from "./types";
 
 const ARTICLES_FOR_GRID_QUERY = `*[_type == "article" && defined(publishedAt)] | order(publishedAt desc)[0...$limit]{
   _id,
@@ -668,11 +655,4 @@ export const puckConfig: Config<Props> = {
       render: ContactInfo,
     },
   },
-};
-
-export type PuckData = Data<Props>;
-
-export const emptyPuckData: PuckData = {
-  content: [],
-  root: { props: {} },
 };

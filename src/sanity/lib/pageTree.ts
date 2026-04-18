@@ -12,7 +12,11 @@ export type PageTreeRow = {
   puckData?: string | null;
 };
 
-const PAGE_TREE_QUERY = `*[_type == "landingPage" && defined(slug.current)]{
+const PAGE_TREE_QUERY = `*[
+  _type == "landingPage" &&
+  !(_id in path("drafts.**")) &&
+  defined(slug.current)
+]{
   _id,
   title,
   description,
@@ -22,7 +26,11 @@ const PAGE_TREE_QUERY = `*[_type == "landingPage" && defined(slug.current)]{
   noIndex
 }`;
 
-const PAGE_PUCK_DATA_QUERY = `*[_type == "landingPage" && _id == $id][0].puckData`;
+const PAGE_PUCK_DATA_QUERY = `*[
+  _type == "landingPage" &&
+  !(_id in path("drafts.**")) &&
+  _id == $id
+][0].puckData`;
 
 export function pathForPage(
   page: PageTreeRow,
@@ -57,6 +65,24 @@ export const getLandingPageByPath = cache(async (path: string) => {
     if (pathForPage(page, byId) === normalised) return page;
   }
   return null;
+});
+
+export const getLandingPagePathById = cache(async (id: string) => {
+  const publishedId = id.replace(/^drafts\./, "");
+  let pages: PageTreeRow[] = [];
+  try {
+    const result = await client.fetch<PageTreeRow[]>(PAGE_TREE_QUERY, {}, {
+      next: { tags: ["landingPage:tree"], revalidate: 60 },
+    });
+    pages = Array.isArray(result) ? result : [];
+  } catch {
+    pages = [];
+  }
+
+  const byId = new Map(pages.map((p) => [p._id, p]));
+  const page = byId.get(publishedId);
+
+  return page ? pathForPage(page, byId) : null;
 });
 
 export const getPageContent = cache(

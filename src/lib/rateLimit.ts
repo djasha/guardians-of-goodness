@@ -56,13 +56,27 @@ export function checkRateLimit(key: string): RateLimitResult {
   return { allowed: true, remaining: MAX_PER_WINDOW - bucket.count };
 }
 
-/** Extracts the client IP from Vercel / Cloudflare / standard proxy headers. */
+/**
+ * Extracts the client IP from Vercel / Cloudflare / standard proxy headers.
+ *
+ * Prefers `x-real-ip` (Vercel) and `cf-connecting-ip` (Cloudflare) because
+ * edge infra sets those to the actual client. `x-forwarded-for`'s leftmost
+ * value is user-controllable — attackers can prepend a fake IP to dodge
+ * per-IP rate limits — so when falling back, we take the rightmost entry,
+ * which is the last hop our proxy actually observed.
+ */
 export function getClientIp(headers: Headers): string {
+  const realIp = headers.get("x-real-ip");
+  if (realIp) return realIp.trim();
+
+  const cfIp = headers.get("cf-connecting-ip");
+  if (cfIp) return cfIp.trim();
+
   const xff = headers.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0].trim();
-  return (
-    headers.get("x-real-ip") ||
-    headers.get("cf-connecting-ip") ||
-    "unknown"
-  );
+  if (xff) {
+    const entries = xff.split(",").map((s) => s.trim()).filter(Boolean);
+    if (entries.length > 0) return entries[entries.length - 1];
+  }
+
+  return "unknown";
 }

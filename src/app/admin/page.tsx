@@ -1,40 +1,40 @@
 import Link from "next/link";
-import { client } from "@/sanity/client";
+import { draftReadClient } from "@/sanity/writeClient";
+import { pathForPage } from "@/sanity/lib/pageTree";
+import { DuplicatePageButton } from "./DuplicatePageButton";
 
-const LANDING_PAGES_QUERY = `*[_type == "landingPage"] | order(_updatedAt desc){
+const LANDING_PAGES_QUERY = `*[
+  _type == "landingPage" &&
+  !(_id in path("drafts.**"))
+] | order(_updatedAt desc){
   _id,
   title,
   "slug": slug.current,
-  "parentSlug": parent->slug.current,
-  "grandparentSlug": parent->parent->slug.current,
+  "parentId": parent._ref,
   isHomepage,
   description,
   _updatedAt,
-  "hasContent": defined(puckData)
+  "hasContent": defined(puckData),
+  "hasDraft": count(*[_id == "drafts." + ^._id]) > 0
 }`;
 
 type LandingPageSummary = {
   _id: string;
   title: string;
   slug: string;
-  parentSlug?: string | null;
-  grandparentSlug?: string | null;
+  parentId?: string | null;
   isHomepage?: boolean;
   description?: string;
   _updatedAt: string;
   hasContent: boolean;
+  hasDraft: boolean;
 };
 
-function publicPath(page: LandingPageSummary): string {
-  if (page.isHomepage) return "/";
-  const segments = [page.grandparentSlug, page.parentSlug, page.slug].filter(
-    (s): s is string => typeof s === "string" && s.length > 0
-  );
-  return "/" + segments.join("/");
-}
+export const dynamic = "force-dynamic";
 
 export default async function AdminIndex() {
-  const pages: LandingPageSummary[] = await client.fetch(LANDING_PAGES_QUERY);
+  const pages: LandingPageSummary[] = await draftReadClient.fetch(LANDING_PAGES_QUERY);
+  const pagesById = new Map(pages.map((page) => [page._id, page]));
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
@@ -67,22 +67,32 @@ export default async function AdminIndex() {
               key={page._id}
               className="border-2 border-dark bg-white shadow-[4px_4px_0_0_#1a1a2e]"
             >
-              <Link
-                href={`/admin/editor/${page.slug}`}
-                className="flex items-center justify-between p-5 hover:bg-cream transition-colors"
-              >
-                <div className="min-w-0">
-                  <h2 className="font-display text-xl font-bold truncate">
-                    {page.title || "Untitled"}
-                  </h2>
-                  <p className="text-sm opacity-70 truncate">
-                    {publicPath(page)} {page.hasContent ? "" : "• empty"}
-                  </p>
-                </div>
-                <span className="ml-4 text-sm opacity-60 whitespace-nowrap">
-                  {new Date(page._updatedAt).toLocaleDateString()}
-                </span>
-              </Link>
+              <div className="flex items-stretch">
+                <Link
+                  href={`/admin/editor/${encodeURIComponent(page._id)}`}
+                  className="flex-1 flex items-center justify-between p-5 hover:bg-cream transition-colors min-w-0"
+                >
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <h2 className="font-display text-xl font-bold truncate">
+                        {page.title || "Untitled"}
+                      </h2>
+                      {page.hasDraft ? (
+                        <span className="text-[10px] font-bold uppercase tracking-wider bg-yellow-400 text-dark border-2 border-dark px-1.5 py-0.5 whitespace-nowrap">
+                          Draft
+                        </span>
+                      ) : null}
+                    </div>
+                    <p className="text-sm opacity-70 truncate">
+                      {pathForPage(page, pagesById)} {page.hasContent ? "" : "• empty"}
+                    </p>
+                  </div>
+                  <span className="ml-4 text-sm opacity-60 whitespace-nowrap">
+                    {new Date(page._updatedAt).toLocaleDateString()}
+                  </span>
+                </Link>
+                <DuplicatePageButton pageId={page._id} pageTitle={page.title || "Untitled"} />
+              </div>
             </li>
           ))}
         </ul>
@@ -93,7 +103,8 @@ export default async function AdminIndex() {
         <Link href="/studio/structure/landingPage" className="underline">
           Sanity Studio
         </Link>
-        . Set a title and URL, then come back here to design the layout.
+        . Set a title and URL, publish the page once, then come back here to
+        design the layout.
       </footer>
     </div>
   );

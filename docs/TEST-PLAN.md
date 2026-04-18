@@ -127,7 +127,34 @@ A simple checklist you can follow to make sure everything works. No coding neede
 
 ---
 
-## 5. Mobile (test on phone)
+## 5. Page Builder (`/admin`)
+
+### Automated Guard
+- [ ] Run `npm run test:puck` locally before changing Puck routes, configs, or draft/publish behavior
+
+### Dashboard + Editor
+- [ ] `/admin` lists landing pages and opens each page in `/admin/editor/<document-id>`
+- [ ] The editor header shows the public path, not the internal document id
+- [ ] Old slug editor URLs still work, e.g. `/admin/editor/test`
+- [ ] If two nested pages share the same URL segment under different parents, each dashboard card opens the correct document-id-backed editor URL
+
+### Draft / Publish
+- [ ] Open a clean published page and wait 2 seconds → no "Draft saved" status appears, and `GET /api/puck/<id>?draft=1` reports `hasDraft: false`
+- [ ] Type into a block and wait ~1.2s → header shows draft saved
+- [ ] `GET /api/puck/<id>?draft=1` returns the edited draft content and `hasDraft: true`
+- [ ] Close and reopen the editor → header shows unpublished draft
+- [ ] Click Publish → public page updates on next request
+- [ ] After publish, `GET /api/puck/<id>?draft=1` reports `hasDraft: false`
+- [ ] Change content and immediately click Publish → no stale unpublished draft reappears after publish
+
+### Public Render
+- [ ] Catch-all route `/<page-path>` renders ArticleGrid and PartnersStrip with live Sanity data
+- [ ] Legacy route `/p/<slug>` renders the same dynamic Puck data
+- [ ] Columns block renders nested slot content on both routes
+
+---
+
+## 6. Mobile (test on phone)
 
 - [ ] Hamburger menu works
 - [ ] Catalogue filters scroll horizontally or wrap properly
@@ -139,7 +166,7 @@ A simple checklist you can follow to make sure everything works. No coding neede
 
 ---
 
-## 6. Production (`guardiansofgoodness.vercel.app`)
+## 7. Production (`guardiansofgoodness.vercel.app`)
 
 - [ ] Homepage loads with cat hero image
 - [ ] All navigation links work

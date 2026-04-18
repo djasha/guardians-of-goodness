@@ -1,19 +1,21 @@
 import { EditIcon } from "@sanity/icons";
 import type { DocumentActionComponent } from "sanity";
 
-type MaybeSlug = { current?: string } | undefined;
-
 export const editInPageBuilderAction: DocumentActionComponent = (props) => {
-  const draftSlug = (props.draft?.slug as MaybeSlug)?.current;
-  const publishedSlug = (props.published?.slug as MaybeSlug)?.current;
-  const slug = draftSlug || publishedSlug;
+  const pageId = props.id?.replace(/^drafts\./, "");
 
   return {
     label: "Open in Page Builder",
     icon: EditIcon,
-    disabled: !slug,
+    disabled: !pageId,
     onHandle: () => {
-      if (slug) window.open(`/admin/editor/${slug}`, "_blank", "noopener,noreferrer");
+      if (pageId) {
+        window.open(
+          `/admin/editor/${encodeURIComponent(pageId)}`,
+          "_blank",
+          "noopener,noreferrer"
+        );
+      }
       props.onComplete();
     },
   };

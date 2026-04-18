@@ -98,13 +98,14 @@ export function Header({ navItems, ctaLabel, ctaHref }: HeaderProps = {}) {
               <Image
                 src="/images/logos/goglogo.png"
                 alt="Guardians of Goodness"
-                width={260}
-                height={90}
+                width={787}
+                height={572}
                 className={cn(
                   "w-auto transition-all duration-300",
                   scrolled ? "h-9 lg:h-11" : onDark ? "h-16 lg:h-22" : "h-10 lg:h-12",
                   (isMystical ? !scrolled : (onDark && !scrolled)) && "brightness-0 invert"
                 )}
+                style={{ width: "auto" }}
                 priority
               />
             </Link>

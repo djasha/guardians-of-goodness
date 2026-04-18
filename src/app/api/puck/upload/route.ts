@@ -1,8 +1,11 @@
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdminAuth } from "@/lib/adminAuth";
+import { requireSameOrigin } from "@/lib/sameOrigin";
 import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 import { writeClient } from "@/sanity/writeClient";
+
+export const dynamic = "force-dynamic";
 
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 const ALLOWED_TYPES = [
@@ -15,6 +18,9 @@ const ALLOWED_TYPES = [
 const ALLOWED_EXTENSIONS = /\.(jpe?g|png|webp|gif|avif)$/i;
 
 export async function POST(req: NextRequest) {
+  const originFailure = requireSameOrigin(req);
+  if (originFailure) return originFailure;
+
   const authFailure = requireAdminAuth(req);
   if (authFailure) return authFailure;
 
@@ -138,13 +144,9 @@ function isAvif(buffer: Buffer): boolean {
     return false;
   }
 
-  const boxSize = buffer.readUInt32BE(0);
-  const brandBytes = Math.min(buffer.length, boxSize > 0 ? boxSize : 32, 64);
-  const brands: string[] = [];
-
-  for (let offset = 8; offset + 4 <= brandBytes; offset += 4) {
-    brands.push(buffer.subarray(offset, offset + 4).toString("ascii"));
-  }
-
-  return brands.some((brand) => brand === "avif" || brand === "avis");
+  // The major brand at bytes 8-12 declares the actual file format.
+  // Earlier versions scanned all compatible brands, which let polyglot
+  // MP4/HEIC files slip through if they listed "avif" as a secondary brand.
+  const majorBrand = buffer.subarray(8, 12).toString("ascii");
+  return majorBrand === "avif" || majorBrand === "avis";
 }
